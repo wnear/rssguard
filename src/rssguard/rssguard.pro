@@ -39,15 +39,15 @@ include(../../pri/build_opts.pri)
 
 DEFINES *= RSSGUARD_DLLSPEC=Q_DECL_IMPORT
 SOURCES += main.cpp
-INCLUDEPATH +=  $$PWD/../librssguard \
-                $$PWD/../librssguard/gui \
-                $$OUT_PWD/../librssguard \
-                $$OUT_PWD/../librssguard/ui
+INCLUDEPATH +=  $$PWD/../librssg \
+                $$PWD/../librssg/gui \
+                $$OUT_PWD/../librssg \
+                $$OUT_PWD/../librssg/ui
 
-DEPENDPATH += $$PWD/../librssguard
+DEPENDPATH += $$PWD/../librssg
 
-win32: LIBS += -L$$OUT_PWD/../librssguard/ -llibrssguard
-unix: LIBS += -L$$OUT_PWD/../librssguard/ -lrssguard
+win32: LIBS += -L$$OUT_PWD/../librssg/ -llibrssg
+unix: LIBS += -L$$OUT_PWD/../librssg/ -lrssguard
 
 # Create new "make 7zip" target and "make zip" target.
 win32 {

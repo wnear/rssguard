@@ -38,9 +38,9 @@
 TEMPLATE = subdirs
 
 CONFIG += ordered
-SUBDIRS = librssguard rssguard
+SUBDIRS = librssg rssguard
 
-librssguard.subdir  = src/librssguard
+librssg.subdir  = src/librssg
 
 rssguard.subdir  = src/rssguard
-rssguard.depends = libtextosaurus
+rssguard.depends = librssg

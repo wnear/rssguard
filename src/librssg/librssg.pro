@@ -4,10 +4,10 @@ unix|mac {
   TARGET = rssguard
 }
 else {
-  TARGET = librssguard
+  TARGET = librssg
 }
 
-MSG_PREFIX  = "librssguard"
+MSG_PREFIX  = "librssg"
 APP_TYPE    = "core library"
 
 include(../../pri/vars.pri)
@@ -422,14 +422,14 @@ uic.commands -= -no-stringliteral
 
 # Create new "make lupdate" target.
 lupdate.target = lupdate
-lupdate.commands = lupdate -no-obsolete -pro $$shell_quote($$shell_path($$PWD/librssguard.pro)) -ts $$TRANSLATIONS_WO_QT
+lupdate.commands = lupdate -no-obsolete -pro $$shell_quote($$shell_path($$PWD/librssg.pro)) -ts $$TRANSLATIONS_WO_QT
 
 QMAKE_EXTRA_TARGETS += lupdate
 
 # Make sure QM translations are nerated.
 qtPrepareTool(LRELEASE, lrelease) {
-  message($$MSG_PREFIX: Running: \"$$LRELEASE\" -compress librssguard.pro)
-  system($$LRELEASE -compress librssguard.pro)
+  message($$MSG_PREFIX: Running: \"$$LRELEASE\" -compress librssg.pro)
+  system($$LRELEASE -compress librssg.pro)
 }
 
 mac {
