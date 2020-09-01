@@ -104,6 +104,7 @@ QStringList StatusBar::savedActions() const
 #endif
 }
 
+<<<<<<< Updated upstream
 QList<QAction *> StatusBar::getSpecificActions(const QStringList &actions)
 {
     bool progress_visible = this->actions().contains(m_barProgressFeedsAction)
@@ -176,6 +177,78 @@ QList<QAction *> StatusBar::getSpecificActions(const QStringList &actions)
             action_to_add->setProperty("widget", QVariant::fromValue((void *) widget_to_add));
             spec_actions.append(action_to_add);
         }
+=======
+QList<QAction*> StatusBar::getSpecificActions(const QStringList& actions) {
+  bool progress_visible = this->actions().contains(m_barProgressFeedsAction) && m_lblProgressFeeds->isVisible() &&
+                          m_barProgressFeeds->isVisible();
+  QList<QAction*> available_actions = availableActions();
+  QList<QAction*> spec_actions;
+
+  // Iterate action names and add respectable
+  // actions into the toolbar.
+  for (const QString& action_name : actions) {
+    QAction* matching_action = findMatchingAction(action_name, available_actions);
+    QAction* action_to_add;
+    QWidget* widget_to_add;
+
+    if (matching_action == m_barProgressDownloadAction) {
+      widget_to_add = m_barProgressDownload;
+      action_to_add = m_barProgressDownloadAction;
+      widget_to_add->setVisible(false);
+    }
+    else if (matching_action == m_barProgressFeedsAction) {
+      widget_to_add = m_barProgressFeeds;
+      action_to_add = m_barProgressFeedsAction;
+      widget_to_add->setVisible(progress_visible);
+    }
+    else if (matching_action == m_lblProgressDownloadAction) {
+      widget_to_add = m_lblProgressDownload;
+      action_to_add = m_lblProgressDownloadAction;
+      widget_to_add->setVisible(false);
+    }
+    else if (matching_action == m_lblProgressFeedsAction) {
+      widget_to_add = m_lblProgressFeeds;
+      action_to_add = m_lblProgressFeedsAction;
+      widget_to_add->setVisible(progress_visible);
+    }
+    else {
+      if (action_name == SEPARATOR_ACTION_NAME) {
+        QLabel* lbl = new QLabel(QString::fromUtf8("-"));
+
+        widget_to_add = lbl;
+        action_to_add = new QAction(this);
+        action_to_add->setSeparator(true);
+        action_to_add->setProperty("should_remove_action", true);
+      }
+      else if (action_name == SPACER_ACTION_NAME) {
+        QLabel* lbl = new QLabel(QSL("\t\t"));
+
+        widget_to_add = lbl;
+        action_to_add = new QAction(this);
+        action_to_add->setProperty("should_remove_action", true);
+        action_to_add->setIcon(qApp->icons()->fromTheme(QSL("system-search")));
+        action_to_add->setProperty("type", SPACER_ACTION_NAME);
+        action_to_add->setProperty("name", tr("Toolbar spacer"));
+      }
+      else if (matching_action != nullptr) {
+        // Add originally toolbar action.
+        auto* tool_button = new PlainToolButton(this);
+
+        tool_button->reactOnActionChange(matching_action);
+        widget_to_add = tool_button;
+        action_to_add = matching_action;
+        connect(tool_button, &PlainToolButton::clicked, matching_action, &QAction::trigger);
+        connect(matching_action, &QAction::changed, tool_button, &PlainToolButton::reactOnSenderActionChange);
+      }
+      else {
+        action_to_add = nullptr;
+        widget_to_add = nullptr;
+      }
+
+      if (action_to_add != nullptr) {
+        action_to_add->setProperty("should_remove_widget", true);
+      }
+>>>>>>> Stashed changes
     }
 
     return spec_actions;
