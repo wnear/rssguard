@@ -1,62 +1,59 @@
 TEMPLATE = app
-           TARGET = rssguard
+TARGET = rssguard
 
-                    MSG_PREFIX = "rssguard"
-                                 APP_TYPE = "executable"
+MSG_PREFIX = "rssguard"
+APP_TYPE = "executable"
 
-                                         include(.. / .. / pri / vars.pri)
+include(../../pri/vars.pri)
 
-                                         isEmpty(PREFIX)
-{
-    message($$MSG_PREFIX: PREFIX variable is not set. This might indicate error.)
+isEmpty(PREFIX) {
+  message($$MSG_PREFIX: PREFIX variable is not set. This might indicate error.)
 
-    win32 {
-        PREFIX = $$OUT_PWD / app
-    }
+  win32 {
+    PREFIX = $$OUT_PWD/app
+  }
 
-    android {
-        PREFIX = $$OUT_PWD / app
-    }
+  android {
+    PREFIX = $$OUT_PWD/app
+  }
 
-    mac {
-        PREFIX = $$quote($$OUT_PWD / $${APP_NAME}.app)
-    }
+  mac {
+    PREFIX = $$quote($$OUT_PWD/$${APP_NAME}.app)
+  }
 
-unix:
-!mac:
-    !android {
-        PREFIX = $$OUT_PWD / AppDir / usr
-    }
+  unix:!mac:!android {
+    PREFIX = $$OUT_PWD/AppDir/usr
+  }
 }
 
-include(.. / .. / pri / defs.pri)
+include(../../pri/defs.pri)
 
 message($$MSG_PREFIX: Shadow copy build directory \"$$OUT_PWD\".)
-        message($$MSG_PREFIX: $$APP_NAME version is: \"$$APP_VERSION\".)
-                message($$MSG_PREFIX: Detected Qt version: \"$$QT_VERSION\".)
-                        message($$MSG_PREFIX: Build destination directory: \"$$DESTDIR\".)
-                                message($$MSG_PREFIX: Prefix directory: \"$$PREFIX\".)
-                                        message($$MSG_PREFIX: Build revision: \"$$APP_REVISION\".)
+message($$MSG_PREFIX: $$APP_NAME version is: \"$$APP_VERSION\".)
+message($$MSG_PREFIX: Detected Qt version: \"$$QT_VERSION\".)
+message($$MSG_PREFIX: Build destination directory: \"$$DESTDIR\".)
+message($$MSG_PREFIX: Prefix directory: \"$$PREFIX\".)
+message($$MSG_PREFIX: Build revision: \"$$APP_REVISION\".)
 
-                                                include(.. / .. / pri / build_opts.pri)
+include(../../pri/build_opts.pri)
 
-                                                DEFINES *= RSSGUARD_DLLSPEC = Q_DECL_IMPORT
-                                                        SOURCES += main.cpp
-                                                                INCLUDEPATH +=  $$PWD / .. / librssguard \
-                                                                        $$PWD / .. / librssguard / gui \
-                                                                        $$OUT_PWD / .. / librssguard \
-                                                                        $$OUT_PWD / .. / librssguard / ui
+DEFINES *= RSSGUARD_DLLSPEC=Q_DECL_IMPORT
+SOURCES += main.cpp
+INCLUDEPATH +=  $$PWD/../librssguard \
+                $$PWD/../librssguard/gui \
+                $$OUT_PWD/../librssguard \
+                $$OUT_PWD/../librssguard/ui
 
-                                                                        DEPENDPATH += $$PWD / .. / librssguard
+DEPENDPATH += $$PWD/../librssguard
 
-                                                                                win32: LIBS += -L$$OUT_PWD / .. / librssguard / -llibrssguard
-                                                                                        unix: LIBS += -L$$OUT_PWD / .. / librssguard / -lrssguard
+win32: LIBS += -L$$OUT_PWD/../librssguard/ -llibrssguard
+unix: LIBS += -L$$OUT_PWD/../librssguard/ -lrssguard
 
 # Create new "make 7zip" target and "make zip" target.
 win32 {
-    seven_zip.target = 7zip
-    seven_zip.depends = install
-    seven_zip.commands = $$shell_path($$shell_quote($$PWD / .. / .. / resources / scripts / 7za / 7za.exe)) a - t7z $$TARGET - $$APP_VERSION - $$APP_REVISION - $${APP_WIN_ARCH}.7z $$shell_path($$PREFIX/*)
+  seven_zip.target = 7zip
+  seven_zip.depends = install
+  seven_zip.commands = $$shell_path($$shell_quote($$PWD/../../resources/scripts/7za/7za.exe)) a -t7z $$TARGET-$$APP_VERSION-$$APP_REVISION-$${APP_WIN_ARCH}.7z $$shell_path($$PREFIX/*)
 
   zip.target = zip
   zip.depends = install

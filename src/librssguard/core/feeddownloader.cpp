@@ -298,7 +298,8 @@ QString FeedDownloadResults::overview(int how_many_feeds) const
     QStringList result;
 
     for (int i = 0, number_items_output = qMin(how_many_feeds, m_updatedFeeds.size());
-            i < number_items_output; i++) {
+            i < number_items_output; 
+	    i++) {
         result.append(m_updatedFeeds.at(i).first + QSL(": ") + QString::number(m_updatedFeeds.at(
                           i).second));
     }
