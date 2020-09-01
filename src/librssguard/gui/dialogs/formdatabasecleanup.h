@@ -9,31 +9,32 @@
 
 #include "miscellaneous/databasecleaner.h"
 
-class FormDatabaseCleanup : public QDialog {
-  Q_OBJECT
+class FormDatabaseCleanup : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormDatabaseCleanup(QWidget* parent = nullptr);
+public:
+    explicit FormDatabaseCleanup(QWidget *parent = nullptr);
     virtual ~FormDatabaseCleanup() = default;
 
-  protected:
-    void closeEvent(QCloseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
+protected:
+    void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
-  private slots:
+private slots:
     void updateDaysSuffix(int number);
     void startPurging();
     void onPurgeStarted();
-    void onPurgeProgress(int progress, const QString& description);
+    void onPurgeProgress(int progress, const QString &description);
     void onPurgeFinished(bool finished);
 
-  signals:
-    void purgeRequested(const CleanerOrders& which_data);
+signals:
+    void purgeRequested(const CleanerOrders &which_data);
 
-  private:
+private:
     void loadDatabaseInfo();
 
-  private:
+private:
     QScopedPointer<Ui::FormDatabaseCleanup> m_ui;
     DatabaseCleaner m_cleaner;
 };

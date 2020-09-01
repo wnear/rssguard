@@ -2,4 +2,4 @@
 
 #include "gui/messagessearchlineedit.h"
 
-MessagesSearchLineEdit::MessagesSearchLineEdit(QWidget* parent) : BaseLineEdit(parent) {}
+MessagesSearchLineEdit::MessagesSearchLineEdit(QWidget *parent) : BaseLineEdit(parent) {}

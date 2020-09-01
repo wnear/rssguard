@@ -56,17 +56,18 @@
    algorithm is changed in a later version, by prepending a version identifier to the cypertext.
  */
 
-class SimpleCrypt {
-  public:
+class SimpleCrypt
+{
+public:
 
     /**
        CompressionMode describes if compression will be applied to the data to be
        encrypted.
      */
     enum CompressionMode {
-      CompressionAuto,    /*!< Only apply compression if that results in a shorter plaintext. */
-      CompressionAlways,  /*!< Always apply compression. Note that for short inputs, a compression may result in longer data */
-      CompressionNever    /*!< Never apply compression. */
+        CompressionAuto,    /*!< Only apply compression if that results in a shorter plaintext. */
+        CompressionAlways,  /*!< Always apply compression. Note that for short inputs, a compression may result in longer data */
+        CompressionNever    /*!< Never apply compression. */
     };
 
     /**
@@ -78,19 +79,19 @@ class SimpleCrypt {
        appears to be valid after decryption.
      */
     enum IntegrityProtectionMode {
-      ProtectionNone,    /*!< The integerity of the encrypted data is not protected. It is not really possible to detect a wrong key, for instance. */
-      ProtectionChecksum,/*!< A simple checksum is used to verify that the data is in order. If not, an empty string is returned. */
-      ProtectionHash     /*!< A cryptographic hash is used to verify the integrity of the data. This method produces a much stronger, but longer check */
+        ProtectionNone,    /*!< The integerity of the encrypted data is not protected. It is not really possible to detect a wrong key, for instance. */
+        ProtectionChecksum,/*!< A simple checksum is used to verify that the data is in order. If not, an empty string is returned. */
+        ProtectionHash     /*!< A cryptographic hash is used to verify the integrity of the data. This method produces a much stronger, but longer check */
     };
 
     /**
        Error describes the type of error that occured.
      */
     enum Error {
-      ErrorNoError,         /*!< No error occurred. */
-      ErrorNoKeySet,        /*!< No key was set. You can not encrypt or decrypt without a valid key. */
-      ErrorUnknownVersion,  /*!< The version of this data is unknown, or the data is otherwise not valid. */
-      ErrorIntegrityFailed  /*!< The integrity check of the data failed. Perhaps the wrong key was used. */
+        ErrorNoError,         /*!< No error occurred. */
+        ErrorNoKeySet,        /*!< No key was set. You can not encrypt or decrypt without a valid key. */
+        ErrorUnknownVersion,  /*!< The version of this data is unknown, or the data is otherwise not valid. */
+        ErrorIntegrityFailed  /*!< The integrity check of the data failed. Perhaps the wrong key was used. */
     };
 
     /**
@@ -115,8 +116,9 @@ class SimpleCrypt {
     /**
        Returns true if SimpleCrypt has been initialized with a key.
      */
-    bool hasKey() const {
-      return !m_keyParts.isEmpty();
+    bool hasKey() const
+    {
+        return !m_keyParts.isEmpty();
     }
 
     /**
@@ -125,15 +127,17 @@ class SimpleCrypt {
        Note that decryption is not influenced by this mode, as the decryption recognizes
        what mode was used when encrypting.
      */
-    void setCompressionMode(CompressionMode mode) {
-      m_compressionMode = mode;
+    void setCompressionMode(CompressionMode mode)
+    {
+        m_compressionMode = mode;
     }
 
     /**
        Returns the CompressionMode that is currently in use.
      */
-    CompressionMode compressionMode() const {
-      return m_compressionMode;
+    CompressionMode compressionMode() const
+    {
+        return m_compressionMode;
     }
 
     /**
@@ -142,22 +146,25 @@ class SimpleCrypt {
        Note that decryption is not influenced by this mode, as the decryption recognizes
        what mode was used when encrypting.
      */
-    void setIntegrityProtectionMode(IntegrityProtectionMode mode) {
-      m_protectionMode = mode;
+    void setIntegrityProtectionMode(IntegrityProtectionMode mode)
+    {
+        m_protectionMode = mode;
     }
 
     /**
        Returns the IntegrityProtectionMode that is currently in use.
      */
-    IntegrityProtectionMode integrityProtectionMode() const {
-      return m_protectionMode;
+    IntegrityProtectionMode integrityProtectionMode() const
+    {
+        return m_protectionMode;
     }
 
     /**
        Returns the last error that occurred.
      */
-    Error lastError() const {
-      return m_lastError;
+    Error lastError() const
+    {
+        return m_lastError;
     }
 
     /**
@@ -165,7 +172,7 @@ class SimpleCrypt {
        a cyphertext the result. The result is a base64 encoded version of the binary array that is the
        actual result of the string, so it can be stored easily in a text format.
      */
-    QString encryptToString(const QString& plaintext);
+    QString encryptToString(const QString &plaintext);
 
     /**
        Encrypts the @arg plaintext QByteArray with the key the class was initialized with, and returns
@@ -181,7 +188,7 @@ class SimpleCrypt {
        This method returns a byte array, that is useable for storing a binary format. If you need
        a string you can store in a text file, use encryptToString() instead.
      */
-    QByteArray encryptToByteArray(const QString& plaintext);
+    QByteArray encryptToByteArray(const QString &plaintext);
 
     /**
        Encrypts the @arg plaintext QByteArray with the key the class was initialized with, and returns
@@ -199,7 +206,7 @@ class SimpleCrypt {
        If an error occured, such as non-matching keys between encryption and decryption,
        an empty string or a string containing nonsense may be returned.
      */
-    QString decryptToString(const QString& cyphertext);
+    QString decryptToString(const QString &cyphertext);
 
     /**
        Decrypts a cyphertext string encrypted with this class with the set key back to the
@@ -208,7 +215,7 @@ class SimpleCrypt {
        If an error occured, such as non-matching keys between encryption and decryption,
        an empty string or a string containing nonsense may be returned.
      */
-    QByteArray decryptToByteArray(const QString& cyphertext);
+    QByteArray decryptToByteArray(const QString &cyphertext);
 
     /**
        Decrypts a cyphertext binary encrypted with this class with the set key back to the
@@ -233,11 +240,12 @@ class SimpleCrypt {
     enum CryptoFlag {CryptoFlagNone = 0,
                      CryptoFlagCompression = 0x01,
                      CryptoFlagChecksum = 0x02,
-                     CryptoFlagHash = 0x04};
+                     CryptoFlagHash = 0x04
+                    };
 
     Q_DECLARE_FLAGS(CryptoFlags, CryptoFlag)
 
-  private:
+private:
     void splitKey();
 
     quint64 m_key;

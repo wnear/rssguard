@@ -5,17 +5,18 @@
 
 #include "services/abstract/gui/formfeeddetails.h"
 
-class FormOwnCloudFeedDetails : public FormFeedDetails {
-  Q_OBJECT
+class FormOwnCloudFeedDetails : public FormFeedDetails
+{
+    Q_OBJECT
 
-  public:
-    explicit FormOwnCloudFeedDetails(ServiceRoot* service_root, QWidget* parent = 0);
+public:
+    explicit FormOwnCloudFeedDetails(ServiceRoot *service_root, QWidget *parent = 0);
 
-  protected slots:
+protected slots:
     void apply();
 
-  protected:
-    void setEditableFeed(Feed* editable_feed);
+protected:
+    void setEditableFeed(Feed *editable_feed);
 };
 
 #endif // FORMOWNCLOUDFEEDDETAILS_H

@@ -7,20 +7,22 @@
 
 #include <QLabel>
 
-class LabelWithStatus : public WidgetWithStatus {
-  Q_OBJECT
+class LabelWithStatus : public WidgetWithStatus
+{
+    Q_OBJECT
 
-  public:
-    explicit LabelWithStatus(QWidget* parent = nullptr);
+public:
+    explicit LabelWithStatus(QWidget *parent = nullptr);
 
-    void setStatus(StatusType status, const QString& label_text, const QString& status_text);
+    void setStatus(StatusType status, const QString &label_text, const QString &status_text);
 
     // Access to label.
-    QLabel* label() const;
+    QLabel *label() const;
 };
 
-inline QLabel* LabelWithStatus::label() const {
-  return static_cast<QLabel*>(m_wdgInput);
+inline QLabel *LabelWithStatus::label() const
+{
+    return static_cast<QLabel *>(m_wdgInput);
 }
 
 #endif // LABELWITHSTATUS_H

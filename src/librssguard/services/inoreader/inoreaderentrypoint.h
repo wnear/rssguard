@@ -5,11 +5,12 @@
 
 #include "services/abstract/serviceentrypoint.h"
 
-class InoreaderEntryPoint : public ServiceEntryPoint {
-  public:
-    ServiceRoot* createNewRoot() const;
+class InoreaderEntryPoint : public ServiceEntryPoint
+{
+public:
+    ServiceRoot *createNewRoot() const;
 
-    QList<ServiceRoot*> initializeSubtree() const;
+    QList<ServiceRoot *> initializeSubtree() const;
     bool isSingleInstanceService() const;
     QString name() const;
     QString code() const;

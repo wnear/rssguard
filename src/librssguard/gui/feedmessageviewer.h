@@ -25,26 +25,27 @@ class QToolBar;
 class QSplitter;
 class QProgressBar;
 
-class RSSGUARD_DLLSPEC FeedMessageViewer : public TabContent {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC FeedMessageViewer : public TabContent
+{
+    Q_OBJECT
 
-  public:
-    explicit FeedMessageViewer(QWidget* parent = nullptr);
+public:
+    explicit FeedMessageViewer(QWidget *parent = nullptr);
     virtual ~FeedMessageViewer();
 
 #if defined(USE_WEBENGINE)
-    WebBrowser* webBrowser() const;
+    WebBrowser *webBrowser() const;
 #endif
 
-    FeedsView* feedsView() const;
-    MessagesView* messagesView() const;
-    MessagesToolBar* messagesToolBar() const;
-    FeedsToolBar* feedsToolBar() const;
+    FeedsView *feedsView() const;
+    MessagesView *messagesView() const;
+    MessagesToolBar *messagesToolBar() const;
+    FeedsToolBar *feedsToolBar() const;
 
     bool areToolBarsEnabled() const;
     bool areListHeadersEnabled() const;
 
-  public slots:
+public slots:
     void saveSize();
     void loadSize();
 
@@ -68,10 +69,10 @@ class RSSGUARD_DLLSPEC FeedMessageViewer : public TabContent {
     void toggleShowOnlyUnreadFeeds();
     void toggleShowFeedTreeBranches();
 
-  private slots:
-    void displayMessage(const Message& message, RootItem* root);
+private slots:
+    void displayMessage(const Message &message, RootItem *root);
 
-  protected:
+protected:
     void initialize();
 
     // Initializes both messages/feeds views.
@@ -80,22 +81,22 @@ class RSSGUARD_DLLSPEC FeedMessageViewer : public TabContent {
     // Sets up connections.
     void createConnections();
 
-  private:
+private:
     bool m_toolBarsEnabled;
     bool m_listHeadersEnabled;
-    FeedsToolBar* m_toolBarFeeds;
-    MessagesToolBar* m_toolBarMessages;
-    QSplitter* m_feedSplitter;
-    QSplitter* m_messageSplitter;
-    MessagesView* m_messagesView;
-    FeedsView* m_feedsView;
-    QWidget* m_feedsWidget;
-    QWidget* m_messagesWidget;
+    FeedsToolBar *m_toolBarFeeds;
+    MessagesToolBar *m_toolBarMessages;
+    QSplitter *m_feedSplitter;
+    QSplitter *m_messageSplitter;
+    MessagesView *m_messagesView;
+    FeedsView *m_feedsView;
+    QWidget *m_feedsWidget;
+    QWidget *m_messagesWidget;
 
 #if defined(USE_WEBENGINE)
-    WebBrowser* m_messagesBrowser;
+    WebBrowser *m_messagesBrowser;
 #else
-    MessagePreviewer* m_messagesBrowser;
+    MessagePreviewer *m_messagesBrowser;
 #endif
 };
 

@@ -13,38 +13,46 @@
 
 #include <QMessageBox>
 
-ServiceRoot* InoreaderEntryPoint::createNewRoot() const {
-  FormEditInoreaderAccount form_acc(qApp->mainFormWidget());
+ServiceRoot *InoreaderEntryPoint::createNewRoot() const
+{
+    FormEditInoreaderAccount form_acc(qApp->mainFormWidget());
 
-  return form_acc.execForCreate();
+    return form_acc.execForCreate();
 }
 
-QList<ServiceRoot*> InoreaderEntryPoint::initializeSubtree() const {
-  QSqlDatabase database = qApp->database()->connection(QSL("InoreaderEntryPoint"));
+QList<ServiceRoot *> InoreaderEntryPoint::initializeSubtree() const
+{
+    QSqlDatabase database = qApp->database()->connection(QSL("InoreaderEntryPoint"));
 
-  return DatabaseQueries::getInoreaderAccounts(database);
+    return DatabaseQueries::getInoreaderAccounts(database);
 }
 
-bool InoreaderEntryPoint::isSingleInstanceService() const {
-  return false;
+bool InoreaderEntryPoint::isSingleInstanceService() const
+{
+    return false;
 }
 
-QString InoreaderEntryPoint::name() const {
-  return QSL("Inoreader");
+QString InoreaderEntryPoint::name() const
+{
+    return QSL("Inoreader");
 }
 
-QString InoreaderEntryPoint::code() const {
-  return SERVICE_CODE_INOREADER;
+QString InoreaderEntryPoint::code() const
+{
+    return SERVICE_CODE_INOREADER;
 }
 
-QString InoreaderEntryPoint::description() const {
-  return QObject::tr("This is integration of Inoreader.");
+QString InoreaderEntryPoint::description() const
+{
+    return QObject::tr("This is integration of Inoreader.");
 }
 
-QString InoreaderEntryPoint::author() const {
-  return APP_AUTHOR;
+QString InoreaderEntryPoint::author() const
+{
+    return APP_AUTHOR;
 }
 
-QIcon InoreaderEntryPoint::icon() const {
-  return qApp->icons()->miscIcon(QSL("inoreader"));
+QIcon InoreaderEntryPoint::icon() const
+{
+    return qApp->icons()->miscIcon(QSL("inoreader"));
 }

@@ -7,12 +7,13 @@
 
 class OwnCloudServiceRoot;
 
-class OwnCloudFeed : public Feed {
-  Q_OBJECT
+class OwnCloudFeed : public Feed
+{
+    Q_OBJECT
 
-  public:
-    explicit OwnCloudFeed(RootItem* parent = nullptr);
-    explicit OwnCloudFeed(const QSqlRecord& record);
+public:
+    explicit OwnCloudFeed(RootItem *parent = nullptr);
+    explicit OwnCloudFeed(const QSqlRecord &record);
     virtual ~OwnCloudFeed();
 
     bool canBeEdited() const;
@@ -20,11 +21,11 @@ class OwnCloudFeed : public Feed {
     bool canBeDeleted() const;
     bool deleteViaGui();
 
-    bool editItself(OwnCloudFeed* new_feed_data);
+    bool editItself(OwnCloudFeed *new_feed_data);
     bool removeItself();
 
-    OwnCloudServiceRoot* serviceRoot() const;
-    QList<Message> obtainNewMessages(bool* error_during_obtaining);
+    OwnCloudServiceRoot *serviceRoot() const;
+    QList<Message> obtainNewMessages(bool *error_during_obtaining);
 };
 
 #endif // OWNCLOUDFEED_H

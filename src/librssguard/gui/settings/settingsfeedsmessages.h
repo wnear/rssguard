@@ -7,28 +7,30 @@
 
 #include "ui_settingsfeedsmessages.h"
 
-class SettingsFeedsMessages : public SettingsPanel {
-  Q_OBJECT
+class SettingsFeedsMessages : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsFeedsMessages(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsFeedsMessages(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsFeedsMessages();
 
-    inline QString title() const {
-      return tr("Feeds & messages");
+    inline QString title() const
+    {
+        return tr("Feeds & messages");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  private:
-    void changeFont(QLabel& lbl);
+private:
+    void changeFont(QLabel &lbl);
 
-  private:
+private:
     void initializeMessageDateFormats();
 
-    Ui::SettingsFeedsMessages* m_ui;
+    Ui::SettingsFeedsMessages *m_ui;
 };
 
 #endif // SETTINGSFEEDSMESSAGES_H

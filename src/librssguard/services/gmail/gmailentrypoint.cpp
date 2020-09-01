@@ -12,38 +12,46 @@
 
 #include <QMessageBox>
 
-ServiceRoot* GmailEntryPoint::createNewRoot() const {
-  FormEditGmailAccount form_acc(qApp->mainFormWidget());
+ServiceRoot *GmailEntryPoint::createNewRoot() const
+{
+    FormEditGmailAccount form_acc(qApp->mainFormWidget());
 
-  return form_acc.execForCreate();
+    return form_acc.execForCreate();
 }
 
-QList<ServiceRoot*> GmailEntryPoint::initializeSubtree() const {
-  QSqlDatabase database = qApp->database()->connection(QSL("GmailEntryPoint"));
+QList<ServiceRoot *> GmailEntryPoint::initializeSubtree() const
+{
+    QSqlDatabase database = qApp->database()->connection(QSL("GmailEntryPoint"));
 
-  return DatabaseQueries::getGmailAccounts(database);
+    return DatabaseQueries::getGmailAccounts(database);
 }
 
-bool GmailEntryPoint::isSingleInstanceService() const {
-  return false;
+bool GmailEntryPoint::isSingleInstanceService() const
+{
+    return false;
 }
 
-QString GmailEntryPoint::name() const {
-  return QSL("Gmail");
+QString GmailEntryPoint::name() const
+{
+    return QSL("Gmail");
 }
 
-QString GmailEntryPoint::code() const {
-  return SERVICE_CODE_GMAIL;
+QString GmailEntryPoint::code() const
+{
+    return SERVICE_CODE_GMAIL;
 }
 
-QString GmailEntryPoint::description() const {
-  return QObject::tr("Simple Gmail integration via JSON API. Allows sending e-mails too.");
+QString GmailEntryPoint::description() const
+{
+    return QObject::tr("Simple Gmail integration via JSON API. Allows sending e-mails too.");
 }
 
-QString GmailEntryPoint::author() const {
-  return APP_AUTHOR;
+QString GmailEntryPoint::author() const
+{
+    return APP_AUTHOR;
 }
 
-QIcon GmailEntryPoint::icon() const {
-  return qApp->icons()->miscIcon(QSL("gmail"));
+QIcon GmailEntryPoint::icon() const
+{
+    return qApp->icons()->miscIcon(QSL("gmail"));
 }

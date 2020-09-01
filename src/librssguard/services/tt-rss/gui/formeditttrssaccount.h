@@ -7,24 +7,26 @@
 
 #include "ui_formeditttrssaccount.h"
 
-namespace Ui {
-  class FormEditTtRssAccount;
+namespace Ui
+{
+class FormEditTtRssAccount;
 }
 
 class TtRssServiceRoot;
 
-class FormEditTtRssAccount : public QDialog {
-  Q_OBJECT
+class FormEditTtRssAccount : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormEditTtRssAccount(QWidget* parent = 0);
+public:
+    explicit FormEditTtRssAccount(QWidget *parent = 0);
     virtual ~FormEditTtRssAccount();
 
-    TtRssServiceRoot* execForCreate();
+    TtRssServiceRoot *execForCreate();
 
-    void execForEdit(TtRssServiceRoot* existing_root);
+    void execForEdit(TtRssServiceRoot *existing_root);
 
-  private slots:
+private slots:
     void displayPassword(bool display);
     void displayHttpPassword(bool display);
     void performTest();
@@ -38,10 +40,10 @@ class FormEditTtRssAccount : public QDialog {
     void onUrlChanged();
     void checkOkButton();
 
-  private:
+private:
     QScopedPointer<Ui::FormEditTtRssAccount> m_ui;
-    TtRssServiceRoot* m_editableRoot;
-    QPushButton* m_btnOk;
+    TtRssServiceRoot *m_editableRoot;
+    QPushButton *m_btnOk;
 };
 
 #endif // FORMEDITACCOUNT_H

@@ -23,13 +23,14 @@
 #include <QObject>
 #include <QWebEngineUrlRequestInfo>
 
-class UrlInterceptor : public QObject {
-  Q_OBJECT
+class UrlInterceptor : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit UrlInterceptor(QObject* parent = Q_NULLPTR) : QObject(parent) { }
+public:
+    explicit UrlInterceptor(QObject *parent = Q_NULLPTR) : QObject(parent) { }
 
-    virtual void interceptRequest(QWebEngineUrlRequestInfo& info) = 0;
+    virtual void interceptRequest(QWebEngineUrlRequestInfo &info) = 0;
 };
 
 #endif // URLINTERCEPTOR_H

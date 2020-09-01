@@ -4,56 +4,66 @@
 
 #include "definitions/definitions.h"
 
-Mutex::Mutex(QMutex::RecursionMode mode, QObject* parent) : QObject(parent), m_mutex(new QMutex(mode)), m_isLocked(false) {}
+Mutex::Mutex(QMutex::RecursionMode mode, QObject *parent) : QObject(parent),
+    m_mutex(new QMutex(mode)), m_isLocked(false) {}
 
-Mutex::~Mutex() {
-  qDebugNN << LOGSEC_CORE << ("Destroying Mutex instance.");
+Mutex::~Mutex()
+{
+    qDebugNN << LOGSEC_CORE << ("Destroying Mutex instance.");
 }
 
-void Mutex::lock() {
-  m_mutex->lock();
-  setLocked();
-}
-
-bool Mutex::tryLock() {
-  bool result;
-
-  if ((result = m_mutex->tryLock())) {
+void Mutex::lock()
+{
+    m_mutex->lock();
     setLocked();
-  }
-
-  return result;
 }
 
-bool Mutex::tryLock(int timeout) {
-  bool result;
+bool Mutex::tryLock()
+{
+    bool result;
 
-  if ((result = m_mutex->tryLock(timeout))) {
-    setLocked();
-  }
+    if ((result = m_mutex->tryLock())) {
+        setLocked();
+    }
 
-  return result;
+    return result;
 }
 
-void Mutex::unlock() {
-  m_mutex->unlock();
-  setUnlocked();
+bool Mutex::tryLock(int timeout)
+{
+    bool result;
+
+    if ((result = m_mutex->tryLock(timeout))) {
+        setLocked();
+    }
+
+    return result;
 }
 
-void Mutex::setLocked() {
-  m_isLocked = true;
-  emit locked();
+void Mutex::unlock()
+{
+    m_mutex->unlock();
+    setUnlocked();
 }
 
-void Mutex::setUnlocked() {
-  m_isLocked = false;
-  emit unlocked();
+void Mutex::setLocked()
+{
+    m_isLocked = true;
+    emit locked();
 }
 
-bool Mutex::isLocked() const {
-  return m_isLocked;
+void Mutex::setUnlocked()
+{
+    m_isLocked = false;
+    emit unlocked();
 }
 
-Mutex::operator QMutex* () const {
-  return m_mutex.data();
+bool Mutex::isLocked() const
+{
+    return m_isLocked;
+}
+
+Mutex::operator QMutex *() const
+{
+    return m_mutex.data();
 }

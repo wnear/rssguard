@@ -9,39 +9,41 @@
 
 #include "services/gmail/network/gmailnetworkfactory.h"
 
-namespace Ui {
-  class FormEditGmailAccount;
+namespace Ui
+{
+class FormEditGmailAccount;
 }
 
 class GmailServiceRoot;
 
-class FormEditGmailAccount : public QDialog {
-  Q_OBJECT
+class FormEditGmailAccount : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormEditGmailAccount(QWidget* parent = nullptr);
+public:
+    explicit FormEditGmailAccount(QWidget *parent = nullptr);
     virtual ~FormEditGmailAccount();
 
-    GmailServiceRoot* execForCreate();
+    GmailServiceRoot *execForCreate();
 
-    void execForEdit(GmailServiceRoot* existing_root);
+    void execForEdit(GmailServiceRoot *existing_root);
 
-  private slots:
+private slots:
     void testSetup();
     void onClickedOk();
     void onClickedCancel();
-    void checkOAuthValue(const QString& value);
-    void checkUsername(const QString& username);
+    void checkOAuthValue(const QString &value);
+    void checkUsername(const QString &username);
     void onAuthFailed();
-    void onAuthError(const QString& error, const QString& detailed_description);
+    void onAuthError(const QString &error, const QString &detailed_description);
     void onAuthGranted();
 
-  private:
+private:
     void hookNetwork();
 
     Ui::FormEditGmailAccount m_ui;
-    OAuth2Service* m_oauth;
-    GmailServiceRoot* m_editableRoot;
+    OAuth2Service *m_oauth;
+    GmailServiceRoot *m_editableRoot;
 };
 
 #endif // FORMEDITINOREADERACCOUNT_H

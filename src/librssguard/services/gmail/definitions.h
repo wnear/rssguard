@@ -32,10 +32,10 @@
 #define GMAIL_CONTENT_TYPE_JSON   "application/json"
 
 enum class RecipientType {
-  To,
-  Cc,
-  Bcc,
-  ReplyTo
+    To,
+    Cc,
+    Bcc,
+    ReplyTo
 };
 
 #endif // GMAIL_DEFINITIONS_H

@@ -9,25 +9,26 @@
 
 class TtRssServiceRoot;
 
-class TtRssFeed : public Feed {
-  Q_OBJECT
+class TtRssFeed : public Feed
+{
+    Q_OBJECT
 
-  public:
-    explicit TtRssFeed(RootItem* parent = nullptr);
-    explicit TtRssFeed(const QSqlRecord& record);
+public:
+    explicit TtRssFeed(RootItem *parent = nullptr);
+    explicit TtRssFeed(const QSqlRecord &record);
     virtual ~TtRssFeed();
 
-    TtRssServiceRoot* serviceRoot() const;
+    TtRssServiceRoot *serviceRoot() const;
 
     bool canBeEdited() const;
     bool editViaGui();
     bool canBeDeleted() const;
     bool deleteViaGui();
 
-    bool editItself(TtRssFeed* new_feed_data);
+    bool editItself(TtRssFeed *new_feed_data);
     bool removeItself();
 
-    QList<Message> obtainNewMessages(bool* error_during_obtaining);
+    QList<Message> obtainNewMessages(bool *error_during_obtaining);
 };
 
 #endif // TTRSSFEED_H

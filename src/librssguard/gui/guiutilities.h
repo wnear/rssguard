@@ -7,13 +7,15 @@
 #include <QLabel>
 #include <QWidget>
 
-class GuiUtilities {
-  public:
-    static void setLabelAsNotice(QLabel& label, bool is_warning);
-    static void applyDialogProperties(QWidget& widget, const QIcon& icon = QIcon(), const QString& title = QString());
-    static void applyResponsiveDialogResize(QWidget& widget, double factor = 0.6);
+class GuiUtilities
+{
+public:
+    static void setLabelAsNotice(QLabel &label, bool is_warning);
+    static void applyDialogProperties(QWidget &widget, const QIcon &icon = QIcon(),
+                                      const QString &title = QString());
+    static void applyResponsiveDialogResize(QWidget &widget, double factor = 0.6);
 
-  private:
+private:
     explicit GuiUtilities();
 };
 

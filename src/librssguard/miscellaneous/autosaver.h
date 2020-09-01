@@ -7,22 +7,23 @@
 #include <QElapsedTimer>
 #include <QObject>
 
-class AutoSaver : public QObject {
-  Q_OBJECT
+class AutoSaver : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit AutoSaver(QObject* parent);
+public:
+    explicit AutoSaver(QObject *parent);
     virtual ~AutoSaver();
 
     void saveIfNeccessary();
 
-  public slots:
+public slots:
     void changeOccurred();
 
-  protected:
-    void timerEvent(QTimerEvent* event);
+protected:
+    void timerEvent(QTimerEvent *event);
 
-  private:
+private:
     QBasicTimer m_timer;
     QElapsedTimer m_firstChange;
 };

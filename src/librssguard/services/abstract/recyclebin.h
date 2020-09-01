@@ -5,16 +5,17 @@
 
 #include "services/abstract/rootitem.h"
 
-class RecycleBin : public RootItem {
-  Q_OBJECT
+class RecycleBin : public RootItem
+{
+    Q_OBJECT
 
-  public:
-    explicit RecycleBin(RootItem* parent_item = nullptr);
+public:
+    explicit RecycleBin(RootItem *parent_item = nullptr);
     virtual ~RecycleBin() = default;
 
     QString additionalTooltip() const;
 
-    QList<QAction*> contextMenuFeedsList();
+    QList<QAction *> contextMenuFeedsList();
     QList<Message> undeletedMessages() const;
 
     bool markAsReadUnread(ReadStatus status);
@@ -25,14 +26,14 @@ class RecycleBin : public RootItem {
 
     void updateCounts(bool update_total_count);
 
-  public slots:
+public slots:
     virtual bool empty();
     virtual bool restore();
 
-  private:
+private:
     int m_totalCount;
     int m_unreadCount;
-    QList<QAction*> m_contextMenu;
+    QList<QAction *> m_contextMenu;
 };
 
 #endif // RECYCLEBIN_H

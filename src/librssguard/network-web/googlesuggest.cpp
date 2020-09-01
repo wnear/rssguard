@@ -43,139 +43,149 @@
 #include <QTimer>
 #include <QXmlStreamReader>
 
-GoogleSuggest::GoogleSuggest(LocationLineEdit* editor, QObject* parent)
-  : QObject(parent), editor(editor), m_downloader(new Downloader(this)), popup(new QListWidget()), m_enteredText(QString()) {
-  popup->setWindowFlags(Qt::Popup);
-  popup->setFocusPolicy(Qt::NoFocus);
-  popup->setFocusProxy(editor);
-  popup->setMouseTracking(true);
-  popup->setSelectionBehavior(QAbstractItemView::SelectRows);
-  popup->setFrameStyle(QFrame::Box | QFrame::Plain);
-  popup->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  popup->installEventFilter(this);
-  timer = new QTimer(this);
-  timer->setSingleShot(true);
-  timer->setInterval(500);
+GoogleSuggest::GoogleSuggest(LocationLineEdit *editor, QObject *parent)
+    : QObject(parent), editor(editor), m_downloader(new Downloader(this)), popup(new QListWidget()),
+      m_enteredText(QString())
+{
+    popup->setWindowFlags(Qt::Popup);
+    popup->setFocusPolicy(Qt::NoFocus);
+    popup->setFocusProxy(editor);
+    popup->setMouseTracking(true);
+    popup->setSelectionBehavior(QAbstractItemView::SelectRows);
+    popup->setFrameStyle(QFrame::Box | QFrame::Plain);
+    popup->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    popup->installEventFilter(this);
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
+    timer->setInterval(500);
 
-  connect(popup.data(), &QListWidget::itemClicked, this, &GoogleSuggest::doneCompletion);
-  connect(timer, &QTimer::timeout, this, &GoogleSuggest::autoSuggest);
-  connect(editor, &LocationLineEdit::textEdited, timer, static_cast<void (QTimer::*)()>(&QTimer::start));
-  connect(m_downloader.data(), &Downloader::completed, this, &GoogleSuggest::handleNetworkData);
+    connect(popup.data(), &QListWidget::itemClicked, this, &GoogleSuggest::doneCompletion);
+    connect(timer, &QTimer::timeout, this, &GoogleSuggest::autoSuggest);
+    connect(editor, &LocationLineEdit::textEdited, timer,
+            static_cast<void (QTimer::*)()>(&QTimer::start));
+    connect(m_downloader.data(), &Downloader::completed, this, &GoogleSuggest::handleNetworkData);
 }
 
-bool GoogleSuggest::eventFilter(QObject* object, QEvent* event) {
-  if (object != popup.data()) {
-    return false;
-  }
+bool GoogleSuggest::eventFilter(QObject *object, QEvent *event)
+{
+    if (object != popup.data()) {
+        return false;
+    }
 
-  if (event->type() == QEvent::MouseButtonPress) {
+    if (event->type() == QEvent::MouseButtonPress) {
+        popup->hide();
+        editor->setFocus();
+        return true;
+    }
+
+    if (event->type() == QEvent::KeyPress) {
+        bool consumed = false;
+        const int key = static_cast<QKeyEvent *>(event)->key();
+
+        switch (key) {
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+                doneCompletion();
+                consumed = true;
+                break;
+
+            case Qt::Key_Escape:
+                editor->setFocus();
+                popup->hide();
+                consumed = true;
+                break;
+
+            case Qt::Key_Up:
+            case Qt::Key_Down:
+            case Qt::Key_Home:
+            case Qt::Key_End:
+            case Qt::Key_PageUp:
+            case Qt::Key_PageDown:
+                break;
+
+            default:
+                editor->setFocus();
+                editor->event(event);
+                popup->hide();
+                break;
+        }
+
+        return consumed;
+    }
+
+    return false;
+}
+
+void GoogleSuggest::showCompletion(const QStringList &choices)
+{
+    if (choices.isEmpty()) {
+        return;
+    }
+
+    popup->setUpdatesEnabled(false);
+    popup->clear();
+
+    for (const QString &choice : choices) {
+        new QListWidgetItem(choice, popup.data());
+    }
+
+    popup->setCurrentItem(popup->item(0));
+    popup->adjustSize();
+    popup->setUpdatesEnabled(true);
+    popup->resize(editor->width(), popup->sizeHintForRow(0) * qMin(7, choices.count()) + 3);
+    popup->move(editor->mapToGlobal(QPoint(0, editor->height())));
+    popup->setFocus();
+    popup->show();
+}
+
+void GoogleSuggest::doneCompletion()
+{
+    timer->stop();
     popup->hide();
     editor->setFocus();
-    return true;
-  }
+    QListWidgetItem *item = popup->currentItem();
 
-  if (event->type() == QEvent::KeyPress) {
-    bool consumed = false;
-    const int key = static_cast<QKeyEvent*>(event)->key();
-
-    switch (key) {
-      case Qt::Key_Enter:
-      case Qt::Key_Return:
-        doneCompletion();
-        consumed = true;
-        break;
-
-      case Qt::Key_Escape:
-        editor->setFocus();
-        popup->hide();
-        consumed = true;
-        break;
-
-      case Qt::Key_Up:
-      case Qt::Key_Down:
-      case Qt::Key_Home:
-      case Qt::Key_End:
-      case Qt::Key_PageUp:
-      case Qt::Key_PageDown:
-        break;
-
-      default:
-        editor->setFocus();
-        editor->event(event);
-        popup->hide();
-        break;
+    if (item != nullptr) {
+        editor->submit(QString(GOOGLE_SEARCH_URL).arg(item->text()));
     }
-
-    return consumed;
-  }
-
-  return false;
 }
 
-void GoogleSuggest::showCompletion(const QStringList& choices) {
-  if (choices.isEmpty()) {
-    return;
-  }
-
-  popup->setUpdatesEnabled(false);
-  popup->clear();
-
-  for (const QString& choice : choices) {
-    new QListWidgetItem(choice, popup.data());
-  }
-
-  popup->setCurrentItem(popup->item(0));
-  popup->adjustSize();
-  popup->setUpdatesEnabled(true);
-  popup->resize(editor->width(), popup->sizeHintForRow(0) * qMin(7, choices.count()) + 3);
-  popup->move(editor->mapToGlobal(QPoint(0, editor->height())));
-  popup->setFocus();
-  popup->show();
+void GoogleSuggest::preventSuggest()
+{
+    timer->stop();
 }
 
-void GoogleSuggest::doneCompletion() {
-  timer->stop();
-  popup->hide();
-  editor->setFocus();
-  QListWidgetItem* item = popup->currentItem();
+void GoogleSuggest::autoSuggest()
+{
+    m_enteredText = QUrl::toPercentEncoding(editor->text());
+    QString url = QString(GOOGLE_SUGGEST_URL).arg(m_enteredText);
 
-  if (item != nullptr) {
-    editor->submit(QString(GOOGLE_SEARCH_URL).arg(item->text()));
-  }
+    m_downloader->downloadFile(url);
 }
 
-void GoogleSuggest::preventSuggest() {
-  timer->stop();
-}
+void GoogleSuggest::handleNetworkData(QNetworkReply::NetworkError status,
+                                      const QByteArray &contents)
+{
+    if (status == QNetworkReply::NetworkError::NoError) {
+        QStringList choices;
+        QDomDocument xml;
+        const QTextCodec *c = QTextCodec::codecForUtfText(contents);
 
-void GoogleSuggest::autoSuggest() {
-  m_enteredText = QUrl::toPercentEncoding(editor->text());
-  QString url = QString(GOOGLE_SUGGEST_URL).arg(m_enteredText);
+        xml.setContent(c->toUnicode(contents));
+        QDomNodeList suggestions = xml.elementsByTagName(QSL("suggestion"));
 
-  m_downloader->downloadFile(url);
-}
+        for (int i = 0; i < suggestions.size(); i++) {
+            const QDomElement element = suggestions.at(i).toElement();
 
-void GoogleSuggest::handleNetworkData(QNetworkReply::NetworkError status, const QByteArray& contents) {
-  if (status == QNetworkReply::NetworkError::NoError) {
-    QStringList choices;
-    QDomDocument xml;
-    const QTextCodec* c = QTextCodec::codecForUtfText(contents);
+            if (element.attributes().contains(QSL("data"))) {
+                choices.append(element.attribute(QSL("data")));
+            }
+        }
 
-    xml.setContent(c->toUnicode(contents));
-    QDomNodeList suggestions = xml.elementsByTagName(QSL("suggestion"));
+        if (choices.isEmpty()) {
+            choices.append(m_enteredText);
+        }
 
-    for (int i = 0; i < suggestions.size(); i++) {
-      const QDomElement element = suggestions.at(i).toElement();
-
-      if (element.attributes().contains(QSL("data"))) {
-        choices.append(element.attribute(QSL("data")));
-      }
+        showCompletion(choices);
     }
-
-    if (choices.isEmpty()) {
-      choices.append(m_enteredText);
-    }
-
-    showCompletion(choices);
-  }
 }

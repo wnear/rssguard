@@ -7,23 +7,25 @@
 
 #include "ui_settingsgeneral.h"
 
-class SettingsGeneral : public SettingsPanel {
-  Q_OBJECT
+class SettingsGeneral : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsGeneral(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsGeneral(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsGeneral();
 
-    inline QString title() const {
-      return tr("General");
+    inline QString title() const
+    {
+        return tr("General");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  private:
-    Ui::SettingsGeneral* m_ui;
+private:
+    Ui::SettingsGeneral *m_ui;
 };
 
 #endif // SETTINGSGENERAL_H

@@ -5,8 +5,9 @@
 
 #include "services/abstract/serviceentrypoint.h"
 
-class StandardServiceEntryPoint : public ServiceEntryPoint {
-  public:
+class StandardServiceEntryPoint : public ServiceEntryPoint
+{
+public:
     bool isSingleInstanceService() const;
     QString name() const;
     QString description() const;
@@ -14,9 +15,9 @@ class StandardServiceEntryPoint : public ServiceEntryPoint {
     QIcon icon() const;
     QString code() const;
 
-    ServiceRoot* createNewRoot() const;
+    ServiceRoot *createNewRoot() const;
 
-    QList<ServiceRoot*> initializeSubtree() const;
+    QList<ServiceRoot *> initializeSubtree() const;
 };
 
 #endif // STANDARDSERVICEENTRYPOINT_H

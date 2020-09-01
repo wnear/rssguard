@@ -6,21 +6,22 @@
 #include <QMetaType>
 #include <QStringList>
 
-class ExternalTool {
-  public:
+class ExternalTool
+{
+public:
     explicit ExternalTool() = default;
-    ExternalTool(const ExternalTool& other);
+    ExternalTool(const ExternalTool &other);
     explicit ExternalTool(QString executable, QStringList parameters);
 
     QString toString();
     QString executable() const;
     QStringList parameters() const;
 
-    static ExternalTool fromString(const QString& str);
+    static ExternalTool fromString(const QString &str);
     static QList<ExternalTool> toolsFromSettings();
-    static void setToolsToSettings(QList<ExternalTool>& tools);
+    static void setToolsToSettings(QList<ExternalTool> &tools);
 
-  private:
+private:
     QString m_executable;
     QStringList m_parameters;
 

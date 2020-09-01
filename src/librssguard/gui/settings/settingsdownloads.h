@@ -7,26 +7,28 @@
 
 #include "ui_settingsdownloads.h"
 
-class SettingsDownloads : public SettingsPanel {
-  Q_OBJECT
+class SettingsDownloads : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsDownloads(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsDownloads(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsDownloads();
 
-    inline QString title() const {
-      return tr("Downloads");
+    inline QString title() const
+    {
+        return tr("Downloads");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  private slots:
+private slots:
     void selectDownloadsDirectory();
 
-  private:
-    Ui::SettingsDownloads* m_ui;
+private:
+    Ui::SettingsDownloads *m_ui;
 };
 
 #endif // SETTINGSDOWNLOADS_H

@@ -7,11 +7,12 @@
 
 #include <QJSValue>
 
-class FilteringException : public ApplicationException {
-  public:
+class FilteringException : public ApplicationException
+{
+public:
     explicit FilteringException(QJSValue::ErrorType js_error, QString message = QString());
 
-  private:
+private:
     QJSValue::ErrorType m_errorType;
 };
 

@@ -14,26 +14,28 @@
 
 #include <QPointer>
 
-namespace Ui {
-  class NewspaperPreviewer;
+namespace Ui
+{
+class NewspaperPreviewer;
 }
 
 class RootItem;
 
-class NewspaperPreviewer : public TabContent {
-  Q_OBJECT
+class NewspaperPreviewer : public TabContent
+{
+    Q_OBJECT
 
-  public:
-    explicit NewspaperPreviewer(RootItem* root, QList<Message> messages, QWidget* parent = nullptr);
+public:
+    explicit NewspaperPreviewer(RootItem *root, QList<Message> messages, QWidget *parent = nullptr);
 
-  private slots:
+private slots:
     void showMoreMessages();
 
-  signals:
+signals:
     void markMessageRead(int id, RootItem::ReadStatus read);
     void markMessageImportant(int id, RootItem::Importance important);
 
-  private:
+private:
     QScopedPointer<Ui::NewspaperPreviewer> m_ui;
     QPointer<RootItem> m_root;
     QList<Message> m_messages;

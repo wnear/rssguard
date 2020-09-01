@@ -9,40 +9,42 @@
 
 #include "services/inoreader/network/inoreadernetworkfactory.h"
 
-namespace Ui {
-  class FormEditInoreaderAccount;
+namespace Ui
+{
+class FormEditInoreaderAccount;
 }
 
 class InoreaderServiceRoot;
 
-class FormEditInoreaderAccount : public QDialog {
-  Q_OBJECT
+class FormEditInoreaderAccount : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormEditInoreaderAccount(QWidget* parent = nullptr);
+public:
+    explicit FormEditInoreaderAccount(QWidget *parent = nullptr);
     virtual ~FormEditInoreaderAccount();
 
-    InoreaderServiceRoot* execForCreate();
+    InoreaderServiceRoot *execForCreate();
 
-    void execForEdit(InoreaderServiceRoot* existing_root);
+    void execForEdit(InoreaderServiceRoot *existing_root);
 
-  private slots:
+private slots:
     void registerApi();
     void testSetup();
     void onClickedOk();
     void onClickedCancel();
-    void checkOAuthValue(const QString& value);
-    void checkUsername(const QString& username);
+    void checkOAuthValue(const QString &value);
+    void checkUsername(const QString &username);
     void onAuthFailed();
-    void onAuthError(const QString& error, const QString& detailed_description);
+    void onAuthError(const QString &error, const QString &detailed_description);
     void onAuthGranted();
 
-  private:
+private:
     void hookNetwork();
 
     Ui::FormEditInoreaderAccount m_ui;
-    OAuth2Service* m_oauth;
-    InoreaderServiceRoot* m_editableRoot;
+    OAuth2Service *m_oauth;
+    InoreaderServiceRoot *m_editableRoot;
 };
 
 #endif // FORMEDITINOREADERACCOUNT_H

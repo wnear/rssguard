@@ -5,26 +5,27 @@
 
 #include <QToolButton>
 
-class DiscoverFeedsButton : public QToolButton {
-  Q_OBJECT
+class DiscoverFeedsButton : public QToolButton
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors.
-    explicit DiscoverFeedsButton(QWidget* parent = 0);
+    explicit DiscoverFeedsButton(QWidget *parent = 0);
     virtual ~DiscoverFeedsButton();
 
     // Feed addresses manipulators.
     void clearFeedAddresses();
-    void setFeedAddresses(const QStringList& addresses);
+    void setFeedAddresses(const QStringList &addresses);
 
-  private slots:
+private slots:
 
     // User chose any of addresses.
-    void linkTriggered(QAction* action);
+    void linkTriggered(QAction *action);
     void fillMenu();
 
-  private:
+private:
     QStringList m_addresses;
 };
 

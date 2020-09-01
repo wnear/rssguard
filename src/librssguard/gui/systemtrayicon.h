@@ -17,33 +17,36 @@ class QEvent;
 
 #if defined(Q_OS_WIN)
 
-class TrayIconMenu : public QMenu {
-  Q_OBJECT
+class TrayIconMenu : public QMenu
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit TrayIconMenu(const QString& title, QWidget* parent);
+    explicit TrayIconMenu(const QString &title, QWidget *parent);
 
-  protected:
-    bool event(QEvent* event);
+protected:
+    bool event(QEvent *event);
 };
 
 #endif
 
-class SystemTrayIcon : public QSystemTrayIcon {
-  Q_OBJECT
+class SystemTrayIcon : public QSystemTrayIcon
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit SystemTrayIcon(const QString& normal_icon, const QString& plain_icon, FormMain* parent = nullptr);
+    explicit SystemTrayIcon(const QString &normal_icon, const QString &plain_icon,
+                            FormMain *parent = nullptr);
     virtual ~SystemTrayIcon();
 
     // Sets the number to be visible in the tray icon, number <= 0 removes it.
     void setNumber(int number = -1, bool any_new_message = false);
 
-    void showMessage(const QString& title, const QString& message, MessageIcon icon = Information,
+    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information,
                      int milliseconds_timeout_hint = TRAY_ICON_BUBBLE_TIMEOUT, std::function<void()> functor = nullptr);
 
     // Returns true if tray icon CAN be constructed on this machine.
@@ -56,17 +59,17 @@ class SystemTrayIcon : public QSystemTrayIcon {
     // Determines whether balloon tips are enabled or not on tray icons.
     static bool areNotificationsEnabled();
 
-  public slots:
+public slots:
     void show();
 
-  private slots:
+private slots:
     void showPrivate();
     void onActivated(QSystemTrayIcon::ActivationReason reason);
 
-  signals:
+signals:
     void shown();
 
-  private:
+private:
     QIcon m_normalIcon;
     QPixmap m_plainPixmap;
     QFont m_font = QFont();

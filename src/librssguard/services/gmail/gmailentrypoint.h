@@ -5,11 +5,12 @@
 
 #include "services/abstract/serviceentrypoint.h"
 
-class GmailEntryPoint : public ServiceEntryPoint {
-  public:
-    ServiceRoot* createNewRoot() const;
+class GmailEntryPoint : public ServiceEntryPoint
+{
+public:
+    ServiceRoot *createNewRoot() const;
 
-    QList<ServiceRoot*> initializeSubtree() const;
+    QList<ServiceRoot *> initializeSubtree() const;
     bool isSingleInstanceService() const;
     QString name() const;
     QString code() const;

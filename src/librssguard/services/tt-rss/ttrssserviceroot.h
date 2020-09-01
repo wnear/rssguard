@@ -12,11 +12,12 @@ class TtRssCategory;
 class TtRssFeed;
 class TtRssNetworkFactory;
 
-class TtRssServiceRoot : public ServiceRoot, public CacheForServiceRoot {
-  Q_OBJECT
+class TtRssServiceRoot : public ServiceRoot, public CacheForServiceRoot
+{
+    Q_OBJECT
 
-  public:
-    explicit TtRssServiceRoot(RootItem* parent = nullptr);
+public:
+    explicit TtRssServiceRoot(RootItem *parent = nullptr);
     virtual ~TtRssServiceRoot();
 
     void start(bool freshly_activated);
@@ -36,20 +37,20 @@ class TtRssServiceRoot : public ServiceRoot, public CacheForServiceRoot {
     void saveAllCachedData(bool async = true);
 
     // Access to network.
-    TtRssNetworkFactory* network() const;
+    TtRssNetworkFactory *network() const;
 
     void saveAccountDataToDatabase();
     void updateTitle();
 
-  public slots:
-    void addNewFeed(const QString& url = QString());
+public slots:
+    void addNewFeed(const QString &url = QString());
     void addNewCategory();
 
-  private:
-    RootItem* obtainNewTreeForSyncIn() const;
+private:
+    RootItem *obtainNewTreeForSyncIn() const;
     void loadFromDatabase();
 
-    TtRssNetworkFactory* m_network;
+    TtRssNetworkFactory *m_network;
 };
 
 #endif // TTRSSSERVICEROOT_H

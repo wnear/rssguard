@@ -7,16 +7,17 @@
 
 class QHeaderView;
 
-class TreeViewColumnsMenu : public QMenu {
-  public:
-    explicit TreeViewColumnsMenu(QHeaderView* parent);
+class TreeViewColumnsMenu : public QMenu
+{
+public:
+    explicit TreeViewColumnsMenu(QHeaderView *parent);
 
-  private slots:
+private slots:
     void prepareMenu();
     void actionTriggered(bool toggle);
 
-  private:
-    QHeaderView* header();
+private:
+    QHeaderView *header();
 };
 
 #endif // TREEVIEWCOLUMNSMENU_H

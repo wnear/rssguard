@@ -8,22 +8,23 @@
 
 class GmailNetworkFactory;
 
-class GmailServiceRoot : public ServiceRoot, public CacheForServiceRoot {
-  Q_OBJECT
+class GmailServiceRoot : public ServiceRoot, public CacheForServiceRoot
+{
+    Q_OBJECT
 
-  public:
-    explicit GmailServiceRoot(GmailNetworkFactory* network, RootItem* parent = nullptr);
+public:
+    explicit GmailServiceRoot(GmailNetworkFactory *network, RootItem *parent = nullptr);
     virtual ~GmailServiceRoot();
 
     void saveAccountDataToDatabase();
 
-    bool downloadAttachmentOnMyOwn(const QUrl& url) const;
+    bool downloadAttachmentOnMyOwn(const QUrl &url) const;
 
-    void setNetwork(GmailNetworkFactory* network);
-    GmailNetworkFactory* network() const;
+    void setNetwork(GmailNetworkFactory *network);
+    GmailNetworkFactory *network() const;
 
-    QList<QAction*> contextMenuMessagesList(const QList<Message>& messages);
-    QList<QAction*> serviceMenu();
+    QList<QAction *> contextMenuMessagesList(const QList<Message> &messages);
+    QList<QAction *> serviceMenu();
     bool isSyncable() const;
     bool canBeEdited() const;
     bool editViaGui();
@@ -39,31 +40,33 @@ class GmailServiceRoot : public ServiceRoot, public CacheForServiceRoot {
 
     void saveAllCachedData(bool async = true);
 
-  public slots:
+public slots:
     void updateTitle();
 
-  private slots:
+private slots:
     void replyToEmail();
 
-  protected:
-    RootItem* obtainNewTreeForSyncIn() const;
+protected:
+    RootItem *obtainNewTreeForSyncIn() const;
 
-  private:
+private:
     void writeNewEmail();
     void loadFromDatabase();
 
-  private:
-    GmailNetworkFactory* m_network;
-    QAction* m_actionReply;
+private:
+    GmailNetworkFactory *m_network;
+    QAction *m_actionReply;
     Message m_replyToMessage;
 };
 
-inline void GmailServiceRoot::setNetwork(GmailNetworkFactory* network) {
-  m_network = network;
+inline void GmailServiceRoot::setNetwork(GmailNetworkFactory *network)
+{
+    m_network = network;
 }
 
-inline GmailNetworkFactory* GmailServiceRoot::network() const {
-  return m_network;
+inline GmailNetworkFactory *GmailServiceRoot::network() const
+{
+    return m_network;
 }
 
 #endif // GMAILSERVICEROOT_H

@@ -14,16 +14,17 @@ class MessageFilter;
 class QMutex;
 
 // Represents results of batch feed updates.
-class FeedDownloadResults {
-  public:
+class FeedDownloadResults
+{
+public:
     QList<QPair<QString, int>> updatedFeeds() const;
     QString overview(int how_many_feeds) const;
 
-    void appendUpdatedFeed(const QPair<QString, int>& feed);
+    void appendUpdatedFeed(const QPair<QString, int> &feed);
     void sort();
     void clear();
 
-  private:
+private:
 
     // QString represents title if the feed, int represents count of newly downloaded messages.
     QList<QPair<QString, int>> m_updatedFeeds;
@@ -31,31 +32,32 @@ class FeedDownloadResults {
 
 // This class offers means to "update" feeds and "special" categories.
 // NOTE: This class is used within separate thread.
-class FeedDownloader : public QObject {
-  Q_OBJECT
+class FeedDownloader : public QObject
+{
+    Q_OBJECT
 
-  public:
+public:
     explicit FeedDownloader();
     virtual ~FeedDownloader();
 
     bool isUpdateRunning() const;
 
-  public slots:
-    void updateFeeds(const QList<Feed*>& feeds);
+public slots:
+    void updateFeeds(const QList<Feed *> &feeds);
     void stopRunningUpdate();
 
-  signals:
+signals:
     void updateStarted();
     void updateFinished(FeedDownloadResults updated_feeds);
-    void updateProgress(const Feed* feed, int current, int total);
+    void updateProgress(const Feed *feed, int current, int total);
 
-  private:
-    void updateOneFeed(Feed* feed);
+private:
+    void updateOneFeed(Feed *feed);
     void updateAvailableFeeds();
     void finalizeUpdate();
 
-    QList<Feed*> m_feeds;
-    QMutex* m_mutex;
+    QList<Feed *> m_feeds;
+    QMutex *m_mutex;
     FeedDownloadResults m_results;
     int m_feedsUpdated;
     int m_feedsOriginalCount;

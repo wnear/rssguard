@@ -8,22 +8,24 @@
 
 #include "core/message.h"
 
-class FeedParser {
-  public:
+class FeedParser
+{
+public:
     explicit FeedParser(QString data);
     virtual ~FeedParser();
 
     virtual QList<Message> messages();
 
-  protected:
-    QList<Enclosure> mrssGetEnclosures(const QDomElement& msg_element) const;
-    QString mrssTextFromPath(const QDomElement& msg_element, const QString& xml_path) const;
-    QStringList textsFromPath(const QDomElement& element, const QString& namespace_uri, const QString& xml_path, bool only_first) const;
+protected:
+    QList<Enclosure> mrssGetEnclosures(const QDomElement &msg_element) const;
+    QString mrssTextFromPath(const QDomElement &msg_element, const QString &xml_path) const;
+    QStringList textsFromPath(const QDomElement &element, const QString &namespace_uri,
+                              const QString &xml_path, bool only_first) const;
     virtual QDomNodeList messageElements() = 0;
     virtual QString feedAuthor() const;
-    virtual Message extractMessage(const QDomElement& msg_element, QDateTime current_time) const = 0;
+    virtual Message extractMessage(const QDomElement &msg_element, QDateTime current_time) const = 0;
 
-  protected:
+protected:
     QString m_xmlData;
     QDomDocument m_xml;
     QString m_mrssNamespace;

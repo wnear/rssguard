@@ -11,34 +11,35 @@
 #include <QStringList>
 
 struct RSSGUARD_DLLSPEC Skin {
-  enum class PaletteColors {
-    Highlight = 1
-  };
+    enum class PaletteColors {
+        Highlight = 1
+    };
 
-  QString m_baseName;
-  QString m_visibleName;
-  QString m_author;
-  QString m_email;
-  QString m_version;
-  QString m_rawData;
-  QString m_adblocked;
-  QString m_layoutMarkupWrapper;
-  QString m_enclosureImageMarkup;
-  QString m_layoutMarkup;
-  QString m_enclosureMarkup;
+    QString m_baseName;
+    QString m_visibleName;
+    QString m_author;
+    QString m_email;
+    QString m_version;
+    QString m_rawData;
+    QString m_adblocked;
+    QString m_layoutMarkupWrapper;
+    QString m_enclosureImageMarkup;
+    QString m_layoutMarkup;
+    QString m_enclosureMarkup;
 
-  QHash<Skin::PaletteColors, QColor> m_colorPalette;
+    QHash<Skin::PaletteColors, QColor> m_colorPalette;
 };
 
-uint qHash(const Skin::PaletteColors& key);
+uint qHash(const Skin::PaletteColors &key);
 
 Q_DECLARE_METATYPE(Skin)
 
-class RSSGUARD_DLLSPEC SkinFactory : public QObject {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC SkinFactory : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit SkinFactory(QObject* parent = nullptr);
+public:
+    explicit SkinFactory(QObject *parent = nullptr);
     virtual ~SkinFactory() = default;
 
     // Loads skin name from settings and sets it as active.
@@ -49,30 +50,31 @@ class RSSGUARD_DLLSPEC SkinFactory : public QObject {
     // after application restart.
     QString selectedSkinName() const;
 
-    QString adBlockedPage(const QString& subscription, const QString& rule);
+    QString adBlockedPage(const QString &subscription, const QString &rule);
 
     // Gets skin about a particular skin.
-    Skin skinInfo(const QString& skin_name, bool* ok = nullptr) const;
+    Skin skinInfo(const QString &skin_name, bool *ok = nullptr) const;
 
     // Returns list of installed skins.
     QList<Skin> installedSkins() const;
 
     // Sets the desired skin as the active one if it exists.
-    void setCurrentSkinName(const QString& skin_name);
+    void setCurrentSkinName(const QString &skin_name);
 
     QString customSkinBaseFolder() const;
 
-  private:
+private:
 
     // Loads the skin from give skin_data.
-    void loadSkinFromData(const Skin& skin);
+    void loadSkinFromData(const Skin &skin);
 
     // Holds name of the current skin.
     Skin m_currentSkin;
 };
 
-inline Skin SkinFactory::currentSkin() const {
-  return m_currentSkin;
+inline Skin SkinFactory::currentSkin() const
+{
+    return m_currentSkin;
 }
 
 #endif // SKINFACTORY_H

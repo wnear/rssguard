@@ -7,26 +7,27 @@
 
 class WebViewer;
 
-class WebPage : public QWebEnginePage {
-  Q_OBJECT
+class WebPage : public QWebEnginePage
+{
+    Q_OBJECT
 
-  public:
+public:
     enum class MessageStatusChange {
-      MarkRead,
-      MarkUnread,
-      MarkStarred,
-      MarkUnstarred
+        MarkRead,
+        MarkUnread,
+        MarkStarred,
+        MarkUnstarred
     };
 
-    explicit WebPage(QObject* parent = nullptr);
+    explicit WebPage(QObject *parent = nullptr);
 
-    WebViewer* view() const;
+    WebViewer *view() const;
 
-  protected:
-    void javaScriptAlert(const QUrl& securityOrigin, const QString& msg);
-    bool acceptNavigationRequest(const QUrl& url, NavigationType type, bool isMainFrame);
+protected:
+    void javaScriptAlert(const QUrl &securityOrigin, const QString &msg);
+    bool acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame);
 
-  signals:
+signals:
     void messageStatusChangeRequested(int message_id, WebPage::MessageStatusChange change);
 };
 

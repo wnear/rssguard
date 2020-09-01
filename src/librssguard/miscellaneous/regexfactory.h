@@ -49,18 +49,20 @@
 #include <QRegularExpression>
 #include <QString>
 
-class RegexFactory {
-  public:
+class RegexFactory
+{
+public:
 
-    static QString anchoredPattern(const QString& expression);
-    static QString wildcardToRegularExpression(const QString& pattern);
+    static QString anchoredPattern(const QString &expression);
+    static QString wildcardToRegularExpression(const QString &pattern);
 
-  private:
+private:
     explicit RegexFactory() = delete;
 };
 
-inline QString RegexFactory::anchoredPattern(const QString& expression) {
-  return QL1S("\\A(?:") + expression + QL1S(")\\z");
+inline QString RegexFactory::anchoredPattern(const QString &expression)
+{
+    return QL1S("\\A(?:") + expression + QL1S(")\\z");
 }
 
 #endif // REGEXFACTORY_H

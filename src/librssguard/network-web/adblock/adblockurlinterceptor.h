@@ -24,16 +24,17 @@
 
 class AdBlockManager;
 
-class AdBlockUrlInterceptor : public UrlInterceptor {
-  Q_OBJECT
+class AdBlockUrlInterceptor : public UrlInterceptor
+{
+    Q_OBJECT
 
-  public:
-    explicit AdBlockUrlInterceptor(AdBlockManager* manager);
+public:
+    explicit AdBlockUrlInterceptor(AdBlockManager *manager);
 
-    void interceptRequest(QWebEngineUrlRequestInfo& info);
+    void interceptRequest(QWebEngineUrlRequestInfo &info);
 
-  private:
-    AdBlockManager* m_manager;
+private:
+    AdBlockManager *m_manager;
 };
 
 #endif // ADBLOCKURLINTERCEPTOR_H

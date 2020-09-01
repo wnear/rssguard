@@ -5,11 +5,12 @@
 
 #include "services/abstract/rootitem.h"
 
-class ImportantNode : public RootItem {
-  Q_OBJECT
+class ImportantNode : public RootItem
+{
+    Q_OBJECT
 
-  public:
-    explicit ImportantNode(RootItem* parent_item = nullptr);
+public:
+    explicit ImportantNode(RootItem *parent_item = nullptr);
     virtual ~ImportantNode() = default;
 
     QList<Message> undeletedMessages() const;
@@ -19,7 +20,7 @@ class ImportantNode : public RootItem {
     int countOfUnreadMessages() const;
     int countOfAllMessages() const;
 
-  private:
+private:
     int m_totalCount{};
     int m_unreadCount{};
 };

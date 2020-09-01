@@ -7,23 +7,25 @@
 #include "services/inoreader/inoreaderserviceroot.h"
 #include "services/inoreader/network/inoreadernetworkfactory.h"
 
-InoreaderFeed::InoreaderFeed(RootItem* parent) : Feed(parent) {}
+InoreaderFeed::InoreaderFeed(RootItem *parent) : Feed(parent) {}
 
-InoreaderFeed::InoreaderFeed(const QSqlRecord& record) : Feed(record) {}
+InoreaderFeed::InoreaderFeed(const QSqlRecord &record) : Feed(record) {}
 
-InoreaderServiceRoot* InoreaderFeed::serviceRoot() const {
-  return qobject_cast<InoreaderServiceRoot*>(getParentServiceRoot());
+InoreaderServiceRoot *InoreaderFeed::serviceRoot() const
+{
+    return qobject_cast<InoreaderServiceRoot *>(getParentServiceRoot());
 }
 
-QList<Message> InoreaderFeed::obtainNewMessages(bool* error_during_obtaining) {
-  Feed::Status error = Feed::Status::Normal;
-  QList<Message> messages = serviceRoot()->network()->messages(customId(), error);
+QList<Message> InoreaderFeed::obtainNewMessages(bool *error_during_obtaining)
+{
+    Feed::Status error = Feed::Status::Normal;
+    QList<Message> messages = serviceRoot()->network()->messages(customId(), error);
 
-  setStatus(error);
+    setStatus(error);
 
-  if (error == Feed::Status::NetworkError || error == Feed::Status::AuthError) {
-    *error_during_obtaining = true;
-  }
+    if (error == Feed::Status::NetworkError || error == Feed::Status::AuthError) {
+        *error_during_obtaining = true;
+    }
 
-  return messages;
+    return messages;
 }

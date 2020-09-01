@@ -14,11 +14,12 @@ class StandardCategory;
 class FeedsImportExportModel;
 class QMenu;
 
-class StandardServiceRoot : public ServiceRoot {
-  Q_OBJECT
+class StandardServiceRoot : public ServiceRoot
+{
+    Q_OBJECT
 
-  public:
-    explicit StandardServiceRoot(RootItem* parent = nullptr);
+public:
+    explicit StandardServiceRoot(RootItem *parent = nullptr);
     virtual ~StandardServiceRoot();
 
     // Start/stop root.
@@ -36,31 +37,32 @@ class StandardServiceRoot : public ServiceRoot {
     Qt::ItemFlags additionalFlags() const;
 
     // Returns menu to be shown in "Services -> service" menu.
-    QList<QAction*> serviceMenu();
+    QList<QAction *> serviceMenu();
 
     // Returns context specific menu actions for given feed.
-    QList<QAction*> getContextMenuForFeed(StandardFeed* feed);
+    QList<QAction *> getContextMenuForFeed(StandardFeed *feed);
 
     // Takes structure residing under given root item and adds feeds/categories from
     // it to active structure.
     // NOTE: This is used for import/export of the model.
-    bool mergeImportExportModel(FeedsImportExportModel* model, RootItem* target_root_node, QString& output_message);
+    bool mergeImportExportModel(FeedsImportExportModel *model, RootItem *target_root_node,
+                                QString &output_message);
 
     void loadFromDatabase();
-    void checkArgumentForFeedAdding(const QString& argument);
+    void checkArgumentForFeedAdding(const QString &argument);
 
-  public slots:
-    void addNewFeed(const QString& url = QString());
+public slots:
+    void addNewFeed(const QString &url = QString());
     void addNewCategory();
     void importFeeds();
     void exportFeeds();
 
-  private:
-    QString processFeedUrl(const QString& feed_url);
+private:
+    QString processFeedUrl(const QString &feed_url);
     void checkArgumentsForFeedAdding();
 
     QPointer<StandardFeed> m_feedForMetadata = {};
-    QList<QAction*> m_feedContextMenu = {};
+    QList<QAction *> m_feedContextMenu = {};
 };
 
 #endif // STANDARDSERVICEROOT_H

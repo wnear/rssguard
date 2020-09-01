@@ -31,13 +31,14 @@
 #include "network-web/oauthhttphandler.h"
 #include "network-web/silentnetworkaccessmanager.h"
 
-class OAuth2Service : public QObject {
-  Q_OBJECT
+class OAuth2Service : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit OAuth2Service(const QString& auth_url, const QString& token_url,
-                           const QString& client_id, const QString& client_secret,
-                           const QString& scope, QObject* parent = nullptr);
+public:
+    explicit OAuth2Service(const QString &auth_url, const QString &token_url,
+                           const QString &client_id, const QString &client_secret,
+                           const QString &scope, QObject *parent = nullptr);
 
     // Returns bearer HTTP header value.
     // NOTE: If on working thread, then call this only if isFullyLoggedIn()
@@ -50,36 +51,36 @@ class OAuth2Service : public QObject {
     QString oAuthTokenGrantType();
 
     QString refreshToken() const;
-    void setRefreshToken(const QString& refresh_token);
+    void setRefreshToken(const QString &refresh_token);
 
     QString redirectUrl() const;
-    void setRedirectUrl(const QString& redirect_url);
+    void setRedirectUrl(const QString &redirect_url);
 
     QString clientId() const;
-    void setClientId(const QString& client_id);
+    void setClientId(const QString &client_id);
 
     QString clientSecret() const;
-    void setClientSecret(const QString& client_secret);
+    void setClientSecret(const QString &client_secret);
 
     QDateTime tokensExpireIn() const;
-    void setTokensExpireIn(const QDateTime& tokens_expire_in);
+    void setTokensExpireIn(const QDateTime &tokens_expire_in);
 
     QString accessToken() const;
-    void setAccessToken(const QString& access_token);
+    void setAccessToken(const QString &access_token);
 
     QString id() const;
-    void setId(const QString& id);
+    void setId(const QString &id);
 
-  signals:
+signals:
     void tokensReceived(QString access_token, QString refresh_token, int expires_in);
     void tokensRetrieveError(QString error, QString error_description);
 
     // User failed to authenticate or rejected it.
     void authFailed();
 
-  public slots:
+public slots:
     void retrieveAuthCode();
-    void retrieveAccessToken(const QString& auth_code);
+    void retrieveAccessToken(const QString &auth_code);
     void refreshAccessToken(QString refresh_token = QString());
 
     // Performs login if needed. If some refresh token is set, then
@@ -94,15 +95,15 @@ class OAuth2Service : public QObject {
     bool login();
     void logout();
 
-  private slots:
+private slots:
     void startRefreshTimer();
     void killRefreshTimer();
-    void tokenRequestFinished(QNetworkReply* network_reply);
+    void tokenRequestFinished(QNetworkReply *network_reply);
 
-  private:
-    void timerEvent(QTimerEvent* event);
+private:
+    void timerEvent(QTimerEvent *event);
 
-  private:
+private:
     QString m_id;
     int m_timerId;
     QDateTime m_tokensExpireIn;
@@ -115,7 +116,7 @@ class OAuth2Service : public QObject {
     QString m_authUrl;
     QString m_scope;
     SilentNetworkAccessManager m_networkManager;
-    OAuthHttpHandler* m_redirectionHandler;
+    OAuthHttpHandler *m_redirectionHandler;
 };
 
 #endif // OAUTH2SERVICE_H

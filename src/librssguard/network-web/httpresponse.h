@@ -8,17 +8,18 @@
 
 typedef QPair<QString, QString> HttpHeader;
 
-class HttpResponse {
-  public:
+class HttpResponse
+{
+public:
     explicit HttpResponse();
 
     QString body() const;
-    void setBody(const QString& body);
+    void setBody(const QString &body);
     QList<HttpHeader> headers() const;
 
-    void appendHeader(const QString& name, const QString& value);
+    void appendHeader(const QString &name, const QString &value);
 
-  private:
+private:
     QList<HttpHeader> m_headers;
     QString m_body;
 };

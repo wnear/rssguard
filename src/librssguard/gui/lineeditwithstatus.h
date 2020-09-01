@@ -7,18 +7,20 @@
 
 #include "gui/baselineedit.h"
 
-class LineEditWithStatus : public WidgetWithStatus {
-  Q_OBJECT
+class LineEditWithStatus : public WidgetWithStatus
+{
+    Q_OBJECT
 
-  public:
-    explicit LineEditWithStatus(QWidget* parent = nullptr);
+public:
+    explicit LineEditWithStatus(QWidget *parent = nullptr);
 
     // Access to line edit.
-    BaseLineEdit* lineEdit() const;
+    BaseLineEdit *lineEdit() const;
 };
 
-inline BaseLineEdit* LineEditWithStatus::lineEdit() const {
-  return static_cast<BaseLineEdit*>(m_wdgInput);
+inline BaseLineEdit *LineEditWithStatus::lineEdit() const
+{
+    return static_cast<BaseLineEdit *>(m_wdgInput);
 }
 
 #endif // LINEEDITWITHSTATUS_H

@@ -11,11 +11,12 @@
 class OwnCloudNetworkFactory;
 class Mutex;
 
-class OwnCloudServiceRoot : public ServiceRoot, public CacheForServiceRoot {
-  Q_OBJECT
+class OwnCloudServiceRoot : public ServiceRoot, public CacheForServiceRoot
+{
+    Q_OBJECT
 
-  public:
-    explicit OwnCloudServiceRoot(RootItem* parent = nullptr);
+public:
+    explicit OwnCloudServiceRoot(RootItem *parent = nullptr);
     virtual ~OwnCloudServiceRoot();
 
     bool isSyncable() const;
@@ -29,22 +30,22 @@ class OwnCloudServiceRoot : public ServiceRoot, public CacheForServiceRoot {
     void start(bool freshly_activated);
     void stop();
     QString code() const;
-    OwnCloudNetworkFactory* network() const;
+    OwnCloudNetworkFactory *network() const;
 
     void updateTitle();
     void saveAccountDataToDatabase();
 
     void saveAllCachedData(bool async = true);
 
-  public slots:
-    void addNewFeed(const QString& url);
+public slots:
+    void addNewFeed(const QString &url);
     void addNewCategory();
 
-  private:
-    RootItem* obtainNewTreeForSyncIn() const;
+private:
+    RootItem *obtainNewTreeForSyncIn() const;
     void loadFromDatabase();
 
-    OwnCloudNetworkFactory* m_network;
+    OwnCloudNetworkFactory *m_network;
 };
 
 #endif // OWNCLOUDSERVICEROOT_H

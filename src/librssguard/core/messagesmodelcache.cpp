@@ -4,16 +4,19 @@
 
 #include "miscellaneous/textfactory.h"
 
-MessagesModelCache::MessagesModelCache(QObject* parent) : QObject(parent) {}
+MessagesModelCache::MessagesModelCache(QObject *parent) : QObject(parent) {}
 
-void MessagesModelCache::setData(const QModelIndex& index, const QVariant& value, const QSqlRecord& record) {
-  if (!m_msgCache.contains(index.row())) {
-    m_msgCache[index.row()] = record;
-  }
+void MessagesModelCache::setData(const QModelIndex &index, const QVariant &value,
+                                 const QSqlRecord &record)
+{
+    if (!m_msgCache.contains(index.row())) {
+        m_msgCache[index.row()] = record;
+    }
 
-  m_msgCache[index.row()].setValue(index.column(), value);
+    m_msgCache[index.row()].setValue(index.column(), value);
 }
 
-QVariant MessagesModelCache::data(const QModelIndex& idx) {
-  return m_msgCache[idx.row()].value(idx.column());
+QVariant MessagesModelCache::data(const QModelIndex &idx)
+{
+    return m_msgCache[idx.row()].value(idx.column());
 }

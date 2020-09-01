@@ -41,26 +41,27 @@
 class LocationLineEdit;
 class QTimer;
 
-class GoogleSuggest : public QObject {
-  Q_OBJECT
+class GoogleSuggest : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit GoogleSuggest(LocationLineEdit* editor, QObject* parent = nullptr);
+public:
+    explicit GoogleSuggest(LocationLineEdit *editor, QObject *parent = nullptr);
 
-    bool eventFilter(QObject* object, QEvent* event);
-    void showCompletion(const QStringList& choices);
+    bool eventFilter(QObject *object, QEvent *event);
+    void showCompletion(const QStringList &choices);
 
-  public slots:
+public slots:
     void doneCompletion();
     void preventSuggest();
     void autoSuggest();
-    void handleNetworkData(QNetworkReply::NetworkError status, const QByteArray& contents);
+    void handleNetworkData(QNetworkReply::NetworkError status, const QByteArray &contents);
 
-  private:
-    LocationLineEdit* editor;
+private:
+    LocationLineEdit *editor;
     QScopedPointer<Downloader> m_downloader;
     QScopedPointer<QListWidget> popup;
-    QTimer* timer;
+    QTimer *timer;
     QString m_enteredText;
 };
 

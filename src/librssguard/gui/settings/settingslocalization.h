@@ -7,23 +7,25 @@
 
 #include "ui_settingslocalization.h"
 
-class SettingsLocalization : public SettingsPanel {
-  Q_OBJECT
+class SettingsLocalization : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsLocalization(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsLocalization(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsLocalization();
 
-    inline QString title() const {
-      return tr("Language");
+    inline QString title() const
+    {
+        return tr("Language");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  private:
-    Ui::SettingsLocalization* m_ui;
+private:
+    Ui::SettingsLocalization *m_ui;
 };
 
 #endif // SETTINGSLOCALIZATION_H

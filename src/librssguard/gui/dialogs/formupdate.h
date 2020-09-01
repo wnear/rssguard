@@ -13,33 +13,34 @@
 #include <QNetworkReply>
 #include <QPushButton>
 
-class RSSGUARD_DLLSPEC FormUpdate : public QDialog {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC FormUpdate : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit FormUpdate(QWidget* parent);
+    explicit FormUpdate(QWidget *parent);
 
     // Returns true if application can self-update
     // on current platform.
     bool isSelfUpdateSupported() const;
 
-  private slots:
+private slots:
 
     // Check for updates and interprets the results.
     void checkForUpdates();
     void startUpdate();
 
     void updateProgress(qint64 bytes_received, qint64 bytes_total);
-    void updateCompleted(QNetworkReply::NetworkError status, const QByteArray& contents);
-    void saveUpdateFile(const QByteArray& file_contents);
+    void updateCompleted(QNetworkReply::NetworkError status, const QByteArray &contents);
+    void saveUpdateFile(const QByteArray &file_contents);
 
-  private:
+private:
     void loadAvailableFiles();
 
     Ui::FormUpdate m_ui;
-    QPushButton* m_btnUpdate;
+    QPushButton *m_btnUpdate;
     Downloader m_downloader;
     QString m_updateFilePath;
     UpdateInfo m_updateInfo;

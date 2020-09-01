@@ -24,21 +24,22 @@
 
 class UrlInterceptor;
 
-class NetworkUrlInterceptor : public QWebEngineUrlRequestInterceptor {
-  Q_OBJECT
+class NetworkUrlInterceptor : public QWebEngineUrlRequestInterceptor
+{
+    Q_OBJECT
 
-  public:
-    explicit NetworkUrlInterceptor(QObject* parent = nullptr);
+public:
+    explicit NetworkUrlInterceptor(QObject *parent = nullptr);
 
-    void interceptRequest(QWebEngineUrlRequestInfo& info) Q_DECL_OVERRIDE;
+    void interceptRequest(QWebEngineUrlRequestInfo &info) Q_DECL_OVERRIDE;
 
-    void installUrlInterceptor(UrlInterceptor* interceptor);
-    void removeUrlInterceptor(UrlInterceptor* interceptor);
+    void installUrlInterceptor(UrlInterceptor *interceptor);
+    void removeUrlInterceptor(UrlInterceptor *interceptor);
 
     void loadSettings();
 
-  private:
-    QList<UrlInterceptor*> m_interceptors;
+private:
+    QList<UrlInterceptor *> m_interceptors;
     bool m_sendDNT;
 };
 

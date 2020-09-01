@@ -5,19 +5,20 @@
 
 #include <QToolBar>
 
-class BaseBar {
-  public:
+class BaseBar
+{
+public:
 
     // Returns all actions which can be added to the toolbar.
-    virtual QList<QAction*> availableActions() const = 0;
+    virtual QList<QAction *> availableActions() const = 0;
 
     // Returns all changeable actions which are currently included
     // in the toolbar.
-    virtual QList<QAction*> changeableActions() const = 0;
+    virtual QList<QAction *> changeableActions() const = 0;
 
     // Sets new "actions" to the toolbar and perhaps saves the toolbar
     // state into the settings.
-    virtual void saveChangeableActions(const QStringList& actions) = 0;
+    virtual void saveChangeableActions(const QStringList &actions) = 0;
 
     // Returns list of default actions.
     virtual QStringList defaultActions() const = 0;
@@ -25,20 +26,21 @@ class BaseBar {
 
     // Loads the toolbar state from settings.
     virtual void loadSavedActions();
-    virtual QList<QAction*> getSpecificActions(const QStringList& actions) = 0;
-    virtual void loadSpecificActions(const QList<QAction*>& actions, bool initial_load = false) = 0;
+    virtual QList<QAction *> getSpecificActions(const QStringList &actions) = 0;
+    virtual void loadSpecificActions(const QList<QAction *> &actions, bool initial_load = false) = 0;
 
-  protected:
-    QAction* findMatchingAction(const QString& action, const QList<QAction*>& actions) const;
+protected:
+    QAction *findMatchingAction(const QString &action, const QList<QAction *> &actions) const;
 };
 
-class BaseToolBar : public QToolBar, public BaseBar {
-  Q_OBJECT
+class BaseToolBar : public QToolBar, public BaseBar
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit BaseToolBar(const QString& title, QWidget* parent = 0);
+    explicit BaseToolBar(const QString &title, QWidget *parent = 0);
     virtual ~BaseToolBar();
 };
 

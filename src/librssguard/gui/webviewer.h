@@ -10,23 +10,25 @@
 
 class RootItem;
 
-class WebViewer : public QWebEngineView {
-  Q_OBJECT
+class WebViewer : public QWebEngineView
+{
+    Q_OBJECT
 
-  public:
-    explicit WebViewer(QWidget* parent = 0);
+public:
+    explicit WebViewer(QWidget *parent = 0);
 
     bool canIncreaseZoom();
     bool canDecreaseZoom();
 
-    inline QString messageContents() {
-      return m_messageContents;
+    inline QString messageContents()
+    {
+        return m_messageContents;
     }
 
-    WebPage* page() const;
-    RootItem* root() const;
+    WebPage *page() const;
+    RootItem *root() const;
 
-  public slots:
+public slots:
 
     // Page zoom modifiers.
     bool increaseWebPageZoom();
@@ -34,22 +36,22 @@ class WebViewer : public QWebEngineView {
     bool resetWebPageZoom();
 
     void displayMessage();
-    void loadMessages(const QList<Message>& messages, RootItem* root);
+    void loadMessages(const QList<Message> &messages, RootItem *root);
     void clear();
 
-  protected:
-    void contextMenuEvent(QContextMenuEvent* event);
-    QWebEngineView* createWindow(QWebEnginePage::WebWindowType type);
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
+    QWebEngineView *createWindow(QWebEnginePage::WebWindowType type);
 
-    void wheelEvent(QWheelEvent* event);
-    bool event(QEvent* event);
-    bool eventFilter(QObject* object, QEvent* event);
+    void wheelEvent(QWheelEvent *event);
+    bool event(QEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 
-  signals:
+signals:
     void messageStatusChangeRequested(int message_id, WebPage::MessageStatusChange change);
 
-  private:
-    RootItem* m_root;
+private:
+    RootItem *m_root;
     QString m_messageContents;
 };
 

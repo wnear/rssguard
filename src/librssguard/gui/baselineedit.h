@@ -5,25 +5,26 @@
 
 #include <QLineEdit>
 
-class BaseLineEdit : public QLineEdit {
-  Q_OBJECT
+class BaseLineEdit : public QLineEdit
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit BaseLineEdit(QWidget* parent = nullptr);
+    explicit BaseLineEdit(QWidget *parent = nullptr);
     virtual ~BaseLineEdit() = default;
 
-  public slots:
-    void submit(const QString& text);
+public slots:
+    void submit(const QString &text);
 
-  protected:
-    void keyPressEvent(QKeyEvent* event);
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
-  signals:
+signals:
 
     // Emitted if user hits ENTER button.
-    void submitted(const QString& text);
+    void submitted(const QString &text);
 };
 
 #endif // BASELINEEDIT_H

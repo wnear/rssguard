@@ -7,17 +7,19 @@
 
 #include <QComboBox>
 
-class ComboBoxWithStatus : public WidgetWithStatus {
-  Q_OBJECT
+class ComboBoxWithStatus : public WidgetWithStatus
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit ComboBoxWithStatus(QWidget* parent = nullptr);
+    explicit ComboBoxWithStatus(QWidget *parent = nullptr);
     virtual ~ComboBoxWithStatus() = default;
 
-    inline QComboBox* comboBox() const {
-      return static_cast<QComboBox*>(m_wdgInput);
+    inline QComboBox *comboBox() const
+    {
+        return static_cast<QComboBox *>(m_wdgInput);
     }
 
 };

@@ -14,263 +14,280 @@
 #include <QToolBar>
 #include <QToolTip>
 
-void MessagePreviewer::createConnections() {
-  installEventFilter(this);
+void MessagePreviewer::createConnections()
+{
+    installEventFilter(this);
 
-  connect(m_ui.m_searchWidget, &SearchTextWidget::cancelSearch, this, [this]() {
-    m_ui.m_txtMessage->textCursor().clearSelection();
-    m_ui.m_txtMessage->moveCursor(QTextCursor::MoveOperation::Left);
-  });
-  connect(m_ui.m_searchWidget, &SearchTextWidget::searchForText, this, [this](const QString& text, bool backwards) {
-    if (backwards) {
-      m_ui.m_txtMessage->find(text, QTextDocument::FindFlag::FindBackward);
-    }
-    else {
-      m_ui.m_txtMessage->find(text);
-    }
-  });
+    connect(m_ui.m_searchWidget, &SearchTextWidget::cancelSearch, this, [this]() {
+        m_ui.m_txtMessage->textCursor().clearSelection();
+        m_ui.m_txtMessage->moveCursor(QTextCursor::MoveOperation::Left);
+    });
+    connect(m_ui.m_searchWidget, &SearchTextWidget::searchForText, this, [this](const QString & text,
+    bool backwards) {
+        if (backwards) {
+            m_ui.m_txtMessage->find(text, QTextDocument::FindFlag::FindBackward);
+        } else {
+            m_ui.m_txtMessage->find(text);
+        }
+    });
 
-  connect(m_ui.m_txtMessage, &QTextBrowser::anchorClicked, [=](const QUrl& url) {
-    if (url.toString().startsWith(INTERNAL_URL_PASSATTACHMENT) &&
-        m_root != nullptr &&
-        m_root->getParentServiceRoot()->downloadAttachmentOnMyOwn(url)) {
-      return;
-    }
-
-    if (!url.isEmpty()) {
-      bool open_externally_now = qApp->settings()->value(GROUP(Browser),
-                                                         SETTING(Browser::OpenLinksInExternalBrowserRightAway)).toBool();
-
-      if (open_externally_now) {
-        qApp->web()->openUrlInExternalBrowser(url.toString());
-      }
-      else {
-        // User clicked some URL. Open it in external browser or download?
-        MessageBox box(qApp->mainForm());
-        box.setText(tr("You clicked some link. You can download the link contents or open it in external web browser."));
-        box.setInformativeText(tr("What action do you want to take?"));
-        box.setDetailedText(url.toString());
-
-        QAbstractButton* btn_open = box.addButton(tr("Open in external browser"), QMessageBox::ActionRole);
-        QAbstractButton* btn_download = box.addButton(tr("Download"), QMessageBox::ActionRole);
-        QAbstractButton* btn_cancel = box.addButton(QMessageBox::Cancel);
-        bool always;
-        MessageBox::setCheckBox(&box, tr("Always open links in external browser."), &always);
-
-        box.setDefaultButton(QMessageBox::Cancel);
-        box.exec();
-
-        if (box.clickedButton() != box.button(QMessageBox::Cancel)) {
-          // Store selected checkbox value.
-          qApp->settings()->setValue(GROUP(Browser), Browser::OpenLinksInExternalBrowserRightAway, always);
+    connect(m_ui.m_txtMessage, &QTextBrowser::anchorClicked, [ = ](const QUrl & url) {
+        if (url.toString().startsWith(INTERNAL_URL_PASSATTACHMENT) &&
+                m_root != nullptr &&
+                m_root->getParentServiceRoot()->downloadAttachmentOnMyOwn(url)) {
+            return;
         }
 
-        if (box.clickedButton() == btn_open) {
-          qApp->web()->openUrlInExternalBrowser(url.toString());
+        if (!url.isEmpty()) {
+            bool open_externally_now = qApp->settings()->value(GROUP(Browser),
+                                       SETTING(Browser::OpenLinksInExternalBrowserRightAway)).toBool();
+
+            if (open_externally_now) {
+                qApp->web()->openUrlInExternalBrowser(url.toString());
+            } else {
+                // User clicked some URL. Open it in external browser or download?
+                MessageBox box(qApp->mainForm());
+                box.setText(
+                    tr("You clicked some link. You can download the link contents or open it in external web browser."));
+                box.setInformativeText(tr("What action do you want to take?"));
+                box.setDetailedText(url.toString());
+
+                QAbstractButton *btn_open = box.addButton(tr("Open in external browser"), QMessageBox::ActionRole);
+                QAbstractButton *btn_download = box.addButton(tr("Download"), QMessageBox::ActionRole);
+                QAbstractButton *btn_cancel = box.addButton(QMessageBox::Cancel);
+                bool always;
+                MessageBox::setCheckBox(&box, tr("Always open links in external browser."), &always);
+
+                box.setDefaultButton(QMessageBox::Cancel);
+                box.exec();
+
+                if (box.clickedButton() != box.button(QMessageBox::Cancel)) {
+                    // Store selected checkbox value.
+                    qApp->settings()->setValue(GROUP(Browser), Browser::OpenLinksInExternalBrowserRightAway, always);
+                }
+
+                if (box.clickedButton() == btn_open) {
+                    qApp->web()->openUrlInExternalBrowser(url.toString());
+                } else if (box.clickedButton() == btn_download) {
+                    qApp->downloadManager()->download(url);
+                }
+
+                btn_download->deleteLater();
+                btn_open->deleteLater();
+                btn_cancel->deleteLater();
+            }
+        } else {
+            MessageBox::show(qApp->mainForm(), QMessageBox::Warning, tr("Incorrect link"),
+                             tr("Selected hyperlink is invalid."));
         }
-        else if (box.clickedButton() == btn_download) {
-          qApp->downloadManager()->download(url);
-        }
-
-        btn_download->deleteLater();
-        btn_open->deleteLater();
-        btn_cancel->deleteLater();
-      }
-    }
-    else {
-      MessageBox::show(qApp->mainForm(), QMessageBox::Warning, tr("Incorrect link"),
-                       tr("Selected hyperlink is invalid."));
-    }
-  });
-  connect(m_actionMarkRead = m_toolBar->addAction(qApp->icons()->fromTheme("mail-mark-read"), tr("Mark message as read")),
-          &QAction::triggered,
-          this,
-          &MessagePreviewer::markMessageAsRead);
-  connect(m_actionMarkUnread = m_toolBar->addAction(qApp->icons()->fromTheme("mail-mark-unread"), tr("Mark message as unread")),
-          &QAction::triggered,
-          this,
-          &MessagePreviewer::markMessageAsUnread);
-  connect(m_actionSwitchImportance = m_toolBar->addAction(qApp->icons()->fromTheme("mail-mark-important"), tr("Switch message importance")),
-          &QAction::triggered,
-          this,
-          &MessagePreviewer::switchMessageImportance);
-  connect(m_ui.m_txtMessage,
-          QOverload<const QUrl&>::of(&QTextBrowser::highlighted),
-          [=](const QUrl& url) {
-    Q_UNUSED(url)
-    QToolTip::showText(QCursor::pos(), tr("Click this link to download it or open it with external browser."), this);
-  });
+    });
+    connect(m_actionMarkRead = m_toolBar->addAction(qApp->icons()->fromTheme("mail-mark-read"),
+                               tr("Mark message as read")),
+            &QAction::triggered,
+            this,
+            &MessagePreviewer::markMessageAsRead);
+    connect(m_actionMarkUnread = m_toolBar->addAction(qApp->icons()->fromTheme("mail-mark-unread"),
+                                 tr("Mark message as unread")),
+            &QAction::triggered,
+            this,
+            &MessagePreviewer::markMessageAsUnread);
+    connect(m_actionSwitchImportance = m_toolBar->addAction(
+                                           qApp->icons()->fromTheme("mail-mark-important"), tr("Switch message importance")),
+            &QAction::triggered,
+            this,
+            &MessagePreviewer::switchMessageImportance);
+    connect(m_ui.m_txtMessage,
+            QOverload<const QUrl &>::of(&QTextBrowser::highlighted),
+    [ = ](const QUrl & url) {
+        Q_UNUSED(url)
+        QToolTip::showText(QCursor::pos(),
+                           tr("Click this link to download it or open it with external browser."), this);
+    });
 }
 
-MessagePreviewer::MessagePreviewer(QWidget* parent) : QWidget(parent) {
-  m_ui.setupUi(this);
-  m_ui.m_txtMessage->viewport()->setAutoFillBackground(true);
-  m_toolBar = new QToolBar(this);
-  m_toolBar->setOrientation(Qt::Vertical);
-  m_ui.m_layout->addWidget(m_toolBar, 0, 0, -1, 1);
-  createConnections();
+MessagePreviewer::MessagePreviewer(QWidget *parent) : QWidget(parent)
+{
+    m_ui.setupUi(this);
+    m_ui.m_txtMessage->viewport()->setAutoFillBackground(true);
+    m_toolBar = new QToolBar(this);
+    m_toolBar->setOrientation(Qt::Vertical);
+    m_ui.m_layout->addWidget(m_toolBar, 0, 0, -1, 1);
+    createConnections();
 
-  m_actionSwitchImportance->setCheckable(true);
-  m_ui.m_searchWidget->hide();
-
-  reloadFontSettings();
-  clear();
-}
-
-void MessagePreviewer::reloadFontSettings() {
-  const Settings* settings = qApp->settings();
-  QFont fon;
-
-  fon.fromString(settings->value(GROUP(Messages), SETTING(Messages::PreviewerFontStandard)).toString());
-  m_ui.m_txtMessage->setFont(fon);
-}
-
-void MessagePreviewer::clear() {
-  m_ui.m_txtMessage->clear();
-  m_pictures.clear();
-  hide();
-}
-
-void MessagePreviewer::hideToolbar() {
-  m_toolBar->setVisible(false);
-}
-
-void MessagePreviewer::loadMessage(const Message& message, RootItem* root) {
-  m_message = message;
-  m_root = root;
-
-  if (!m_root.isNull()) {
+    m_actionSwitchImportance->setCheckable(true);
     m_ui.m_searchWidget->hide();
-    m_actionSwitchImportance->setChecked(m_message.m_isImportant);
-    m_ui.m_txtMessage->setHtml(prepareHtmlForMessage(m_message));
-    updateButtons();
-    show();
-    m_ui.m_txtMessage->verticalScrollBar()->triggerAction(QScrollBar::SliderToMinimum);
-  }
+
+    reloadFontSettings();
+    clear();
 }
 
-void MessagePreviewer::markMessageAsRead() {
-  markMessageAsReadUnread(RootItem::ReadStatus::Read);
+void MessagePreviewer::reloadFontSettings()
+{
+    const Settings *settings = qApp->settings();
+    QFont fon;
+
+    fon.fromString(settings->value(GROUP(Messages),
+                                   SETTING(Messages::PreviewerFontStandard)).toString());
+    m_ui.m_txtMessage->setFont(fon);
 }
 
-void MessagePreviewer::markMessageAsUnread() {
-  markMessageAsReadUnread(RootItem::ReadStatus::Unread);
+void MessagePreviewer::clear()
+{
+    m_ui.m_txtMessage->clear();
+    m_pictures.clear();
+    hide();
 }
 
-void MessagePreviewer::markMessageAsReadUnread(RootItem::ReadStatus read) {
-  if (!m_root.isNull()) {
-    if (m_root->getParentServiceRoot()->onBeforeSetMessagesRead(m_root.data(),
-                                                                QList<Message>() << m_message,
-                                                                read)) {
-      DatabaseQueries::markMessagesReadUnread(qApp->database()->connection(objectName(), DatabaseFactory::DesiredType::FromSettings),
-                                              QStringList() << QString::number(m_message.m_id),
-                                              read);
-      m_root->getParentServiceRoot()->onAfterSetMessagesRead(m_root.data(),
-                                                             QList<Message>() << m_message,
-                                                             read);
-      m_message.m_isRead = read == RootItem::ReadStatus::Read;
-      emit markMessageRead(m_message.m_id, read);
+void MessagePreviewer::hideToolbar()
+{
+    m_toolBar->setVisible(false);
+}
 
-      updateButtons();
+void MessagePreviewer::loadMessage(const Message &message, RootItem *root)
+{
+    m_message = message;
+    m_root = root;
+
+    if (!m_root.isNull()) {
+        m_ui.m_searchWidget->hide();
+        m_actionSwitchImportance->setChecked(m_message.m_isImportant);
+        m_ui.m_txtMessage->setHtml(prepareHtmlForMessage(m_message));
+        updateButtons();
+        show();
+        m_ui.m_txtMessage->verticalScrollBar()->triggerAction(QScrollBar::SliderToMinimum);
     }
-  }
 }
 
-void MessagePreviewer::switchMessageImportance(bool checked) {
-  if (!m_root.isNull()) {
-    if (m_root->getParentServiceRoot()->onBeforeSwitchMessageImportance(m_root.data(),
-                                                                        QList<ImportanceChange>()
-                                                                        << ImportanceChange(m_message,
-                                                                                            m_message.
-                                                                                            m_isImportant
-                                                                                            ? RootItem::Importance::NotImportant
-                                                                                            : RootItem::Importance::Important))) {
-      DatabaseQueries::switchMessagesImportance(qApp->database()->connection(objectName(), DatabaseFactory::DesiredType::FromSettings),
-                                                QStringList() << QString::number(m_message.m_id));
-      m_root->getParentServiceRoot()->onAfterSwitchMessageImportance(m_root.data(),
-                                                                     QList<ImportanceChange>()
-                                                                     << ImportanceChange(m_message,
-                                                                                         m_message.m_isImportant
-                                                                                         ? RootItem::Importance::NotImportant
-                                                                                         : RootItem::Importance::Important));
-      emit markMessageImportant(m_message.m_id, checked
-                                ? RootItem::Importance::Important
-                                : RootItem::Importance::NotImportant);
-
-      m_message.m_isImportant = checked;
-    }
-  }
+void MessagePreviewer::markMessageAsRead()
+{
+    markMessageAsReadUnread(RootItem::ReadStatus::Read);
 }
 
-bool MessagePreviewer::eventFilter(QObject* watched, QEvent* event) {
-  Q_UNUSED(watched)
-
-  if (event->type() == QEvent::Type::KeyPress) {
-    auto* key_event = static_cast<QKeyEvent*>(event);
-
-    if (key_event->matches(QKeySequence::StandardKey::Find)) {
-      m_ui.m_searchWidget->clear();
-      m_ui.m_searchWidget->show();
-      m_ui.m_searchWidget->setFocus();
-      return true;
-    }
-  }
-
-  return false;
+void MessagePreviewer::markMessageAsUnread()
+{
+    markMessageAsReadUnread(RootItem::ReadStatus::Unread);
 }
 
-void MessagePreviewer::updateButtons() {
-  m_actionMarkRead->setEnabled(!m_message.m_isRead);
-  m_actionMarkUnread->setEnabled(m_message.m_isRead);
+void MessagePreviewer::markMessageAsReadUnread(RootItem::ReadStatus read)
+{
+    if (!m_root.isNull()) {
+        if (m_root->getParentServiceRoot()->onBeforeSetMessagesRead(m_root.data(),
+                QList<Message>() << m_message,
+                read)) {
+            DatabaseQueries::markMessagesReadUnread(qApp->database()->connection(objectName(),
+                                                    DatabaseFactory::DesiredType::FromSettings),
+                                                    QStringList() << QString::number(m_message.m_id),
+                                                    read);
+            m_root->getParentServiceRoot()->onAfterSetMessagesRead(m_root.data(),
+                    QList<Message>() << m_message,
+                    read);
+            m_message.m_isRead = read == RootItem::ReadStatus::Read;
+            emit markMessageRead(m_message.m_id, read);
+
+            updateButtons();
+        }
+    }
 }
 
-QString MessagePreviewer::prepareHtmlForMessage(const Message& message) {
-  QString html = QString("<h2 align=\"center\">%1</h2>").arg(message.m_title);
+void MessagePreviewer::switchMessageImportance(bool checked)
+{
+    if (!m_root.isNull()) {
+        if (m_root->getParentServiceRoot()->onBeforeSwitchMessageImportance(m_root.data(),
+                QList<ImportanceChange>()
+                << ImportanceChange(m_message,
+                                    m_message.
+                                    m_isImportant
+                                    ? RootItem::Importance::NotImportant
+                                    : RootItem::Importance::Important))) {
+            DatabaseQueries::switchMessagesImportance(qApp->database()->connection(objectName(),
+                    DatabaseFactory::DesiredType::FromSettings),
+                    QStringList() << QString::number(m_message.m_id));
+            m_root->getParentServiceRoot()->onAfterSwitchMessageImportance(m_root.data(),
+                    QList<ImportanceChange>()
+                    << ImportanceChange(m_message,
+                                        m_message.m_isImportant
+                                        ? RootItem::Importance::NotImportant
+                                        : RootItem::Importance::Important));
+            emit markMessageImportant(m_message.m_id, checked
+                                      ? RootItem::Importance::Important
+                                      : RootItem::Importance::NotImportant);
 
-  if (!message.m_url.isEmpty()) {
-    html += QString("[url] <a href=\"%1\">%1</a><br/>").arg(message.m_url);
-  }
-
-  for (const Enclosure& enc : message.m_enclosures) {
-    QString enc_url;
-
-    if (!enc.m_url.contains(QRegularExpression(QSL("^(http|ftp|\\/)")))) {
-      enc_url = QString(INTERNAL_URL_PASSATTACHMENT) + QL1S("/?") + enc.m_url;
+            m_message.m_isImportant = checked;
+        }
     }
-    else {
-      enc_url = enc.m_url;
+}
+
+bool MessagePreviewer::eventFilter(QObject *watched, QEvent *event)
+{
+    Q_UNUSED(watched)
+
+    if (event->type() == QEvent::Type::KeyPress) {
+        auto *key_event = static_cast<QKeyEvent *>(event);
+
+        if (key_event->matches(QKeySequence::StandardKey::Find)) {
+            m_ui.m_searchWidget->clear();
+            m_ui.m_searchWidget->show();
+            m_ui.m_searchWidget->setFocus();
+            return true;
+        }
     }
 
-    html += QString("[%2] <a href=\"%1\">%1</a><br/>").arg(enc_url, enc.m_mimeType);
-  }
+    return false;
+}
 
-  QRegularExpression imgTagRegex("\\<img[^\\>]*src\\s*=\\s*[\"\']([^\"\']*)[\"\'][^\\>]*\\>",
-                                 QRegularExpression::PatternOption::CaseInsensitiveOption |
-                                 QRegularExpression::PatternOption::InvertedGreedinessOption);
-  QRegularExpressionMatchIterator i = imgTagRegex.globalMatch(message.m_contents);
-  QString pictures_html;
+void MessagePreviewer::updateButtons()
+{
+    m_actionMarkRead->setEnabled(!m_message.m_isRead);
+    m_actionMarkUnread->setEnabled(m_message.m_isRead);
+}
 
-  while (i.hasNext()) {
-    QRegularExpressionMatch match = i.next();
+QString MessagePreviewer::prepareHtmlForMessage(const Message &message)
+{
+    QString html = QString("<h2 align=\"center\">%1</h2>").arg(message.m_title);
 
-    m_pictures.append(match.captured(1));
-    pictures_html += QString("<br/>[%1] <a href=\"%2\">%2</a>").arg(tr("image"), match.captured(1));
-  }
+    if (!message.m_url.isEmpty()) {
+        html += QString("[url] <a href=\"%1\">%1</a><br/>").arg(message.m_url);
+    }
 
-  if (qApp->settings()->value(GROUP(Messages), SETTING(Messages::DisplayImagePlaceholders)).toBool()) {
-    html += message.m_contents;
-  }
-  else {
-    QString cnts = message.m_contents;
+    for (const Enclosure &enc : message.m_enclosures) {
+        QString enc_url;
 
-    html += cnts.replace(imgTagRegex, QString());
-  }
+        if (!enc.m_url.contains(QRegularExpression(QSL("^(http|ftp|\\/)")))) {
+            enc_url = QString(INTERNAL_URL_PASSATTACHMENT) + QL1S("/?") + enc.m_url;
+        } else {
+            enc_url = enc.m_url;
+        }
 
-  html += pictures_html;
-  html = html
-         .replace(QSL("\r\n"), QSL("\n"))
-         .replace(QL1C('\r'), QL1C('\n'))
-         .replace(QL1C('\n'), QSL("<br/>"));
+        html += QString("[%2] <a href=\"%1\">%1</a><br/>").arg(enc_url, enc.m_mimeType);
+    }
 
-  return html;
+    QRegularExpression imgTagRegex("\\<img[^\\>]*src\\s*=\\s*[\"\']([^\"\']*)[\"\'][^\\>]*\\>",
+                                   QRegularExpression::PatternOption::CaseInsensitiveOption |
+                                   QRegularExpression::PatternOption::InvertedGreedinessOption);
+    QRegularExpressionMatchIterator i = imgTagRegex.globalMatch(message.m_contents);
+    QString pictures_html;
+
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+
+        m_pictures.append(match.captured(1));
+        pictures_html += QString("<br/>[%1] <a href=\"%2\">%2</a>").arg(tr("image"), match.captured(1));
+    }
+
+    if (qApp->settings()->value(GROUP(Messages),
+                                SETTING(Messages::DisplayImagePlaceholders)).toBool()) {
+        html += message.m_contents;
+    } else {
+        QString cnts = message.m_contents;
+
+        html += cnts.replace(imgTagRegex, QString());
+    }
+
+    html += pictures_html;
+    html = html
+           .replace(QSL("\r\n"), QSL("\n"))
+           .replace(QL1C('\r'), QL1C('\n'))
+           .replace(QL1C('\n'), QSL("<br/>"));
+
+    return html;
 }
