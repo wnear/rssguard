@@ -39,11 +39,12 @@ class WebFactory;
 class NetworkUrlInterceptor;
 #endif
 
-class RSSGUARD_DLLSPEC Application : public QtSingleApplication {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC Application : public QtSingleApplication
+{
+    Q_OBJECT
 
-  public:
-    explicit Application(const QString& id, int& argc, char** argv);
+public:
+    explicit Application(const QString &id, int &argc, char **argv);
     virtual ~Application();
 
     void reactOnForeignNotifications();
@@ -54,11 +55,11 @@ class RSSGUARD_DLLSPEC Application : public QtSingleApplication {
 
     bool isAlreadyRunning();
 
-    FeedReader* feedReader();
-    void setFeedReader(FeedReader* feed_reader);
+    FeedReader *feedReader();
+    void setFeedReader(FeedReader *feed_reader);
 
     // Globally accessible actions.
-    QList<QAction*> userActions();
+    QList<QAction *> userActions();
 
     // Check whether this application starts for the first time (ever).
     bool isFirstRun() const;
@@ -66,21 +67,21 @@ class RSSGUARD_DLLSPEC Application : public QtSingleApplication {
     // Check whether CURRENT VERSION of the application starts for the first time.
     bool isFirstRunCurrentVersion() const;
 
-    WebFactory* web() const;
-    SystemFactory* system();
-    SkinFactory* skins();
-    Localization* localization();
-    DatabaseFactory* database();
-    IconFactory* icons();
-    DownloadManager* downloadManager();
-    Settings* settings() const;
-    Mutex* feedUpdateLock();
-    FormMain* mainForm();
-    QWidget* mainFormWidget();
-    SystemTrayIcon* trayIcon();
+    WebFactory *web() const;
+    SystemFactory *system();
+    SkinFactory *skins();
+    Localization *localization();
+    DatabaseFactory *database();
+    IconFactory *icons();
+    DownloadManager *downloadManager();
+    Settings *settings() const;
+    Mutex *feedUpdateLock();
+    FormMain *mainForm();
+    QWidget *mainFormWidget();
+    SystemTrayIcon *trayIcon();
 
 #if defined(USE_WEBENGINE)
-    NetworkUrlInterceptor* urlIinterceptor();
+    NetworkUrlInterceptor *urlIinterceptor();
 #endif
 
     QString tempFolder();
@@ -96,56 +97,57 @@ class RSSGUARD_DLLSPEC Application : public QtSingleApplication {
     // NOTE: Use this to get correct path under which store user data.
     QString userDataFolder();
 
-    void setMainForm(FormMain* main_form);
+    void setMainForm(FormMain *main_form);
 
     void backupDatabaseSettings(bool backup_database, bool backup_settings,
-                                const QString& target_path, const QString& backup_name);
+                                const QString &target_path, const QString &backup_name);
     void restoreDatabaseSettings(bool restore_database, bool restore_settings,
-                                 const QString& source_database_file_path = QString(),
-                                 const QString& source_settings_file_path = QString());
+                                 const QString &source_database_file_path = QString(),
+                                 const QString &source_settings_file_path = QString());
 
     void showTrayIcon();
     void deleteTrayIcon();
 
     // Displays given simple message in tray icon bubble or OSD
     // or in message box if tray icon is disabled.
-    void showGuiMessage(const QString& title, const QString& message, QSystemTrayIcon::MessageIcon message_type,
-                        QWidget* parent = nullptr, bool show_at_least_msgbox = false,
+    void showGuiMessage(const QString &title, const QString &message,
+                        QSystemTrayIcon::MessageIcon message_type,
+                        QWidget *parent = nullptr, bool show_at_least_msgbox = false,
                         std::function<void()> functor = nullptr);
 
     // Returns pointer to "GOD" application singleton.
-    static Application* instance();
+    static Application *instance();
 
-  public slots:
+public slots:
 
     // Restarts the application.
     void restart();
 
     // Processes incoming message from another RSS Guard instance.
-    void processExecutionMessage(const QString& message);
+    void processExecutionMessage(const QString &message);
 
-  private slots:
-    void onCommitData(QSessionManager& manager);
-    void onSaveState(QSessionManager& manager);
+private slots:
+    void onCommitData(QSessionManager &manager);
+    void onSaveState(QSessionManager &manager);
     void onAboutToQuit();
 
 #if defined(USE_WEBENGINE)
-    void downloadRequested(QWebEngineDownloadItem* download_item);
+    void downloadRequested(QWebEngineDownloadItem *download_item);
 #endif
 
     void onFeedUpdatesStarted();
-    void onFeedUpdatesProgress(const Feed* feed, int current, int total);
-    void onFeedUpdatesFinished(const FeedDownloadResults& results);
+    void onFeedUpdatesProgress(const Feed *feed, int current, int total);
+    void onFeedUpdatesFinished(const FeedDownloadResults &results);
 
-  private:
+private:
     void determineFirstRuns();
     void eliminateFirstRuns();
 
 #if defined(USE_WEBENGINE)
-    NetworkUrlInterceptor* m_urlInterceptor;
+    NetworkUrlInterceptor *m_urlInterceptor;
 #endif
 
-    FeedReader* m_feedReader;
+    FeedReader *m_feedReader;
 
     bool m_quitLogicDone;
 
@@ -163,24 +165,25 @@ class RSSGUARD_DLLSPEC Application : public QtSingleApplication {
     // action will be allowed to lock for reading.
     QScopedPointer<Mutex> m_updateFeedsLock;
 
-    QList<QAction*> m_userActions;
-    FormMain* m_mainForm;
-    SystemTrayIcon* m_trayIcon;
-    Settings* m_settings;
-    WebFactory* m_webFactory;
-    SystemFactory* m_system;
-    SkinFactory* m_skins;
-    Localization* m_localization;
-    IconFactory* m_icons;
-    DatabaseFactory* m_database;
-    DownloadManager* m_downloadManager;
+    QList<QAction *> m_userActions;
+    FormMain *m_mainForm;
+    SystemTrayIcon *m_trayIcon;
+    Settings *m_settings;
+    WebFactory *m_webFactory;
+    SystemFactory *m_system;
+    SkinFactory *m_skins;
+    Localization *m_localization;
+    IconFactory *m_icons;
+    DatabaseFactory *m_database;
+    DownloadManager *m_downloadManager;
     bool m_shouldRestart;
     bool m_firstRunEver;
     bool m_firstRunCurrentVersion;
 };
 
-inline Application* Application::instance() {
-  return static_cast<Application*>(QCoreApplication::instance());
+inline Application *Application::instance()
+{
+    return static_cast<Application *>(QCoreApplication::instance());
 }
 
 #endif // APPLICATION_H

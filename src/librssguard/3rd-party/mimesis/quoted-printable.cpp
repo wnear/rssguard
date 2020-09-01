@@ -21,41 +21,39 @@
 
 using namespace std;
 
-string quoted_printable_decode(string_view in) {
-  string out;
+string quoted_printable_decode(string_view in)
+{
+    string out;
 
-  out.reserve(in.size());
+    out.reserve(in.size());
 
-  int decode = 0;
-  uint8_t val = 0;
+    int decode = 0;
+    uint8_t val = 0;
 
-  for (auto&& c: in) {
-    if (decode) {
-      if (c >= '0' && c <= '9') {
-        val <<= 4;
-        val |= c - '0';
-        decode--;
-      }
-      else if (c >= 'A' && c <= 'F') {
-        val <<= 4;
-        val |= 10 + (c - 'A');
-        decode--;
-      }
-      else {
-        decode = 0;
-        continue;
-      }
+    for (auto &&c : in) {
+        if (decode) {
+            if (c >= '0' && c <= '9') {
+                val <<= 4;
+                val |= c - '0';
+                decode--;
+            } else if (c >= 'A' && c <= 'F') {
+                val <<= 4;
+                val |= 10 + (c - 'A');
+                decode--;
+            } else {
+                decode = 0;
+                continue;
+            }
 
-      if (decode == 0)
-        out.push_back(static_cast<char>(val));
+            if (decode == 0)
+                out.push_back(static_cast<char>(val));
+        } else {
+            if (c == '=')
+                decode = 2;
+            else
+                out.push_back(c);
+        }
     }
-    else {
-      if (c == '=')
-        decode = 2;
-      else
-        out.push_back(c);
-    }
-  }
 
-  return out;
+    return out;
 }

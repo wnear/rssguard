@@ -12,16 +12,18 @@
 #include <QNetworkReply>
 #include <QPair>
 
-class UpdateUrl {
-  public:
+class UpdateUrl
+{
+public:
 
     QString m_fileUrl;
     QString m_name;
     QString m_size;
 };
 
-class UpdateInfo {
-  public:
+class UpdateInfo
+{
+public:
 
     QString m_availableVersion;
     QString m_changes;
@@ -32,19 +34,20 @@ class UpdateInfo {
 
 Q_DECLARE_METATYPE(UpdateInfo)
 
-class SystemFactory : public QObject {
-  Q_OBJECT
+class SystemFactory : public QObject
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Specifies possible states of auto-start functionality.
     enum class AutoStartStatus {
-      Enabled,
-      Disabled,
-      Unavailable
+        Enabled,
+        Disabled,
+        Unavailable
     };
 
-    explicit SystemFactory(QObject* parent = nullptr);
+    explicit SystemFactory(QObject *parent = nullptr);
     virtual ~SystemFactory();
 
     // Returns current status of auto-start function.
@@ -77,17 +80,17 @@ class SystemFactory : public QObject {
     static QRegularExpression supportedUpdateFiles();
 
     // Checks if update is newer than current application version.
-    static bool isVersionNewer(const QString& new_version, const QString& base_version);
-    static bool isVersionEqualOrNewer(const QString& new_version, const QString& base_version);
-    static bool openFolderFile(const QString& file_path);
+    static bool isVersionNewer(const QString &new_version, const QString &base_version);
+    static bool isVersionEqualOrNewer(const QString &new_version, const QString &base_version);
+    static bool openFolderFile(const QString &file_path);
 
-  signals:
+signals:
     void updatesChecked(QPair<QList<UpdateInfo>, QNetworkReply::NetworkError> updates) const;
 
-  private:
+private:
 
     // Performs parsing of downloaded file with list of updates.
-    QList<UpdateInfo> parseUpdatesFile(const QByteArray& updates_file) const;
+    QList<UpdateInfo> parseUpdatesFile(const QByteArray &updates_file) const;
 };
 
 #endif // SYSTEMFACTORY_H

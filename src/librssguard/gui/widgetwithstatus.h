@@ -9,28 +9,29 @@
 class PlainToolButton;
 class QHBoxLayout;
 
-class WidgetWithStatus : public QWidget {
-  Q_OBJECT
+class WidgetWithStatus : public QWidget
+{
+    Q_OBJECT
 
-  public:
+public:
     enum class StatusType {
-      Information,
-      Warning,
-      Error,
-      Ok,
-      Progress
+        Information,
+        Warning,
+        Error,
+        Ok,
+        Progress
     };
 
-    explicit WidgetWithStatus(QWidget* parent);
+    explicit WidgetWithStatus(QWidget *parent);
 
-    void setStatus(StatusType status, const QString& tooltip_text);
+    void setStatus(StatusType status, const QString &tooltip_text);
     StatusType status() const;
 
-  protected:
+protected:
     StatusType m_status;
-    QWidget* m_wdgInput;
-    PlainToolButton* m_btnStatus;
-    QHBoxLayout* m_layout;
+    QWidget *m_wdgInput;
+    PlainToolButton *m_btnStatus;
+    QHBoxLayout *m_layout;
     QIcon m_iconProgress;
     QIcon m_iconInformation;
     QIcon m_iconWarning;
@@ -38,8 +39,9 @@ class WidgetWithStatus : public QWidget {
     QIcon m_iconOk;
 };
 
-inline WidgetWithStatus::StatusType WidgetWithStatus::status() const {
-  return m_status;
+inline WidgetWithStatus::StatusType WidgetWithStatus::status() const
+{
+    return m_status;
 }
 
 #endif // WIDGETWITHSTATUS_H

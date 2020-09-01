@@ -7,23 +7,25 @@
 
 #include "ui_settingsshortcuts.h"
 
-class SettingsShortcuts : public SettingsPanel {
-  Q_OBJECT
+class SettingsShortcuts : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsShortcuts(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsShortcuts(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsShortcuts();
 
-    inline QString title() const {
-      return tr("Keyboard shortcuts");
+    inline QString title() const
+    {
+        return tr("Keyboard shortcuts");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  private:
-    Ui::SettingsShortcuts* m_ui;
+private:
+    Ui::SettingsShortcuts *m_ui;
 };
 
 #endif // SETTINGSSHORTCUTS_H

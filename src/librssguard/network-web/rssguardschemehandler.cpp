@@ -27,36 +27,37 @@
 #include <QUrlQuery>
 #include <QWebEngineUrlRequestJob>
 
-RssGuardSchemeHandler::RssGuardSchemeHandler(QObject* parent) : QWebEngineUrlSchemeHandler(parent) {}
+RssGuardSchemeHandler::RssGuardSchemeHandler(QObject *parent) : QWebEngineUrlSchemeHandler(
+        parent) {}
 
 RssGuardSchemeHandler::~RssGuardSchemeHandler() = default;
 
-void RssGuardSchemeHandler::requestStarted(QWebEngineUrlRequestJob* job) {
-  // Decide which data we want.
-  QByteArray data = targetData(job->requestUrl());
+void RssGuardSchemeHandler::requestStarted(QWebEngineUrlRequestJob *job)
+{
+    // Decide which data we want.
+    QByteArray data = targetData(job->requestUrl());
 
-  if (data.isEmpty()) {
-    job->fail(QWebEngineUrlRequestJob::UrlNotFound);
-  }
-  else {
-    auto* buf = new QBuffer(job);
+    if (data.isEmpty()) {
+        job->fail(QWebEngineUrlRequestJob::UrlNotFound);
+    } else {
+        auto *buf = new QBuffer(job);
 
-    buf->setData(data);
-    job->reply(QByteArray("text/html"), buf);
-  }
+        buf->setData(data);
+        job->reply(QByteArray("text/html"), buf);
+    }
 }
 
-QByteArray RssGuardSchemeHandler::targetData(const QUrl& url) {
-  const QString& url_string = url.toString();
+QByteArray RssGuardSchemeHandler::targetData(const QUrl &url)
+{
+    const QString &url_string = url.toString();
 
-  if (url_string.contains(QSL(ADBLOCK_ADBLOCKED_PAGE))) {
-    QUrlQuery query(url);
-    const QString& subscription = query.queryItemValue(QSL("subscription"));
-    const QString& rule = query.queryItemValue(QSL("rule"));
+    if (url_string.contains(QSL(ADBLOCK_ADBLOCKED_PAGE))) {
+        QUrlQuery query(url);
+        const QString &subscription = query.queryItemValue(QSL("subscription"));
+        const QString &rule = query.queryItemValue(QSL("rule"));
 
-    return qApp->skins()->adBlockedPage(subscription, rule).toUtf8();
-  }
-  else {
-    return QByteArray();
-  }
+        return qApp->skins()->adBlockedPage(subscription, rule).toUtf8();
+    } else {
+        return QByteArray();
+    }
 }

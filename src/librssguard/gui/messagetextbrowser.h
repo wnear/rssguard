@@ -5,19 +5,20 @@
 
 #include <QTextBrowser>
 
-class MessageTextBrowser : public QTextBrowser {
-  Q_OBJECT
+class MessageTextBrowser : public QTextBrowser
+{
+    Q_OBJECT
 
-  public:
-    explicit MessageTextBrowser(QWidget* parent = nullptr);
+public:
+    explicit MessageTextBrowser(QWidget *parent = nullptr);
     virtual ~MessageTextBrowser() = default;
 
-    QVariant loadResource(int type, const QUrl& name);
+    QVariant loadResource(int type, const QUrl &name);
 
-  protected:
-    void wheelEvent(QWheelEvent* e);
+protected:
+    void wheelEvent(QWheelEvent *e);
 
-  private:
+private:
     QPixmap m_imagePlaceholder;
 };
 

@@ -6,28 +6,31 @@
 #include <QStyledItemDelegate>
 #include <QStyleOptionViewItemV4>
 
-class StyledItemDelegateWithoutFocus : public QStyledItemDelegate {
-  Q_OBJECT
+class StyledItemDelegateWithoutFocus : public QStyledItemDelegate
+{
+    Q_OBJECT
 
-  public:
-    explicit StyledItemDelegateWithoutFocus(QObject* parent = nullptr);
+public:
+    explicit StyledItemDelegateWithoutFocus(QObject *parent = nullptr);
 
-    QSize sizeHint ( const QStyleOptionViewItem& option, const QModelIndex& index ) const;
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QSize sizeHint ( const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 };
 
-inline QSize StyledItemDelegateWithoutFocus::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const {
-  QSize siz = QStyledItemDelegate::sizeHint(option, index);
+inline QSize StyledItemDelegateWithoutFocus::sizeHint(const QStyleOptionViewItem &option,
+        const QModelIndex &index) const
+{
+    QSize siz = QStyledItemDelegate::sizeHint(option, index);
 
-  /*   QStyleOptionViewItem opt = option;
+    /*   QStyleOptionViewItem opt = option;
 
-         initStyleOption(&opt, index);
-         QStyle* style = widget ? widget->style() : QApplication::style();
+           initStyleOption(&opt, index);
+           QStyle* style = widget ? widget->style() : QApplication::style();
 
-         return style->sizeFromContents(QStyle::CT_ItemViewItem, &opt, QSize(), widget);*/
+           return style->sizeFromContents(QStyle::CT_ItemViewItem, &opt, QSize(), widget);*/
 
-  return siz;
+    return siz;
 }
 
 #endif // STYLEDITEMDELEGATEWITHOUTFOCUS_H

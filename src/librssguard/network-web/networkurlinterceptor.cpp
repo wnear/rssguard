@@ -23,31 +23,35 @@
 #include "miscellaneous/settings.h"
 #include "network-web/urlinterceptor.h"
 
-NetworkUrlInterceptor::NetworkUrlInterceptor(QObject* parent)
-  : QWebEngineUrlRequestInterceptor(parent), m_sendDNT(false) {}
+NetworkUrlInterceptor::NetworkUrlInterceptor(QObject *parent)
+    : QWebEngineUrlRequestInterceptor(parent), m_sendDNT(false) {}
 
-void NetworkUrlInterceptor::interceptRequest(QWebEngineUrlRequestInfo& info) {
-  if (m_sendDNT) {
-    info.setHttpHeader(QByteArrayLiteral("DNT"), QByteArrayLiteral("1"));
-  }
+void NetworkUrlInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+{
+    if (m_sendDNT) {
+        info.setHttpHeader(QByteArrayLiteral("DNT"), QByteArrayLiteral("1"));
+    }
 
-  // NOTE: Here we can add custom headers for each webengine request, for example "User-Agent".
+    // NOTE: Here we can add custom headers for each webengine request, for example "User-Agent".
 
-  for (UrlInterceptor* interceptor : m_interceptors) {
-    interceptor->interceptRequest(info);
-  }
+    for (UrlInterceptor *interceptor : m_interceptors) {
+        interceptor->interceptRequest(info);
+    }
 }
 
-void NetworkUrlInterceptor::installUrlInterceptor(UrlInterceptor* interceptor) {
-  if (!m_interceptors.contains(interceptor)) {
-    m_interceptors.append(interceptor);
-  }
+void NetworkUrlInterceptor::installUrlInterceptor(UrlInterceptor *interceptor)
+{
+    if (!m_interceptors.contains(interceptor)) {
+        m_interceptors.append(interceptor);
+    }
 }
 
-void NetworkUrlInterceptor::removeUrlInterceptor(UrlInterceptor* interceptor) {
-  m_interceptors.removeOne(interceptor);
+void NetworkUrlInterceptor::removeUrlInterceptor(UrlInterceptor *interceptor)
+{
+    m_interceptors.removeOne(interceptor);
 }
 
-void NetworkUrlInterceptor::loadSettings() {
-  m_sendDNT = qApp->settings()->value(GROUP(Browser), SETTING(Browser::SendDNT)).toBool();
+void NetworkUrlInterceptor::loadSettings()
+{
+    m_sendDNT = qApp->settings()->value(GROUP(Browser), SETTING(Browser::SendDNT)).toBool();
 }

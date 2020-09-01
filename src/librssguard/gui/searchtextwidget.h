@@ -7,31 +7,33 @@
 
 #include "ui_searchtextwidget.h"
 
-namespace Ui {
-  class SearchTextWidget;
+namespace Ui
+{
+class SearchTextWidget;
 }
 
-class SearchTextWidget : public QWidget {
-  Q_OBJECT
+class SearchTextWidget : public QWidget
+{
+    Q_OBJECT
 
-  public:
-    explicit SearchTextWidget(QWidget* parent = nullptr);
+public:
+    explicit SearchTextWidget(QWidget *parent = nullptr);
 
-  public slots:
+public slots:
     void clear();
 
-  private slots:
-    void onTextChanged(const QString& text);
+private slots:
+    void onTextChanged(const QString &text);
 
-  protected:
-    void keyPressEvent(QKeyEvent* event);
-    void focusInEvent(QFocusEvent* event);
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void focusInEvent(QFocusEvent *event);
 
-  signals:
+signals:
     void searchForText(QString text, bool search_backwards);
     void cancelSearch();
 
-  private:
+private:
     Ui::SearchTextWidget m_ui;
 };
 

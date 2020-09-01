@@ -5,18 +5,19 @@
 
 #include "gui/basetoolbar.h"
 
-class FeedsToolBar : public BaseToolBar {
-  Q_OBJECT
+class FeedsToolBar : public BaseToolBar
+{
+    Q_OBJECT
 
-  public:
-    explicit FeedsToolBar(const QString& title, QWidget* parent = nullptr);
+public:
+    explicit FeedsToolBar(const QString &title, QWidget *parent = nullptr);
 
-    QList<QAction*> availableActions() const;
-    QList<QAction*> changeableActions() const;
-    void saveChangeableActions(const QStringList& actions);
+    QList<QAction *> availableActions() const;
+    QList<QAction *> changeableActions() const;
+    void saveChangeableActions(const QStringList &actions);
 
-    QList<QAction*> getSpecificActions(const QStringList& actions);
-    void loadSpecificActions(const QList<QAction*>& actions, bool initial_load = false);
+    QList<QAction *> getSpecificActions(const QStringList &actions);
+    void loadSpecificActions(const QList<QAction *> &actions, bool initial_load = false);
 
     QStringList defaultActions() const;
     QStringList savedActions() const;

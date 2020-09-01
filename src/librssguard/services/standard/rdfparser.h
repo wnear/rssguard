@@ -7,12 +7,13 @@
 
 #include <QList>
 
-class RdfParser {
-  public:
+class RdfParser
+{
+public:
     explicit RdfParser();
     virtual ~RdfParser();
 
-    QList<Message> parseXmlData(const QString& data);
+    QList<Message> parseXmlData(const QString &data);
 };
 
 #endif // RDFPARSER_H

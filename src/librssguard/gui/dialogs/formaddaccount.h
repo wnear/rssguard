@@ -10,25 +10,27 @@
 class ServiceEntryPoint;
 class FeedsModel;
 
-class FormAddAccount : public QDialog {
-  Q_OBJECT
+class FormAddAccount : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormAddAccount(const QList<ServiceEntryPoint*>& entry_points, FeedsModel* model, QWidget* parent = 0);
+public:
+    explicit FormAddAccount(const QList<ServiceEntryPoint *> &entry_points, FeedsModel *model,
+                            QWidget *parent = 0);
     virtual ~FormAddAccount();
 
-  private slots:
+private slots:
     void addSelectedAccount();
 
-  private:
-    ServiceEntryPoint* selectedEntryPoint() const;
+private:
+    ServiceEntryPoint *selectedEntryPoint() const;
 
     void loadEntryPoints();
 
     QScopedPointer<Ui::FormAddAccount> m_ui;
-    FeedsModel* m_model;
+    FeedsModel *m_model;
 
-    QList<ServiceEntryPoint*> m_entryPoints;
+    QList<ServiceEntryPoint *> m_entryPoints;
 };
 
 #endif // FORMADDACCOUNT_H

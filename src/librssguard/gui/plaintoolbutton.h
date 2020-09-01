@@ -5,27 +5,28 @@
 
 #include <QToolButton>
 
-class PlainToolButton : public QToolButton {
-  Q_OBJECT
+class PlainToolButton : public QToolButton
+{
+    Q_OBJECT
 
-  public:
-    explicit PlainToolButton(QWidget* parent = nullptr);
+public:
+    explicit PlainToolButton(QWidget *parent = nullptr);
 
     // Padding changers.
     int padding() const;
     void setPadding(int padding);
 
-  public slots:
+public slots:
     void setChecked(bool checked);
-    void reactOnActionChange(QAction* action);
+    void reactOnActionChange(QAction *action);
     void reactOnSenderActionChange();
 
-  protected:
+protected:
 
     // Custom look.
-    void paintEvent(QPaintEvent* e);
+    void paintEvent(QPaintEvent *e);
 
-  private:
+private:
     int m_padding;
 };
 

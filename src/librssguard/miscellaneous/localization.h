@@ -9,19 +9,20 @@
 #include <QString>
 
 struct Language {
-  QString m_name;
-  QString m_code;
-  QString m_author;
-  QString m_email;
+    QString m_name;
+    QString m_code;
+    QString m_author;
+    QString m_email;
 };
 
-class RSSGUARD_DLLSPEC Localization : public QObject {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC Localization : public QObject
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructor.
-    explicit Localization(QObject* parent = nullptr);
+    explicit Localization(QObject *parent = nullptr);
 
     // Destructor.
     virtual ~Localization();
@@ -39,15 +40,17 @@ class RSSGUARD_DLLSPEC Localization : public QObject {
 
     // Returns empty string or loaded language
     // name if it is really loaded.
-    inline QString loadedLanguage() const {
-      return m_loadedLanguage;
+    inline QString loadedLanguage() const
+    {
+        return m_loadedLanguage;
     }
 
-    inline QLocale loadedLocale() const {
-      return m_loadedLocale;
+    inline QLocale loadedLocale() const
+    {
+        return m_loadedLocale;
     }
 
-  private:
+private:
 
     // Code of loaded language.
     QString m_loadedLanguage;

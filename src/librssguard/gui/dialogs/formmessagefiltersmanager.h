@@ -13,17 +13,19 @@ class AccountCheckModel;
 class MessageFilter;
 class FeedReader;
 
-class FormMessageFiltersManager : public QDialog {
-  Q_OBJECT
+class FormMessageFiltersManager : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormMessageFiltersManager(FeedReader* reader, const QList<ServiceRoot*>& accounts, QWidget* parent = nullptr);
+public:
+    explicit FormMessageFiltersManager(FeedReader *reader, const QList<ServiceRoot *> &accounts,
+                                       QWidget *parent = nullptr);
     virtual ~FormMessageFiltersManager();
 
-    MessageFilter* selectedFilter() const;
-    ServiceRoot* selectedAccount() const;
+    MessageFilter *selectedFilter() const;
+    ServiceRoot *selectedAccount() const;
 
-  private slots:
+private slots:
     void removeSelectedFilter();
     void addNewFilter();
     void saveSelectedFilter();
@@ -32,29 +34,29 @@ class FormMessageFiltersManager : public QDialog {
     void testFilter();
 
     // Load feeds/categories tree.
-    void loadAccount(ServiceRoot* account);
+    void loadAccount(ServiceRoot *account);
 
     // Load checkmarks according to already active assignments.
-    void loadFilterFeedAssignments(MessageFilter* filter, ServiceRoot* account);
+    void loadFilterFeedAssignments(MessageFilter *filter, ServiceRoot *account);
 
     void onAccountChanged();
-    void onFeedChecked(RootItem* item, Qt::CheckState state);
+    void onFeedChecked(RootItem *item, Qt::CheckState state);
 
     // Display filter title/contents.
-    void showFilter(MessageFilter* filter);
+    void showFilter(MessageFilter *filter);
 
-  private:
+private:
     void loadAccounts();
     void beautifyScript();
     void initializeTestingMessage();
     Message testingMessage() const;
 
-  private:
+private:
     Ui::FormMessageFiltersManager m_ui;
-    AccountCheckModel* m_feedsModel;
-    RootItem* m_rootItem;
-    QList<ServiceRoot*> m_accounts;
-    FeedReader* m_reader;
+    AccountCheckModel *m_feedsModel;
+    RootItem *m_rootItem;
+    QList<ServiceRoot *> m_accounts;
+    FeedReader *m_reader;
     bool m_loadingFilter;
 };
 

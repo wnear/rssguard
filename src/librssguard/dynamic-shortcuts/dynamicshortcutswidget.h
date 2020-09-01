@@ -8,15 +8,16 @@
 class QGridLayout;
 class ShortcutCatcher;
 
-typedef QPair<QAction*, ShortcutCatcher*> ActionBinding;
+typedef QPair<QAction *, ShortcutCatcher *> ActionBinding;
 
-class DynamicShortcutsWidget : public QWidget {
-  Q_OBJECT
+class DynamicShortcutsWidget : public QWidget
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit DynamicShortcutsWidget(QWidget* parent = 0);
+    explicit DynamicShortcutsWidget(QWidget *parent = 0);
     virtual ~DynamicShortcutsWidget();
 
     // Updates shortcuts of all actions according to changes.
@@ -33,13 +34,13 @@ class DynamicShortcutsWidget : public QWidget {
     // NOTE: This gets initial shortcut for each action from its properties, NOT from
     // the application settings, so shortcuts from settings need to be
     // assigned to actions before calling this method.
-    void populate(QList<QAction*> actions);
+    void populate(QList<QAction *> actions);
 
-  signals:
+signals:
     void setupChanged();
 
-  private:
-    QGridLayout* m_layout;
+private:
+    QGridLayout *m_layout;
 
     QList<ActionBinding> m_actionBindings;
 };

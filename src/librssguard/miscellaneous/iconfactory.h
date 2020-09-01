@@ -13,24 +13,25 @@
 #include <QIcon>
 #include <QString>
 
-class RSSGUARD_DLLSPEC IconFactory : public QObject {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC IconFactory : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit IconFactory(QObject* parent = nullptr);
+public:
+    explicit IconFactory(QObject *parent = nullptr);
     virtual ~IconFactory();
 
     // Used to store/retrieve QIcons from/to Base64-encoded
     // byte array.
     static QIcon fromByteArray(QByteArray array);
-    static QByteArray toByteArray(const QIcon& icon);
+    static QByteArray toByteArray(const QIcon &icon);
 
     // Returns icon from active theme or invalid icon if
     // "no icon theme" is set.
-    QIcon fromTheme(const QString& name);
+    QIcon fromTheme(const QString &name);
 
-    QPixmap miscPixmap(const QString& name);
-    QIcon miscIcon(const QString& name);
+    QPixmap miscPixmap(const QString &name);
+    QIcon miscIcon(const QString &name);
 
     // Adds custom application path to be search for icons.
     void setupSearchPaths();
@@ -47,11 +48,12 @@ class RSSGUARD_DLLSPEC IconFactory : public QObject {
     QString currentIconTheme() const;
 
     // Sets icon theme with given name as the active one and loads it.
-    void setCurrentIconTheme(const QString& theme_name);
+    void setCurrentIconTheme(const QString &theme_name);
 };
 
-inline QString IconFactory::currentIconTheme() const {
-  return QIcon::themeName();
+inline QString IconFactory::currentIconTheme() const
+{
+    return QIcon::themeName();
 }
 
 #endif // ICONFACTORY_H

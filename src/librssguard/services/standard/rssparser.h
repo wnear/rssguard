@@ -9,14 +9,15 @@
 
 #include <QList>
 
-class RssParser : public FeedParser {
-  public:
-    explicit RssParser(const QString& data);
+class RssParser : public FeedParser
+{
+public:
+    explicit RssParser(const QString &data);
     virtual ~RssParser();
 
-  private:
+private:
     QDomNodeList messageElements();
-    Message extractMessage(const QDomElement& msg_element, QDateTime current_time) const;
+    Message extractMessage(const QDomElement &msg_element, QDateTime current_time) const;
 };
 
 #endif // RSSPARSER_H

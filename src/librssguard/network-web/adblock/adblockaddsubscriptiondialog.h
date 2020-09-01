@@ -25,37 +25,40 @@
 
 #include "ui_adblockaddsubscriptiondialog.h"
 
-namespace Ui {
-  class AdBlockAddSubscriptionDialog;
+namespace Ui
+{
+class AdBlockAddSubscriptionDialog;
 }
 
-class AdBlockAddSubscriptionDialog : public QDialog {
-  Q_OBJECT
+class AdBlockAddSubscriptionDialog : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit AdBlockAddSubscriptionDialog(QWidget* parent = 0);
+public:
+    explicit AdBlockAddSubscriptionDialog(QWidget *parent = 0);
     virtual ~AdBlockAddSubscriptionDialog();
 
     QString title() const;
     QString url() const;
 
-  private slots:
+private slots:
     void indexChanged(int index);
     void presetsEnabledChanged(bool enabled);
 
-  private:
-    Ui::AdBlockAddSubscriptionDialog* m_ui;
+private:
+    Ui::AdBlockAddSubscriptionDialog *m_ui;
 
     struct Subscription {
-      QString m_title;
-      QString m_url;
+        QString m_title;
+        QString m_url;
 
-      Subscription() {}
+        Subscription() {}
 
-      Subscription(const QString& t, const QString& u) {
-        m_title = t;
-        m_url = u;
-      }
+        Subscription(const QString &t, const QString &u)
+        {
+            m_title = t;
+            m_url = u;
+        }
 
     };
 

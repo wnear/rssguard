@@ -7,28 +7,30 @@
 
 #include "ui_settingsgui.h"
 
-class SettingsGui : public SettingsPanel {
-  Q_OBJECT
+class SettingsGui : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsGui(Settings* settings, QWidget* parent = 0);
+public:
+    explicit SettingsGui(Settings *settings, QWidget *parent = 0);
     virtual ~SettingsGui();
 
-    inline QString title() const {
-      return tr("User interface");
+    inline QString title() const
+    {
+        return tr("User interface");
     }
 
     void loadSettings();
 
     void saveSettings();
 
-  protected:
+protected:
 
     // Does check of controls before dialog can be submitted.
-    bool eventFilter(QObject* obj, QEvent* e);
+    bool eventFilter(QObject *obj, QEvent *e);
 
-  private:
-    Ui::SettingsGui* m_ui;
+private:
+    Ui::SettingsGui *m_ui;
 };
 
 #endif // SETTINGSGUI_H

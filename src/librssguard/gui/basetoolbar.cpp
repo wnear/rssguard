@@ -8,28 +8,32 @@
 
 #include <QWidgetAction>
 
-BaseToolBar::BaseToolBar(const QString& title, QWidget* parent) : QToolBar(title, parent) {
-  // Update right margin of filter textbox.
-  QMargins margins = contentsMargins();
+BaseToolBar::BaseToolBar(const QString &title, QWidget *parent) : QToolBar(title, parent)
+{
+    // Update right margin of filter textbox.
+    QMargins margins = contentsMargins();
 
-  margins.setRight(margins.right() + FILTER_RIGHT_MARGIN);
-  setContentsMargins(margins);
+    margins.setRight(margins.right() + FILTER_RIGHT_MARGIN);
+    setContentsMargins(margins);
 }
 
-BaseToolBar::~BaseToolBar() {
-  qDebugNN << LOGSEC_GUI << "Destroying BaseToolBar instance.";
+BaseToolBar::~BaseToolBar()
+{
+    qDebugNN << LOGSEC_GUI << "Destroying BaseToolBar instance.";
 }
 
-void BaseBar::loadSavedActions() {
-  loadSpecificActions(getSpecificActions(savedActions()), true);
+void BaseBar::loadSavedActions()
+{
+    loadSpecificActions(getSpecificActions(savedActions()), true);
 }
 
-QAction* BaseBar::findMatchingAction(const QString& action, const QList<QAction*>& actions) const {
-  for (QAction* act : actions) {
-    if (act->objectName() == action) {
-      return act;
+QAction *BaseBar::findMatchingAction(const QString &action, const QList<QAction *> &actions) const
+{
+    for (QAction *act : actions) {
+        if (act->objectName() == action) {
+            return act;
+        }
     }
-  }
 
-  return nullptr;
+    return nullptr;
 }

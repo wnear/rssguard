@@ -11,56 +11,54 @@
 #include <QStringList>
 #include <QUrl>
 
-WebPage::WebPage(QObject* parent) : QWebEnginePage(parent) {
-  setBackgroundColor(Qt::transparent);
+WebPage::WebPage(QObject *parent) : QWebEnginePage(parent)
+{
+    setBackgroundColor(Qt::transparent);
 }
 
-WebViewer* WebPage::view() const {
-  return qobject_cast<WebViewer*>(QWebEnginePage::view());
+WebViewer *WebPage::view() const
+{
+    return qobject_cast<WebViewer *>(QWebEnginePage::view());
 }
 
-void WebPage::javaScriptAlert(const QUrl& securityOrigin, const QString& msg) {
-  QStringList parts = msg.split(QL1C('-'));
+void WebPage::javaScriptAlert(const QUrl &securityOrigin, const QString &msg)
+{
+    QStringList parts = msg.split(QL1C('-'));
 
-  if (parts.size() == 2) {
-    int message_id = parts.at(0).toInt();
-    const QString& action = parts.at(1);
+    if (parts.size() == 2) {
+        int message_id = parts.at(0).toInt();
+        const QString &action = parts.at(1);
 
-    if (action == QSL("read")) {
-      emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkRead);
+        if (action == QSL("read")) {
+            emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkRead);
+        } else if (action == QSL("unread")) {
+            emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkUnread);
+        } else if (action == QSL("starred")) {
+            emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkStarred);
+        } else if (action == QSL("unstarred")) {
+            emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkUnstarred);
+        } else {
+            QWebEnginePage::javaScriptAlert(securityOrigin, msg);
+        }
+    } else {
+        QWebEnginePage::javaScriptAlert(securityOrigin, msg);
     }
-    else if (action == QSL("unread")) {
-      emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkUnread);
-    }
-    else if (action == QSL("starred")) {
-      emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkStarred);
-    }
-    else if (action == QSL("unstarred")) {
-      emit messageStatusChangeRequested(message_id, MessageStatusChange::MarkUnstarred);
-    }
-    else {
-      QWebEnginePage::javaScriptAlert(securityOrigin, msg);
-    }
-  }
-  else {
-    QWebEnginePage::javaScriptAlert(securityOrigin, msg);
-  }
 }
 
-bool WebPage::acceptNavigationRequest(const QUrl& url, NavigationType type, bool isMainFrame) {
-  const RootItem* root = view()->root();
+bool WebPage::acceptNavigationRequest(const QUrl &url, NavigationType type, bool isMainFrame)
+{
+    const RootItem *root = view()->root();
 
-  if (url.toString().startsWith(INTERNAL_URL_PASSATTACHMENT) &&
-      root != nullptr &&
-      root->getParentServiceRoot()->downloadAttachmentOnMyOwn(url)) {
-    return false;
-  }
+    if (url.toString().startsWith(INTERNAL_URL_PASSATTACHMENT) &&
+            root != nullptr &&
+            root->getParentServiceRoot()->downloadAttachmentOnMyOwn(url)) {
+        return false;
+    }
 
-  if (url.host() == INTERNAL_URL_MESSAGE_HOST) {
-    setHtml(view()->messageContents(), QUrl(INTERNAL_URL_MESSAGE));
-    return true;
-  }
-  else {
-    return QWebEnginePage::acceptNavigationRequest(url, type, isMainFrame);
-  }
+    if (url.host() == INTERNAL_URL_MESSAGE_HOST) {
+        setHtml(view()->messageContents(), QUrl(INTERNAL_URL_MESSAGE));
+        return true;
+    } else {
+        return QWebEnginePage::acceptNavigationRequest(url, type, isMainFrame);
+    }
 }

@@ -8,29 +8,31 @@
 #include "services/standard/standardfeedsimportexportmodel.h"
 #include "ui_formstandardimportexport.h"
 
-namespace Ui {
-  class FormStandardImportExport;
+namespace Ui
+{
+class FormStandardImportExport;
 }
 
 class Category;
 class StandardServiceRoot;
 
-class FormStandardImportExport : public QDialog {
-  Q_OBJECT
+class FormStandardImportExport : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
     enum class ConversionType {
-      OPML20 = 0,
-      TxtUrlPerLine = 1
+        OPML20 = 0,
+        TxtUrlPerLine = 1
     };
 
     // Constructors.
-    explicit FormStandardImportExport(StandardServiceRoot* service_root, QWidget* parent = 0);
+    explicit FormStandardImportExport(StandardServiceRoot *service_root, QWidget *parent = 0);
     virtual ~FormStandardImportExport();
 
-    void setMode(const FeedsImportExportModel::Mode& mode);
+    void setMode(const FeedsImportExportModel::Mode &mode);
 
-  private slots:
+private slots:
     void performAction();
     void selectFile();
 
@@ -38,20 +40,20 @@ class FormStandardImportExport : public QDialog {
     void onParsingFinished(int count_failed, int count_succeeded, bool parsing_error);
     void onParsingProgress(int completed, int total);
 
-  private:
+private:
     void selectExportFile();
     void selectImportFile();
-    void parseImportFile(const QString& file_name, bool fetch_metadata_online);
+    void parseImportFile(const QString &file_name, bool fetch_metadata_online);
 
     void exportFeeds();
     void importFeeds();
 
-    void loadCategories(const QList<Category*>& categories, RootItem* root_item);
+    void loadCategories(const QList<Category *> &categories, RootItem *root_item);
 
     QScopedPointer<Ui::FormStandardImportExport> m_ui;
     ConversionType m_conversionType;
-    FeedsImportExportModel* m_model;
-    StandardServiceRoot* m_serviceRoot;
+    FeedsImportExportModel *m_model;
+    StandardServiceRoot *m_serviceRoot;
 };
 
 #endif // FORMEXPORT_H

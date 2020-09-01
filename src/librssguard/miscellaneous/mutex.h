@@ -6,13 +6,14 @@
 #include <QMutex>
 #include <QObject>
 
-class Mutex : public QObject {
-  Q_OBJECT
+class Mutex : public QObject
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors.
-    explicit Mutex(QMutex::RecursionMode mode = QMutex::NonRecursive, QObject* parent = 0);
+    explicit Mutex(QMutex::RecursionMode mode = QMutex::NonRecursive, QObject *parent = 0);
     virtual ~Mutex();
 
     // Main methods.
@@ -22,23 +23,23 @@ class Mutex : public QObject {
     // Identifies if mutes is locked or not.
     bool isLocked() const;
 
-    operator QMutex* () const;
+    operator QMutex *() const;
 
-  public slots:
+public slots:
     void lock();
     void unlock();
 
-  protected:
+protected:
 
     // These methods set proper value for m_isLocked and emit signals.
     void setLocked();
     void setUnlocked();
 
-  signals:
+signals:
     void locked();
     void unlocked();
 
-  private:
+private:
     QScopedPointer<QMutex> m_mutex;
     bool m_isLocked;
 };

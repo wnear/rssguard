@@ -3,4 +3,4 @@
 #include "exceptions/filteringexception.h"
 
 FilteringException::FilteringException(QJSValue::ErrorType js_error, QString message)
-  : ApplicationException(message), m_errorType(js_error) {}
+    : ApplicationException(message), m_errorType(js_error) {}

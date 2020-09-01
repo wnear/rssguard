@@ -5,13 +5,14 @@
 
 #include <QString>
 
-class ApplicationException {
-  public:
+class ApplicationException
+{
+public:
     explicit ApplicationException(QString message = QString());
 
     QString message() const;
 
-  private:
+private:
     QString m_message;
 };
 

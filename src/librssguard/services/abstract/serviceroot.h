@@ -16,30 +16,31 @@ class QAction;
 class MessagesModel;
 
 // Car here represents ID (int, primary key) of the item.
-typedef QList<QPair<int, RootItem*>> Assignment;
-typedef QPair<int, RootItem*> AssignmentItem;
+typedef QList<QPair<int, RootItem *>> Assignment;
+typedef QPair<int, RootItem *> AssignmentItem;
 typedef QPair<Message, RootItem::Importance> ImportanceChange;
 
 // THIS IS the root node of the service.
 // NOTE: The root usually contains some core functionality of the
 // service like service account username/password etc.
-class ServiceRoot : public RootItem {
-  Q_OBJECT
+class ServiceRoot : public RootItem
+{
+    Q_OBJECT
 
-  public:
-    explicit ServiceRoot(RootItem* parent = nullptr);
+public:
+    explicit ServiceRoot(RootItem *parent = nullptr);
     virtual ~ServiceRoot();
 
     void updateCounts(bool including_total_count);
     bool deleteViaGui();
     bool markAsReadUnread(ReadStatus status);
 
-    virtual RecycleBin* recycleBin() const;
+    virtual RecycleBin *recycleBin() const;
 
-    void setRecycleBin(RecycleBin* recycle_bin);
+    void setRecycleBin(RecycleBin *recycle_bin);
 
-    virtual ImportantNode* importantNode() const;
-    virtual bool downloadAttachmentOnMyOwn(const QUrl& url) const;
+    virtual ImportantNode *importantNode() const;
+    virtual bool downloadAttachmentOnMyOwn(const QUrl &url) const;
 
     QList<Message> undeletedMessages() const;
     virtual bool supportsFeedAdding() const;
@@ -51,18 +52,18 @@ class ServiceRoot : public RootItem {
     //  b) Add new category
     //  c) ...
     // NOTE: Caller does NOT take ownership of created menu!
-    virtual QList<QAction*> addItemMenu();
+    virtual QList<QAction *> addItemMenu();
 
     // NOTE: Caller does NOT take ownership of created menu!
-    virtual QList<QAction*> contextMenuFeedsList();
+    virtual QList<QAction *> contextMenuFeedsList();
 
     // NOTE: Caller does NOT take ownership of created menu!
-    virtual QList<QAction*> contextMenuMessagesList(const QList<Message>& messages);
+    virtual QList<QAction *> contextMenuMessagesList(const QList<Message> &messages);
 
     // Returns list of specific actions to be shown in main window menu
     // bar in sections "Services -> 'this service'".
     // NOTE: Caller does NOT take ownership of created menu!
-    virtual QList<QAction*> serviceMenu();
+    virtual QList<QAction *> serviceMenu();
 
     // If plugin uses online synchronization, then returns true.
     virtual bool isSyncable() const;
@@ -86,26 +87,26 @@ class ServiceRoot : public RootItem {
     virtual QString code() const = 0;
 
     // Removes all/read only messages from given underlying feeds.
-    bool cleanFeeds(QList<Feed*> items, bool clean_read_only);
+    bool cleanFeeds(QList<Feed *> items, bool clean_read_only);
 
     void completelyRemoveAllData();
-    QStringList customIDSOfMessagesForItem(RootItem* item);
-    bool markFeedsReadUnread(QList<Feed*> items, ReadStatus read);
+    QStringList customIDSOfMessagesForItem(RootItem *item);
+    bool markFeedsReadUnread(QList<Feed *> items, ReadStatus read);
 
     // Obvious methods to wrap signals.
-    void itemChanged(const QList<RootItem*>& items);
+    void itemChanged(const QList<RootItem *> &items);
     void requestReloadMessageList(bool mark_selected_messages_read);
-    void requestItemExpand(const QList<RootItem*>& items, bool expand);
-    void requestItemExpandStateSave(RootItem* subtree_root);
-    void requestItemReassignment(RootItem* item, RootItem* new_parent);
-    void requestItemRemoval(RootItem* item);
+    void requestItemExpand(const QList<RootItem *> &items, bool expand);
+    void requestItemExpandStateSave(RootItem *subtree_root);
+    void requestItemReassignment(RootItem *item, RootItem *new_parent);
+    void requestItemRemoval(RootItem *item);
 
     // This method should prepare messages for given "item" (download them maybe?)
     // into predefined "Messages" table
     // and then use method QSqlTableModel::setFilter(....).
     // NOTE: It would be more preferable if all messages are downloaded
     // right when feeds are updated.
-    virtual bool loadMessagesForItem(RootItem* item, MessagesModel* model);
+    virtual bool loadMessagesForItem(RootItem *item, MessagesModel *model);
 
     // Called BEFORE this read status update (triggered by user in message list) is stored in DB,
     // when false is returned, change is aborted.
@@ -113,7 +114,8 @@ class ServiceRoot : public RootItem {
     // some ONLINE service or something.
     //
     // "read" is status which is ABOUT TO BE SET.
-    virtual bool onBeforeSetMessagesRead(RootItem* selected_item, const QList<Message>& messages, ReadStatus read);
+    virtual bool onBeforeSetMessagesRead(RootItem *selected_item, const QList<Message> &messages,
+                                         ReadStatus read);
 
     // Called AFTER this read status update (triggered by user in message list) is stored in DB,
     // when false is returned, change is aborted.
@@ -121,7 +123,8 @@ class ServiceRoot : public RootItem {
     // which items are actually changed.
     //
     // "read" is status which is ABOUT TO BE SET.
-    virtual bool onAfterSetMessagesRead(RootItem* selected_item, const QList<Message>& messages, ReadStatus read);
+    virtual bool onAfterSetMessagesRead(RootItem *selected_item, const QList<Message> &messages,
+                                        ReadStatus read);
 
     // Called BEFORE this importance switch update is stored in DB,
     // when false is returned, change is aborted.
@@ -129,7 +132,8 @@ class ServiceRoot : public RootItem {
     // some ONLINE service or something.
     //
     // "changes" - list of pairs - <message (integer id), new status>
-    virtual bool onBeforeSwitchMessageImportance(RootItem* selected_item, const QList<ImportanceChange>& changes);
+    virtual bool onBeforeSwitchMessageImportance(RootItem *selected_item,
+            const QList<ImportanceChange> &changes);
 
     // Called AFTER this importance switch update is stored in DB,
     // when false is returned, change is aborted.
@@ -137,41 +141,44 @@ class ServiceRoot : public RootItem {
     // which items are actually changed.
     //
     // "changes" - list of pairs - <message (integer id), new status>
-    virtual bool onAfterSwitchMessageImportance(RootItem* selected_item, const QList<ImportanceChange>& changes);
+    virtual bool onAfterSwitchMessageImportance(RootItem *selected_item,
+            const QList<ImportanceChange> &changes);
 
     // Called BEFORE the list of messages is about to be deleted
     // by the user from message list.
-    virtual bool onBeforeMessagesDelete(RootItem* selected_item, const QList<Message>& messages);
+    virtual bool onBeforeMessagesDelete(RootItem *selected_item, const QList<Message> &messages);
 
     // Called AFTER the list of messages was deleted
     // by the user from message list.
-    virtual bool onAfterMessagesDelete(RootItem* selected_item, const QList<Message>& messages);
+    virtual bool onAfterMessagesDelete(RootItem *selected_item, const QList<Message> &messages);
 
     // Called BEFORE the list of messages is about to be restored from recycle bin
     // by the user from message list.
     // Selected item is naturally recycle bin.
-    virtual bool onBeforeMessagesRestoredFromBin(RootItem* selected_item, const QList<Message>& messages);
+    virtual bool onBeforeMessagesRestoredFromBin(RootItem *selected_item,
+            const QList<Message> &messages);
 
     // Called AFTER the list of messages was restored from recycle bin
     // by the user from message list.
     // Selected item is naturally recycle bin.
-    virtual bool onAfterMessagesRestoredFromBin(RootItem* selected_item, const QList<Message>& messages);
+    virtual bool onAfterMessagesRestoredFromBin(RootItem *selected_item,
+            const QList<Message> &messages);
 
-  public slots:
-    virtual void addNewFeed(const QString& url = QString());
+public slots:
+    virtual void addNewFeed(const QString &url = QString());
     virtual void addNewCategory();
     virtual void syncIn();
 
-  protected:
+protected:
 
     // This method should obtain new tree of feed/messages/etc to perform
     // sync in.
-    virtual RootItem* obtainNewTreeForSyncIn() const;
+    virtual RootItem *obtainNewTreeForSyncIn() const;
 
     // Removes all messages/categories/feeds which are
     // associated with this account.
     void removeOldAccountFromDatabase(bool including_messages);
-    void storeNewFeedTree(RootItem* root);
+    void storeNewFeedTree(RootItem *root);
     void cleanAllItemsFromModel();
 
     // Removes messages which do not belong to any
@@ -188,34 +195,35 @@ class ServiceRoot : public RootItem {
     // from another machine and then performs sync-in on this machine.
     void removeLeftOverMessageFilterAssignments();
 
-    QStringList textualFeedUrls(const QList<Feed*>& feeds) const;
-    QStringList textualFeedIds(const QList<Feed*>& feeds) const;
-    QStringList customIDsOfMessages(const QList<ImportanceChange>& changes);
-    QStringList customIDsOfMessages(const QList<Message>& messages);
+    QStringList textualFeedUrls(const QList<Feed *> &feeds) const;
+    QStringList textualFeedIds(const QList<Feed *> &feeds) const;
+    QStringList customIDsOfMessages(const QList<ImportanceChange> &changes);
+    QStringList customIDsOfMessages(const QList<Message> &messages);
 
     // Takes lists of feeds/categories and assembles them into the tree structure.
     void assembleCategories(Assignment categories);
     void assembleFeeds(Assignment feeds);
 
-  signals:
-    void dataChanged(QList<RootItem*> items);
+signals:
+    void dataChanged(QList<RootItem *> items);
     void reloadMessageListRequested(bool mark_selected_messages_read);
-    void itemExpandRequested(QList<RootItem*> items, bool expand);
-    void itemExpandStateSaveRequested(RootItem* subtree_root);
+    void itemExpandRequested(QList<RootItem *> items, bool expand);
+    void itemExpandStateSaveRequested(RootItem *subtree_root);
 
-    void itemReassignmentRequested(RootItem* item, RootItem* new_parent);
-    void itemRemovalRequested(RootItem* item);
+    void itemReassignmentRequested(RootItem *item, RootItem *new_parent);
+    void itemRemovalRequested(RootItem *item);
 
-  private:
+private:
     virtual QMap<QString, QVariantMap> storeCustomFeedsData();
-    virtual void restoreCustomFeedsData(const QMap<QString, QVariantMap>& data, const QHash<QString, Feed*>& feeds);
+    virtual void restoreCustomFeedsData(const QMap<QString, QVariantMap> &data,
+                                        const QHash<QString, Feed *> &feeds);
 
-  protected:
-    RecycleBin* m_recycleBin;
-    ImportantNode* m_importantNode;
+protected:
+    RecycleBin *m_recycleBin;
+    ImportantNode *m_importantNode;
     int m_accountId;
-    QAction* m_actionSyncIn;
-    QList<QAction*> m_serviceMenu;
+    QAction *m_actionSyncIn;
+    QList<QAction *> m_serviceMenu;
 };
 
 #endif // SERVICEROOT_H

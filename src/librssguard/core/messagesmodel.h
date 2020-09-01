@@ -15,21 +15,22 @@
 
 class MessagesModelCache;
 
-class MessagesModel : public QSqlQueryModel, public MessagesModelSqlLayer {
-  Q_OBJECT
+class MessagesModel : public QSqlQueryModel, public MessagesModelSqlLayer
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Enum which describes basic filtering schemes
     // for messages.
     enum class MessageHighlighter {
-      NoHighlighting = 100,
-      HighlightUnread = 101,
-      HighlightImportant = 102
+        NoHighlighting = 100,
+        HighlightUnread = 101,
+        HighlightImportant = 102
     };
 
     // Constructors and destructors.
-    explicit MessagesModel(QObject* parent = nullptr);
+    explicit MessagesModel(QObject *parent = nullptr);
     virtual ~MessagesModel();
 
     // Fetches ALL available data to the model.
@@ -37,11 +38,11 @@ class MessagesModel : public QSqlQueryModel, public MessagesModelSqlLayer {
     void repopulate();
 
     // Model implementation.
-    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
-    QVariant data(const QModelIndex& idx, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const;
     QVariant data(int row, int column, int role = Qt::DisplayRole) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    Qt::ItemFlags flags(const QModelIndex& index) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
 
     // Returns message at given index.
 
@@ -50,8 +51,8 @@ class MessagesModel : public QSqlQueryModel, public MessagesModelSqlLayer {
     int messageId(int row_index) const;
     RootItem::Importance messageImportance(int row_index) const;
 
-    RootItem* loadedItem() const;
-    MessagesModelCache* cache() const;
+    RootItem *loadedItem() const;
+    MessagesModelCache *cache() const;
 
     void setupFonts();
     void updateDateFormat();
@@ -62,32 +63,32 @@ class MessagesModel : public QSqlQueryModel, public MessagesModelSqlLayer {
     bool setMessageRead(int row_index, RootItem::ReadStatus read);
 
     // BATCH messages manipulators.
-    bool switchBatchMessageImportance(const QModelIndexList& messages);
-    bool setBatchMessagesDeleted(const QModelIndexList& messages);
-    bool setBatchMessagesRead(const QModelIndexList& messages, RootItem::ReadStatus read);
-    bool setBatchMessagesRestored(const QModelIndexList& messages);
+    bool switchBatchMessageImportance(const QModelIndexList &messages);
+    bool setBatchMessagesDeleted(const QModelIndexList &messages);
+    bool setBatchMessagesRead(const QModelIndexList &messages, RootItem::ReadStatus read);
+    bool setBatchMessagesRestored(const QModelIndexList &messages);
 
     // Highlights messages.
     void highlightMessages(MessageHighlighter highlight);
 
     // Loads messages of given feeds.
-    void loadMessages(RootItem* item);
+    void loadMessages(RootItem *item);
 
-  public slots:
+public slots:
 
     // NOTE: These methods DO NOT actually change data in the DB, just in the model.
     // These are particularly used by msg browser.
     bool setMessageImportantById(int id, RootItem::Importance important);
     bool setMessageReadById(int id, RootItem::ReadStatus read);
 
-  private:
+private:
     void setupHeaderData();
     void setupIcons();
 
-    MessagesModelCache* m_cache;
+    MessagesModelCache *m_cache;
     MessageHighlighter m_messageHighlighter;
     QString m_customDateFormat;
-    RootItem* m_selectedItem;
+    RootItem *m_selectedItem;
     QList<QString> m_headerData;
     QList<QString> m_tooltipData;
     QFont m_normalFont;

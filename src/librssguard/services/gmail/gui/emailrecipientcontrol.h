@@ -11,25 +11,26 @@ class QComboBox;
 class QLineEdit;
 class PlainToolButton;
 
-class EmailRecipientControl : public QWidget {
-  Q_OBJECT
+class EmailRecipientControl : public QWidget
+{
+    Q_OBJECT
 
-  public:
-    explicit EmailRecipientControl(const QString& recipient, QWidget* parent = nullptr);
+public:
+    explicit EmailRecipientControl(const QString &recipient, QWidget *parent = nullptr);
 
-  public:
+public:
     QString recipientAddress() const;
     RecipientType recipientType() const;
 
-    void setPossibleRecipients(const QStringList& rec);
+    void setPossibleRecipients(const QStringList &rec);
 
-  signals:
+signals:
     void removalRequested();
 
-  private:
-    QComboBox* m_cmbRecipientType;
-    QLineEdit* m_txtRecipient;
-    PlainToolButton* m_btnCloseMe;
+private:
+    QComboBox *m_cmbRecipientType;
+    QLineEdit *m_txtRecipient;
+    PlainToolButton *m_btnCloseMe;
 };
 
 #endif // EMAILRECIPIENTCONTROL_H

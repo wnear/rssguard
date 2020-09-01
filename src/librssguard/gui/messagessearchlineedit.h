@@ -7,11 +7,12 @@
 
 class PlainToolButton;
 
-class MessagesSearchLineEdit : public BaseLineEdit {
-  Q_OBJECT
+class MessagesSearchLineEdit : public BaseLineEdit
+{
+    Q_OBJECT
 
-  public:
-    explicit MessagesSearchLineEdit(QWidget* parent = nullptr);
+public:
+    explicit MessagesSearchLineEdit(QWidget *parent = nullptr);
 };
 
 #endif // MESSAGESEARCHLINEEDIT_H

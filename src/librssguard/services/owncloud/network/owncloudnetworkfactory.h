@@ -12,22 +12,24 @@
 #include <QNetworkReply>
 #include <QString>
 
-class OwnCloudResponse {
-  public:
-    explicit OwnCloudResponse(const QString& raw_content = QString());
+class OwnCloudResponse
+{
+public:
+    explicit OwnCloudResponse(const QString &raw_content = QString());
     virtual ~OwnCloudResponse();
 
     bool isLoaded() const;
     QString toString() const;
 
-  protected:
+protected:
     QJsonObject m_rawContent;
     bool m_emptyString;
 };
 
-class OwnCloudUserResponse : public OwnCloudResponse {
-  public:
-    explicit OwnCloudUserResponse(const QString& raw_content = QString());
+class OwnCloudUserResponse : public OwnCloudResponse
+{
+public:
+    explicit OwnCloudUserResponse(const QString &raw_content = QString());
     virtual ~OwnCloudUserResponse();
 
     QString userId() const;
@@ -36,17 +38,19 @@ class OwnCloudUserResponse : public OwnCloudResponse {
     QIcon avatar() const;
 };
 
-class OwnCloudGetMessagesResponse : public OwnCloudResponse {
-  public:
-    explicit OwnCloudGetMessagesResponse(const QString& raw_content = QString());
+class OwnCloudGetMessagesResponse : public OwnCloudResponse
+{
+public:
+    explicit OwnCloudGetMessagesResponse(const QString &raw_content = QString());
     virtual ~OwnCloudGetMessagesResponse();
 
     QList<Message> messages() const;
 };
 
-class OwnCloudStatusResponse : public OwnCloudResponse {
-  public:
-    explicit OwnCloudStatusResponse(const QString& raw_content = QString());
+class OwnCloudStatusResponse : public OwnCloudResponse
+{
+public:
+    explicit OwnCloudStatusResponse(const QString &raw_content = QString());
     virtual ~OwnCloudStatusResponse();
 
     QString version() const;
@@ -55,40 +59,43 @@ class OwnCloudStatusResponse : public OwnCloudResponse {
 
 class RootItem;
 
-class OwnCloudGetFeedsCategoriesResponse {
-  public:
-    explicit OwnCloudGetFeedsCategoriesResponse(QString raw_categories = QString(), QString raw_feeds = QString());
+class OwnCloudGetFeedsCategoriesResponse
+{
+public:
+    explicit OwnCloudGetFeedsCategoriesResponse(QString raw_categories = QString(),
+            QString raw_feeds = QString());
     virtual ~OwnCloudGetFeedsCategoriesResponse();
 
     // Returns tree of feeds/categories.
     // Top-level root of the tree is not needed here.
     // Returned items do not have primary IDs assigned.
-    RootItem* feedsCategories(bool obtain_icons) const;
+    RootItem *feedsCategories(bool obtain_icons) const;
 
-  private:
+private:
     QString m_contentCategories;
     QString m_contentFeeds;
 };
 
-class OwnCloudNetworkFactory {
-  public:
+class OwnCloudNetworkFactory
+{
+public:
     explicit OwnCloudNetworkFactory();
     virtual ~OwnCloudNetworkFactory();
 
     QString url() const;
-    void setUrl(const QString& url);
+    void setUrl(const QString &url);
 
     bool forceServerSideUpdate() const;
     void setForceServerSideUpdate(bool force_update);
 
     QString authUsername() const;
-    void setAuthUsername(const QString& auth_username);
+    void setAuthUsername(const QString &auth_username);
 
     QString authPassword() const;
-    void setAuthPassword(const QString& auth_password);
+    void setAuthPassword(const QString &auth_password);
 
     QString userId() const;
-    void setUserId(const QString& userId);
+    void setUserId(const QString &userId);
 
     QNetworkReply::NetworkError lastError() const;
 
@@ -104,18 +111,19 @@ class OwnCloudNetworkFactory {
     OwnCloudGetFeedsCategoriesResponse feedsCategories();
 
     // Feed operations.
-    bool deleteFeed(const QString& feed_id);
-    bool createFeed(const QString& url, int parent_id);
-    bool renameFeed(const QString& new_name, const QString& custom_feed_id);
+    bool deleteFeed(const QString &feed_id);
+    bool createFeed(const QString &url, int parent_id);
+    bool renameFeed(const QString &new_name, const QString &custom_feed_id);
 
     // Get messages for given feed.
     OwnCloudGetMessagesResponse getMessages(int feed_id);
 
     // Misc methods.
     QNetworkReply::NetworkError triggerFeedUpdate(int feed_id);
-    void markMessagesRead(RootItem::ReadStatus status, const QStringList& custom_ids, bool async = true);
-    void markMessagesStarred(RootItem::Importance importance, const QStringList& feed_ids,
-                             const QStringList& guid_hashes, bool async = true);
+    void markMessagesRead(RootItem::ReadStatus status, const QStringList &custom_ids,
+                          bool async = true);
+    void markMessagesStarred(RootItem::Importance importance, const QStringList &feed_ids,
+                             const QStringList &guid_hashes, bool async = true);
 
     // Gets/sets the amount of messages to obtain during single feed update.
     int batchSize() const;
@@ -124,7 +132,7 @@ class OwnCloudNetworkFactory {
     bool downloadOnlyUnreadMessages() const;
     void setDownloadOnlyUnreadMessages(bool dowload_only_unread_messages);
 
-  private:
+private:
     QString m_url;
     QString m_fixedUrl;
     bool m_downloadOnlyUnreadMessages;

@@ -8,22 +8,23 @@
 class WebBrowser;
 class GoogleSuggest;
 
-class LocationLineEdit : public BaseLineEdit {
-  Q_OBJECT
+class LocationLineEdit : public BaseLineEdit
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit LocationLineEdit(QWidget* parent = 0);
+    explicit LocationLineEdit(QWidget *parent = 0);
     virtual ~LocationLineEdit();
 
-  protected:
-    void focusOutEvent(QFocusEvent* event);
-    void mousePressEvent(QMouseEvent* event);
+protected:
+    void focusOutEvent(QFocusEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
-  private:
+private:
     bool m_mouseSelectsAllText;
-    GoogleSuggest* m_googleSuggest;
+    GoogleSuggest *m_googleSuggest;
 };
 
 #endif // LOCATIONLINEEDIT_H

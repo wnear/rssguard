@@ -9,28 +9,29 @@ class QHBoxLayout;
 class PlainToolButton;
 class QKeySequenceEdit;
 
-class ShortcutCatcher : public QWidget {
-  Q_OBJECT
+class ShortcutCatcher : public QWidget
+{
+    Q_OBJECT
 
-  public:
-    explicit ShortcutCatcher(QWidget* parent = nullptr);
+public:
+    explicit ShortcutCatcher(QWidget *parent = nullptr);
 
     QKeySequence shortcut() const;
-    void setDefaultShortcut(const QKeySequence& key);
-    void setShortcut(const QKeySequence& key);
+    void setDefaultShortcut(const QKeySequence &key);
+    void setShortcut(const QKeySequence &key);
 
-  public slots:
+public slots:
     void resetShortcut();
     void clearShortcut();
 
-  signals:
-    void shortcutChanged(const QKeySequence& seguence);
+signals:
+    void shortcutChanged(const QKeySequence &seguence);
 
-  private:
-    PlainToolButton* m_btnReset;
-    PlainToolButton* m_btnClear;
-    QKeySequenceEdit* m_shortcutBox;
-    QHBoxLayout* m_layout;
+private:
+    PlainToolButton *m_btnReset;
+    PlainToolButton *m_btnClear;
+    QKeySequenceEdit *m_shortcutBox;
+    QHBoxLayout *m_layout;
     QKeySequence m_currentSequence;
     QKeySequence m_defaultSequence;
     bool m_isRecording;

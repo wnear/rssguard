@@ -8,50 +8,52 @@
 #include <QTabBar>
 #include <QVariant>
 
-class TabBar : public QTabBar {
-  Q_OBJECT
+class TabBar : public QTabBar
+{
+    Q_OBJECT
 
-  public:
+public:
     enum class TabType {
-      FeedReader = 1,
-      DownloadManager = 2,
-      NonClosable = 4,
-      Closable = 8
+        FeedReader = 1,
+        DownloadManager = 2,
+        NonClosable = 4,
+        Closable = 8
     };
 
     // Constructors.
-    explicit TabBar(QWidget* parent = nullptr);
+    explicit TabBar(QWidget *parent = nullptr);
     virtual ~TabBar();
 
     // Getter/setter for tab type.
-    void setTabType(int index, const TabBar::TabType& type);
+    void setTabType(int index, const TabBar::TabType &type);
     TabBar::TabType tabType(int index) const;
 
-  private slots:
+private slots:
 
     // Called when user selects to close tab via close button.
     void closeTabViaButton();
 
-  private:
+private:
 
     // Reimplementations.
-    void mouseDoubleClickEvent(QMouseEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void wheelEvent(QWheelEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
 
-  signals:
+signals:
 
     // Emmited if empty space on tab bar is double clicked.
     void emptySpaceDoubleClicked();
 };
 
-inline TabBar::TabType TabBar::tabType(int index) const {
-  return static_cast<TabBar::TabType>(tabData(index).toInt());
+inline TabBar::TabType TabBar::tabType(int index) const
+{
+    return static_cast<TabBar::TabType>(tabData(index).toInt());
 }
 
 TabBar::TabType operator| (TabBar::TabType a, TabBar::TabType b);
 TabBar::TabType operator& (TabBar::TabType a, TabBar::TabType b);
-TabBar::TabType& operator|= (TabBar::TabType& a, TabBar::TabType b);
-TabBar::TabType& operator&= (TabBar::TabType& a, TabBar::TabType b);
+TabBar::TabType &operator|= (TabBar::TabType &a, TabBar::TabType b);
+TabBar::TabType &operator&= (TabBar::TabType &a, TabBar::TabType b);
 
 #endif // TABBAR_H

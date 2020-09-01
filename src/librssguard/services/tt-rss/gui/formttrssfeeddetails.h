@@ -5,19 +5,20 @@
 
 #include "services/abstract/gui/formfeeddetails.h"
 
-class FormTtRssFeedDetails : public FormFeedDetails {
-  Q_OBJECT
+class FormTtRssFeedDetails : public FormFeedDetails
+{
+    Q_OBJECT
 
-  public:
-    explicit FormTtRssFeedDetails(ServiceRoot* service_root, QWidget* parent = 0);
+public:
+    explicit FormTtRssFeedDetails(ServiceRoot *service_root, QWidget *parent = 0);
 
     // FormFeedDetails interface
 
-  protected slots:
+protected slots:
     void apply();
 
-  protected:
-    void setEditableFeed(Feed* editable_feed);
+protected:
+    void setEditableFeed(Feed *editable_feed);
 };
 
 #endif // FORMTTRSSFEEDDETAILS_H

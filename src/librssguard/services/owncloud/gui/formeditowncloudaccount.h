@@ -7,24 +7,26 @@
 
 #include "ui_formeditowncloudaccount.h"
 
-namespace Ui {
-  class FormEditAccount;
+namespace Ui
+{
+class FormEditAccount;
 }
 
 class OwnCloudServiceRoot;
 
-class FormEditOwnCloudAccount : public QDialog {
-  Q_OBJECT
+class FormEditOwnCloudAccount : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormEditOwnCloudAccount(QWidget* parent = 0);
+public:
+    explicit FormEditOwnCloudAccount(QWidget *parent = 0);
     virtual ~FormEditOwnCloudAccount();
 
-    OwnCloudServiceRoot* execForCreate();
+    OwnCloudServiceRoot *execForCreate();
 
-    void execForEdit(OwnCloudServiceRoot* existing_root);
+    void execForEdit(OwnCloudServiceRoot *existing_root);
 
-  private slots:
+private slots:
     void displayPassword(bool display);
     void performTest();
     void onClickedOk();
@@ -35,10 +37,10 @@ class FormEditOwnCloudAccount : public QDialog {
     void onUrlChanged();
     void checkOkButton();
 
-  private:
+private:
     QScopedPointer<Ui::FormEditOwnCloudAccount> m_ui;
-    OwnCloudServiceRoot* m_editableRoot;
-    QPushButton* m_btnOk;
+    OwnCloudServiceRoot *m_editableRoot;
+    QPushButton *m_btnOk;
 };
 
 #endif // FORMEDITOWNCLOUDACCOUNT_H

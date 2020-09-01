@@ -7,23 +7,24 @@
 
 #include "ui_formbackupdatabasesettings.h"
 
-class FormBackupDatabaseSettings : public QDialog {
-  Q_OBJECT
+class FormBackupDatabaseSettings : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors
-    explicit FormBackupDatabaseSettings(QWidget* parent = 0);
+    explicit FormBackupDatabaseSettings(QWidget *parent = 0);
     virtual ~FormBackupDatabaseSettings();
 
-  private slots:
+private slots:
     void performBackup();
     void selectFolderInitial();
     void selectFolder(QString path = QString());
-    void checkBackupNames(const QString& name);
+    void checkBackupNames(const QString &name);
     void checkOkButton();
 
-  private:
+private:
     QScopedPointer<Ui::FormBackupDatabaseSettings> m_ui;
 };
 

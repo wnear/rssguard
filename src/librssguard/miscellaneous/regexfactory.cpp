@@ -43,89 +43,90 @@
 
 #include "miscellaneous/regexfactory.h"
 
-QString RegexFactory::wildcardToRegularExpression(const QString& pattern) {
-  const int wclen = pattern.length();
-  QString rx;
+QString RegexFactory::wildcardToRegularExpression(const QString &pattern)
+{
+    const int wclen = pattern.length();
+    QString rx;
 
-  rx.reserve(wclen + wclen / 16);
-  int i = 0;
-  const QChar* wc = pattern.unicode();
+    rx.reserve(wclen + wclen / 16);
+    int i = 0;
+    const QChar *wc = pattern.unicode();
 
 #ifdef Q_OS_WIN
-  const QLatin1Char nativePathSeparator('\\');
-  const QLatin1String starEscape("[^/\\\\]*");
-  const QLatin1String questionMarkEscape("[^/\\\\]");
+    const QLatin1Char nativePathSeparator('\\');
+    const QLatin1String starEscape("[^/\\\\]*");
+    const QLatin1String questionMarkEscape("[^/\\\\]");
 #else
-  const QLatin1Char nativePathSeparator('/');
-  const QLatin1String starEscape("[^/]*");
-  const QLatin1String questionMarkEscape("[^/]");
+    const QLatin1Char nativePathSeparator('/');
+    const QLatin1String starEscape("[^/]*");
+    const QLatin1String questionMarkEscape("[^/]");
 #endif
 
-  while (i < wclen) {
-    const QChar c = wc[i++];
+    while (i < wclen) {
+        const QChar c = wc[i++];
 
-    switch (c.unicode()) {
-      case '*':
-        rx += starEscape;
-        break;
+        switch (c.unicode()) {
+            case '*':
+                rx += starEscape;
+                break;
 
-      case '?':
-        rx += questionMarkEscape;
-        break;
+            case '?':
+                rx += questionMarkEscape;
+                break;
 
-      case '\\':
+            case '\\':
 #ifdef Q_OS_WIN
-      case '/':
-        rx += QLatin1String("[/\\\\]");
-        break;
+            case '/':
+                rx += QLatin1String("[/\\\\]");
+                break;
 #endif
-      case '$':
-      case '(':
-      case ')':
-      case '+':
-      case '.':
-      case '^':
-      case '{':
-      case '|':
-      case '}':
-        rx += QLatin1Char('\\');
-        rx += c;
-        break;
+            case '$':
+            case '(':
+            case ')':
+            case '+':
+            case '.':
+            case '^':
+            case '{':
+            case '|':
+            case '}':
+                rx += QLatin1Char('\\');
+                rx += c;
+                break;
 
-      case '[':
-        rx += c;
+            case '[':
+                rx += c;
 
-        // Support for the [!abc] or [!a-c] syntax
-        if (i < wclen) {
-          if (wc[i] == QLatin1Char('!')) {
-            rx += QLatin1Char('^');
-            ++i;
-          }
+                // Support for the [!abc] or [!a-c] syntax
+                if (i < wclen) {
+                    if (wc[i] == QLatin1Char('!')) {
+                        rx += QLatin1Char('^');
+                        ++i;
+                    }
 
-          if (i < wclen && wc[i] == QLatin1Char(']'))
-            rx += wc[i++];
+                    if (i < wclen && wc[i] == QLatin1Char(']'))
+                        rx += wc[i++];
 
-          while (i < wclen && wc[i] != QLatin1Char(']')) {
-            // The '/' appearing in a character class invalidates the
-            // regular expression parsing. It also concerns '\\' on
-            // Windows OS types.
-            if (wc[i] == QLatin1Char('/') || wc[i] == nativePathSeparator)
-              return rx;
+                    while (i < wclen && wc[i] != QLatin1Char(']')) {
+                        // The '/' appearing in a character class invalidates the
+                        // regular expression parsing. It also concerns '\\' on
+                        // Windows OS types.
+                        if (wc[i] == QLatin1Char('/') || wc[i] == nativePathSeparator)
+                            return rx;
 
-            if (wc[i] == QLatin1Char('\\'))
-              rx += QLatin1Char('\\');
+                        if (wc[i] == QLatin1Char('\\'))
+                            rx += QLatin1Char('\\');
 
-            rx += wc[i++];
-          }
+                        rx += wc[i++];
+                    }
+                }
+
+                break;
+
+            default:
+                rx += c;
+                break;
         }
-
-        break;
-
-      default:
-        rx += c;
-        break;
     }
-  }
 
-  return anchoredPattern(rx);
+    return anchoredPattern(rx);
 }

@@ -9,38 +9,39 @@
 
 class StatusBar;
 
-class RSSGUARD_DLLSPEC FormMain : public QMainWindow {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC FormMain : public QMainWindow
+{
+    Q_OBJECT
 
-  friend class TabWidget;
-  friend class MessagesView;
-  friend class FeedsView;
+    friend class TabWidget;
+    friend class MessagesView;
+    friend class FeedsView;
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit FormMain(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowType::Widget);
+    explicit FormMain(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowType::Widget);
     virtual ~FormMain();
 
     // Returns menu for the tray icon.
-    QMenu* trayMenu() const;
+    QMenu *trayMenu() const;
 
     // Returns global tab widget.
-    TabWidget* tabWidget() const;
+    TabWidget *tabWidget() const;
 
     // Access to statusbar.
-    StatusBar* statusBar() const;
+    StatusBar *statusBar() const;
 
     // Returns list of all globally available actions.
     // NOTE: This is used for setting dynamic shortcuts
     // for given actions.
-    QList<QAction*> allActions() const;
+    QList<QAction *> allActions() const;
 
     // Loads/saves visual state of the application.
     void loadSize();
     void saveSize();
 
-  public slots:
+public slots:
 
     // Displays window on top or switches its visibility.
     void display();
@@ -53,7 +54,7 @@ class RSSGUARD_DLLSPEC FormMain : public QMainWindow {
 
     void showAddAccountDialog();
 
-  private slots:
+private slots:
     void updateAddItemMenu();
     void updateRecycleBinMenu();
     void updateAccountsMenu();
@@ -62,8 +63,8 @@ class RSSGUARD_DLLSPEC FormMain : public QMainWindow {
     void updateFeedButtonsAvailability();
 
     void onFeedUpdatesStarted();
-    void onFeedUpdatesProgress(const Feed* feed, int current, int total);
-    void onFeedUpdatesFinished(const FeedDownloadResults& results);
+    void onFeedUpdatesProgress(const Feed *feed, int current, int total);
+    void onFeedUpdatesFinished(const FeedDownloadResults &results);
 
     // Displays various dialogs.
     void backupDatabaseSettings();
@@ -73,10 +74,10 @@ class RSSGUARD_DLLSPEC FormMain : public QMainWindow {
     void reportABug();
     void donate();
 
-  private:
+private:
 
     // Event handler reimplementations.
-    void changeEvent(QEvent* event);
+    void changeEvent(QEvent *event);
 
     // Creates all needed menus and sets them up.
     void prepareMenus();
@@ -88,8 +89,8 @@ class RSSGUARD_DLLSPEC FormMain : public QMainWindow {
     void setupIcons();
 
     QScopedPointer<Ui::FormMain> m_ui;
-    QMenu* m_trayMenu;
-    StatusBar* m_statusBar;
+    QMenu *m_trayMenu;
+    StatusBar *m_statusBar;
 };
 
 #endif // FORMMAIN_H

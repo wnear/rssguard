@@ -41,7 +41,7 @@ DVALUE(bool) Feeds::EnableAutoUpdateNotificationDef = true;
 
 DKEY Feeds::CountFormat = "count_format";
 
-DVALUE(char*) Feeds::CountFormatDef = "(%unread)";
+DVALUE(char *) Feeds::CountFormatDef = "(%unread)";
 
 DKEY Feeds::AutoUpdateInterval = "auto_update_interval";
 
@@ -99,7 +99,7 @@ DVALUE(bool) Messages::UseCustomDateDef = false;
 
 DKEY Messages::CustomDateFormat = "custom_date_format";
 
-DVALUE(char*) Messages::CustomDateFormatDef = "";
+DVALUE(char *) Messages::CustomDateFormatDef = "";
 
 DKEY Messages::ClearReadOnExit = "clear_read_on_exit";
 
@@ -114,7 +114,8 @@ DVALUE(bool) Messages::ShowOnlyUnreadMessagesDef = false;
 
 DKEY Messages::PreviewerFontStandard = "previewer_font_standard";
 
-NON_CONST_DVALUE(QString) Messages::PreviewerFontStandardDef = QFont(QFont().family(), 12).toString();
+NON_CONST_DVALUE(QString) Messages::PreviewerFontStandardDef = QFont(QFont().family(),
+        12).toString();
 
 DKEY Messages::ListFont = "list_font";
 
@@ -126,11 +127,11 @@ DVALUE(QString) GUI::MessageViewStateDef = QString();
 
 DKEY GUI::SplitterFeeds = "splitter_feeds";
 
-DVALUE(char*) GUI::SplitterFeedsDef = "";
+DVALUE(char *) GUI::SplitterFeedsDef = "";
 
 DKEY GUI::SplitterMessages = "splitter_messages";
 
-DVALUE(char*) GUI::SplitterMessagesDef = "";
+DVALUE(char *) GUI::SplitterMessagesDef = "";
 
 DKEY GUI::ToolbarStyle = "toolbar_style";
 
@@ -146,12 +147,13 @@ DVALUE(int) GUI::HeightRowFeedsDef = -1;
 
 DKEY GUI::FeedsToolbarActions = "feeds_toolbar";
 
-DVALUE(char*) GUI::FeedsToolbarActionsDef = "m_actionUpdateAllItems,m_actionStopRunningItemsUpdate,m_actionMarkAllItemsRead";
+DVALUE(char *) GUI::FeedsToolbarActionsDef =
+    "m_actionUpdateAllItems,m_actionStopRunningItemsUpdate,m_actionMarkAllItemsRead";
 
 DKEY GUI::StatusbarActions = "status_bar";
 
-DVALUE(char*) GUI::StatusbarActionsDef =
-  "m_lblProgressFeedsAction,m_barProgressFeedsAction,m_actionUpdateAllItems,m_actionUpdateSelectedItems,m_actionStopRunningItemsUpdate,m_actionFullscreen,m_actionQuit";
+DVALUE(char *) GUI::StatusbarActionsDef =
+    "m_lblProgressFeedsAction,m_barProgressFeedsAction,m_actionUpdateAllItems,m_actionUpdateSelectedItems,m_actionStopRunningItemsUpdate,m_actionFullscreen,m_actionQuit";
 
 DKEY GUI::MainWindowInitialSize = "window_size";
 DKEY GUI::MainWindowInitialPosition = "window_position";
@@ -221,8 +223,8 @@ DVALUE(bool) GUI::HideTabBarIfOnlyOneTabDef = false;
 
 DKEY GUI::MessagesToolbarDefaultButtons = "messages_toolbar";
 
-DVALUE(char*) GUI::MessagesToolbarDefaultButtonsDef =
-  "m_actionMarkSelectedMessagesAsRead,m_actionMarkSelectedMessagesAsUnread,m_actionSwitchImportanceOfSelectedMessages,separator,highlighter,spacer,search";
+DVALUE(char *) GUI::MessagesToolbarDefaultButtonsDef =
+    "m_actionMarkSelectedMessagesAsRead,m_actionMarkSelectedMessagesAsUnread,m_actionSwitchImportanceOfSelectedMessages,separator,highlighter,spacer,search";
 
 DKEY GUI::DefaultSortColumnFeeds = "default_sort_column_feeds";
 
@@ -234,15 +236,15 @@ DVALUE(Qt::SortOrder) GUI::DefaultSortOrderFeedsDef = Qt::AscendingOrder;
 
 DKEY GUI::IconTheme = "icon_theme_name";
 
-DVALUE(char*) GUI::IconThemeDef = APP_THEME_DEFAULT;
+DVALUE(char *) GUI::IconThemeDef = APP_THEME_DEFAULT;
 
 DKEY GUI::Skin = "skin";
 
-DVALUE(char*) GUI::SkinDef = APP_SKIN_DEFAULT;
+DVALUE(char *) GUI::SkinDef = APP_SKIN_DEFAULT;
 
 DKEY GUI::Style = "style";
 
-DVALUE(char*) GUI::StyleDef = APP_STYLE_DEFAULT;
+DVALUE(char *) GUI::StyleDef = APP_STYLE_DEFAULT;
 
 // General.
 DKEY General::ID = "main";
@@ -270,7 +272,8 @@ DVALUE(bool) Downloads::AlwaysPromptForFilenameDef = false;
 
 DKEY Downloads::TargetDirectory = "target_directory";
 
-DVALUE(QString) Downloads::TargetDirectoryDef = IOFactory::getSystemFolder(QStandardPaths::DownloadLocation);
+DVALUE(QString) Downloads::TargetDirectoryDef = IOFactory::getSystemFolder(
+            QStandardPaths::DownloadLocation);
 
 DKEY Downloads::RemovePolicy = "remove_policy";
 
@@ -278,7 +281,8 @@ DVALUE(int) Downloads::RemovePolicyDef = int(DownloadManager::RemovePolicy::Neve
 
 DKEY Downloads::TargetExplicitDirectory = "target_explicit_directory";
 
-DVALUE(QString) Downloads::TargetExplicitDirectoryDef = IOFactory::getSystemFolder(QStandardPaths::DownloadLocation);
+DVALUE(QString) Downloads::TargetExplicitDirectoryDef = IOFactory::getSystemFolder(
+            QStandardPaths::DownloadLocation);
 
 DKEY Downloads::ShowDownloadsWhenNewDownloadStarts = "show_downloads_on_new_download_start";
 
@@ -334,7 +338,7 @@ DVALUE(QString) Database::MySQLPasswordDef = QString();
 
 DKEY Database::MySQLDatabase = "mysql_database";
 
-DVALUE(char*) Database::MySQLDatabaseDef = APP_LOW_NAME;
+DVALUE(char *) Database::MySQLDatabaseDef = APP_LOW_NAME;
 
 DKEY Database::MySQLPort = "mysql_port";
 
@@ -342,7 +346,7 @@ DVALUE(int) Database::MySQLPortDef = APP_DB_MYSQL_PORT;
 
 DKEY Database::ActiveDriver = "database_driver";
 
-DVALUE(char*) Database::ActiveDriverDef = APP_DB_SQLITE_DRIVER;
+DVALUE(char *) Database::ActiveDriverDef = APP_DB_SQLITE_DRIVER;
 
 // Keyboard.
 DKEY Keyboard::ID = "keyboard";
@@ -367,7 +371,7 @@ DVALUE(QString) Browser::CustomExternalBrowserExecutableDef = QString();
 
 DKEY Browser::CustomExternalBrowserArguments = "external_browser_arguments";
 
-DVALUE(char*) Browser::CustomExternalBrowserArgumentsDef = "%1";
+DVALUE(char *) Browser::CustomExternalBrowserArgumentsDef = "%1";
 
 DKEY Browser::CustomExternalEmailEnabled = "custom_external_email";
 
@@ -379,7 +383,7 @@ DVALUE(QString) Browser::CustomExternalEmailExecutableDef = QString();
 
 DKEY Browser::CustomExternalEmailArguments = "external_email_arguments";
 
-DVALUE(char*) Browser::CustomExternalEmailArgumentsDef = "";
+DVALUE(char *) Browser::CustomExternalEmailArgumentsDef = "";
 
 DKEY Browser::ExternalTools = "external_tools";
 
@@ -388,106 +392,114 @@ DVALUE(QStringList) Browser::ExternalToolsDef = QStringList();
 // Categories.
 DKEY CategoriesExpandStates::ID = "categories_expand_states";
 
-Settings::Settings(const QString& file_name, Format format, const SettingsProperties::SettingsType& type, QObject* parent)
-  : QSettings(file_name, format, parent), m_initializationStatus(type) {}
+Settings::Settings(const QString &file_name, Format format,
+                   const SettingsProperties::SettingsType &type, QObject *parent)
+    : QSettings(file_name, format, parent), m_initializationStatus(type) {}
 
 Settings::~Settings() = default;
 
-QString Settings::pathName() const {
-  return QFileInfo(fileName()).absolutePath();
+QString Settings::pathName() const
+{
+    return QFileInfo(fileName()).absolutePath();
 }
 
-QSettings::Status Settings::checkSettings() {
-  qDebugNN << LOGSEC_CORE << "Syncing settings.";
-  sync();
-  return status();
+QSettings::Status Settings::checkSettings()
+{
+    qDebugNN << LOGSEC_CORE << "Syncing settings.";
+    sync();
+    return status();
 }
 
-bool Settings::initiateRestoration(const QString& settings_backup_file_path) {
-  return IOFactory::copyFile(settings_backup_file_path,
-                             QFileInfo(fileName()).absolutePath() + QDir::separator() +
-                             BACKUP_NAME_SETTINGS + BACKUP_SUFFIX_SETTINGS);
+bool Settings::initiateRestoration(const QString &settings_backup_file_path)
+{
+    return IOFactory::copyFile(settings_backup_file_path,
+                               QFileInfo(fileName()).absolutePath() + QDir::separator() +
+                               BACKUP_NAME_SETTINGS + BACKUP_SUFFIX_SETTINGS);
 }
 
-void Settings::finishRestoration(const QString& desired_settings_file_path) {
-  const QString backup_settings_file = QFileInfo(desired_settings_file_path).absolutePath() + QDir::separator() +
-                                       BACKUP_NAME_SETTINGS + BACKUP_SUFFIX_SETTINGS;
+void Settings::finishRestoration(const QString &desired_settings_file_path)
+{
+    const QString backup_settings_file = QFileInfo(desired_settings_file_path).absolutePath() +
+                                         QDir::separator() +
+                                         BACKUP_NAME_SETTINGS + BACKUP_SUFFIX_SETTINGS;
 
-  if (QFile::exists(backup_settings_file)) {
-    qWarningNN << LOGSEC_CORE
-               << "Backup settings file"
-               << QUOTE_W_SPACE(QDir::toNativeSeparators(backup_settings_file))
-               << "was detected. Restoring it.";
+    if (QFile::exists(backup_settings_file)) {
+        qWarningNN << LOGSEC_CORE
+                   << "Backup settings file"
+                   << QUOTE_W_SPACE(QDir::toNativeSeparators(backup_settings_file))
+                   << "was detected. Restoring it.";
 
-    if (IOFactory::copyFile(backup_settings_file, desired_settings_file_path)) {
-      QFile::remove(backup_settings_file);
-      qDebugNN << LOGSEC_CORE << "Settings file was restored successully.";
+        if (IOFactory::copyFile(backup_settings_file, desired_settings_file_path)) {
+            QFile::remove(backup_settings_file);
+            qDebugNN << LOGSEC_CORE << "Settings file was restored successully.";
+        } else {
+            qCriticalNN << LOGSEC_CORE << "Settings file was NOT restored due to error when copying the file.";
+        }
     }
-    else {
-      qCriticalNN << LOGSEC_CORE << "Settings file was NOT restored due to error when copying the file.";
+}
+
+Settings *Settings::setupSettings(QObject *parent)
+{
+    Settings *new_settings;
+
+    // If settings file exists (and is writable) in executable file working directory
+    // (in subdirectory APP_CFG_PATH), then use it (portable settings).
+    // Otherwise use settings file stored in home path.
+    const SettingsProperties properties = determineProperties();
+
+    finishRestoration(properties.m_absoluteSettingsFileName);
+
+    // Portable settings are available, use them.
+    new_settings = new Settings(properties.m_absoluteSettingsFileName, QSettings::IniFormat,
+                                properties.m_type, parent);
+
+    // Check if portable settings are available.
+    if (properties.m_type == SettingsProperties::SettingsType::Portable) {
+        qDebugNN << LOGSEC_CORE
+                 << "Initializing settings in"
+                 << QUOTE_W_SPACE(QDir::toNativeSeparators(properties.m_absoluteSettingsFileName))
+                 << "(portable way).";
+    } else {
+        qDebugNN << LOGSEC_CORE
+                 << "Initializing settings in"
+                 << QUOTE_W_SPACE(QDir::toNativeSeparators(properties.m_absoluteSettingsFileName))
+                 << "(non-portable way).";
     }
-  }
+
+    return new_settings;
 }
 
-Settings* Settings::setupSettings(QObject* parent) {
-  Settings* new_settings;
+SettingsProperties Settings::determineProperties()
+{
+    SettingsProperties properties;
 
-  // If settings file exists (and is writable) in executable file working directory
-  // (in subdirectory APP_CFG_PATH), then use it (portable settings).
-  // Otherwise use settings file stored in home path.
-  const SettingsProperties properties = determineProperties();
+    properties.m_settingsSuffix = QDir::separator() + QSL(APP_CFG_PATH) + QDir::separator() + QSL(
+                                      APP_CFG_FILE);
+    const QString app_path = qApp->userDataAppFolder();
+    const QString home_path = qApp->userDataHomeFolder();
 
-  finishRestoration(properties.m_absoluteSettingsFileName);
-
-  // Portable settings are available, use them.
-  new_settings = new Settings(properties.m_absoluteSettingsFileName, QSettings::IniFormat, properties.m_type, parent);
-
-  // Check if portable settings are available.
-  if (properties.m_type == SettingsProperties::SettingsType::Portable) {
-    qDebugNN << LOGSEC_CORE
-             << "Initializing settings in"
-             << QUOTE_W_SPACE(QDir::toNativeSeparators(properties.m_absoluteSettingsFileName))
-             << "(portable way).";
-  }
-  else {
-    qDebugNN << LOGSEC_CORE
-             << "Initializing settings in"
-             << QUOTE_W_SPACE(QDir::toNativeSeparators(properties.m_absoluteSettingsFileName))
-             << "(non-portable way).";
-  }
-
-  return new_settings;
-}
-
-SettingsProperties Settings::determineProperties() {
-  SettingsProperties properties;
-
-  properties.m_settingsSuffix = QDir::separator() + QSL(APP_CFG_PATH) + QDir::separator() + QSL(APP_CFG_FILE);
-  const QString app_path = qApp->userDataAppFolder();
-  const QString home_path = qApp->userDataHomeFolder();
-
-  // We will use PORTABLE settings only and only if it is available and NON-PORTABLE
-  // settings was not initialized before.
+    // We will use PORTABLE settings only and only if it is available and NON-PORTABLE
+    // settings was not initialized before.
 #if defined (Q_OS_LINUX) || defined (Q_OS_ANDROID) || defined (Q_OS_MACOSOS)
-  // DO NOT use portable settings for Linux, it is really not used on that platform.
-  const bool will_we_use_portable_settings = false;
+    // DO NOT use portable settings for Linux, it is really not used on that platform.
+    const bool will_we_use_portable_settings = false;
 #else
-  const QString exe_path = qApp->applicationDirPath();
-  const QString home_path_file = home_path + properties.m_settingsSuffix;
-  const bool portable_settings_available = IOFactory::isFolderWritable(exe_path);
-  const bool non_portable_settings_exist = QFile::exists(home_path_file);
-  const bool will_we_use_portable_settings = portable_settings_available && !non_portable_settings_exist;
+    const QString exe_path = qApp->applicationDirPath();
+    const QString home_path_file = home_path + properties.m_settingsSuffix;
+    const bool portable_settings_available = IOFactory::isFolderWritable(exe_path);
+    const bool non_portable_settings_exist = QFile::exists(home_path_file);
+    const bool will_we_use_portable_settings = portable_settings_available
+            && !non_portable_settings_exist;
 #endif
 
-  if (will_we_use_portable_settings) {
-    properties.m_type = SettingsProperties::SettingsType::Portable;
-    properties.m_baseDirectory = app_path;
-  }
-  else {
-    properties.m_type = SettingsProperties::SettingsType::NonPortable;
-    properties.m_baseDirectory = home_path;
-  }
+    if (will_we_use_portable_settings) {
+        properties.m_type = SettingsProperties::SettingsType::Portable;
+        properties.m_baseDirectory = app_path;
+    } else {
+        properties.m_type = SettingsProperties::SettingsType::NonPortable;
+        properties.m_baseDirectory = home_path;
+    }
 
-  properties.m_absoluteSettingsFileName = properties.m_baseDirectory + properties.m_settingsSuffix;
-  return properties;
+    properties.m_absoluteSettingsFileName = properties.m_baseDirectory + properties.m_settingsSuffix;
+    return properties;
 }

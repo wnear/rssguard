@@ -7,31 +7,33 @@
 
 #include "ui_toolbareditor.h"
 
-namespace Ui {
-  class ToolBarEditor;
+namespace Ui
+{
+class ToolBarEditor;
 }
 
 class BaseBar;
 
-class ToolBarEditor : public QWidget {
-  Q_OBJECT
+class ToolBarEditor : public QWidget
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit ToolBarEditor(QWidget* parent = nullptr);
+    explicit ToolBarEditor(QWidget *parent = nullptr);
 
     // Toolbar operations.
-    void loadFromToolBar(BaseBar* tool_bar);
+    void loadFromToolBar(BaseBar *tool_bar);
     void saveToolBar();
 
-    QListWidget* activeItemsWidget() const;
-    QListWidget* availableItemsWidget() const;
+    QListWidget *activeItemsWidget() const;
+    QListWidget *availableItemsWidget() const;
 
-  protected:
-    bool eventFilter(QObject* object, QEvent* event);
+protected:
+    bool eventFilter(QObject *object, QEvent *event);
 
-  private slots:
+private slots:
     void updateActionsAvailability();
 
     // Insert common controls.
@@ -47,22 +49,24 @@ class ToolBarEditor : public QWidget {
 
     void resetToolBar();
 
-  signals:
+signals:
     void setupChanged();
 
-  private:
-    void loadEditor(const QList<QAction*> activated_actions, const QList<QAction*> available_actions);
+private:
+    void loadEditor(const QList<QAction *> activated_actions, const QList<QAction *> available_actions);
 
     QScopedPointer<Ui::ToolBarEditor> m_ui;
-    BaseBar* m_toolBar;
+    BaseBar *m_toolBar;
 };
 
-inline QListWidget* ToolBarEditor::activeItemsWidget() const {
-  return m_ui->m_listActivatedActions;
+inline QListWidget *ToolBarEditor::activeItemsWidget() const
+{
+    return m_ui->m_listActivatedActions;
 }
 
-inline QListWidget* ToolBarEditor::availableItemsWidget() const {
-  return m_ui->m_listAvailableActions;
+inline QListWidget *ToolBarEditor::availableItemsWidget() const
+{
+    return m_ui->m_listAvailableActions;
 }
 
 #endif // TOOLBAREDITOR_H

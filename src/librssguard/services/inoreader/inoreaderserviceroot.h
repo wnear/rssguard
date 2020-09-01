@@ -8,17 +8,18 @@
 
 class InoreaderNetworkFactory;
 
-class InoreaderServiceRoot : public ServiceRoot, public CacheForServiceRoot {
-  Q_OBJECT
+class InoreaderServiceRoot : public ServiceRoot, public CacheForServiceRoot
+{
+    Q_OBJECT
 
-  public:
-    explicit InoreaderServiceRoot(InoreaderNetworkFactory* network, RootItem* parent = nullptr);
+public:
+    explicit InoreaderServiceRoot(InoreaderNetworkFactory *network, RootItem *parent = nullptr);
     virtual ~InoreaderServiceRoot();
 
     void saveAccountDataToDatabase();
 
-    void setNetwork(InoreaderNetworkFactory* network);
-    InoreaderNetworkFactory* network() const;
+    void setNetwork(InoreaderNetworkFactory *network);
+    InoreaderNetworkFactory *network() const;
 
     bool isSyncable() const;
     bool canBeEdited() const;
@@ -33,28 +34,30 @@ class InoreaderServiceRoot : public ServiceRoot, public CacheForServiceRoot {
 
     QString additionalTooltip() const;
 
-    RootItem* obtainNewTreeForSyncIn() const;
+    RootItem *obtainNewTreeForSyncIn() const;
 
     void saveAllCachedData(bool async = true);
 
-  public slots:
-    void addNewFeed(const QString& url);
+public slots:
+    void addNewFeed(const QString &url);
     void addNewCategory();
     void updateTitle();
 
-  private:
+private:
     void loadFromDatabase();
 
-  private:
-    InoreaderNetworkFactory* m_network;
+private:
+    InoreaderNetworkFactory *m_network;
 };
 
-inline void InoreaderServiceRoot::setNetwork(InoreaderNetworkFactory* network) {
-  m_network = network;
+inline void InoreaderServiceRoot::setNetwork(InoreaderNetworkFactory *network)
+{
+    m_network = network;
 }
 
-inline InoreaderNetworkFactory* InoreaderServiceRoot::network() const {
-  return m_network;
+inline InoreaderNetworkFactory *InoreaderServiceRoot::network() const
+{
+    return m_network;
 }
 
 #endif // INOREADERSERVICEROOT_H

@@ -34,131 +34,150 @@
 #include <QMessageBox>
 #include <QTimer>
 
-AdBlockDialog::AdBlockDialog(QWidget* parent)
-  : QDialog(parent), m_manager(AdBlockManager::instance()), m_currentTreeWidget(nullptr), m_currentSubscription(nullptr),
-  m_loaded(false), m_ui(new Ui::AdBlockDialog) {
-  m_ui->setupUi(this);
-  m_ui->m_cbEnable->setChecked(m_manager->isEnabled());
-  setAttribute(Qt::WA_DeleteOnClose);
-  setWindowFlags(Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog | Qt::WindowSystemMenuHint);
-  setWindowIcon(qApp->icons()->miscIcon(ADBLOCK_ICON_ACTIVE));
-  QPushButton* btn_options = m_ui->m_buttonBox->addButton(QDialogButtonBox::FirstButton);
+AdBlockDialog::AdBlockDialog(QWidget *parent)
+    : QDialog(parent), m_manager(AdBlockManager::instance()), m_currentTreeWidget(nullptr),
+      m_currentSubscription(nullptr),
+      m_loaded(false), m_ui(new Ui::AdBlockDialog)
+{
+    m_ui->setupUi(this);
+    m_ui->m_cbEnable->setChecked(m_manager->isEnabled());
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowFlags(Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog | Qt::WindowSystemMenuHint);
+    setWindowIcon(qApp->icons()->miscIcon(ADBLOCK_ICON_ACTIVE));
+    QPushButton *btn_options = m_ui->m_buttonBox->addButton(QDialogButtonBox::FirstButton);
 
-  btn_options->setText(tr("Options"));
-  auto* menu = new QMenu(btn_options);
+    btn_options->setText(tr("Options"));
+    auto *menu = new QMenu(btn_options);
 
-  m_actionAddRule = menu->addAction(tr("Add rule"), this, &AdBlockDialog::addRule);
-  m_actionRemoveRule = menu->addAction(tr("Remove rule"), this, &AdBlockDialog::removeRule);
-  menu->addSeparator();
-  m_actionAddSubscription = menu->addAction(tr("Add subscription"), this, &AdBlockDialog::addSubscription);
-  m_actionRemoveSubscription = menu->addAction(tr("Remove subscription"), this, &AdBlockDialog::removeSubscription);
-  menu->addAction(tr("Update subscriptions"), m_manager, &AdBlockManager::updateAllSubscriptions);
-  menu->addSeparator();
-  menu->addAction(tr("Learn about writing rules..."), this, &AdBlockDialog::learnAboutRules);
-  btn_options->setMenu(menu);
-  connect(menu, &QMenu::aboutToShow, this, &AdBlockDialog::aboutToShowMenu);
-  connect(m_ui->m_cbEnable, &QCheckBox::toggled, this, &AdBlockDialog::enableAdBlock);
-  connect(m_ui->m_tabSubscriptions, &QTabWidget::currentChanged, this, &AdBlockDialog::currentChanged);
-  connect(m_ui->m_buttonBox, &QDialogButtonBox::rejected, this, &AdBlockDialog::close);
-  load();
-  m_ui->m_buttonBox->setFocus();
-}
-
-void AdBlockDialog::showRule(const AdBlockRule* rule) const {
-  AdBlockSubscription* subscription = rule->subscription();
-
-  if (subscription != nullptr) {
-    for (int i = 0; i < m_ui->m_tabSubscriptions->count(); ++i) {
-      auto* treeWidget = qobject_cast<AdBlockTreeWidget*>(m_ui->m_tabSubscriptions->widget(i));
-
-      if (subscription == treeWidget->subscription()) {
-        treeWidget->showRule(rule);
-        m_ui->m_tabSubscriptions->setCurrentIndex(i);
-        break;
-      }
-    }
-  }
-}
-
-void AdBlockDialog::addRule() {
-  m_currentTreeWidget->addRule();
-}
-
-void AdBlockDialog::removeRule() {
-  m_currentTreeWidget->removeRule();
-}
-
-void AdBlockDialog::addSubscription() {
-  AdBlockAddSubscriptionDialog dialog(this);
-
-  if (dialog.exec() != QDialog::Accepted) {
-    return;
-  }
-
-  QString title = dialog.title();
-  QString url = dialog.url();
-
-  if (AdBlockSubscription* subscription = m_manager->addSubscription(title, url)) {
-    auto* tree = new AdBlockTreeWidget(subscription, m_ui->m_tabSubscriptions);
-    int index = m_ui->m_tabSubscriptions->insertTab(m_ui->m_tabSubscriptions->count() - 1, tree, subscription->title());
-
-    m_ui->m_tabSubscriptions->setCurrentIndex(index);
-  }
-}
-
-void AdBlockDialog::removeSubscription() {
-  if (m_manager->removeSubscription(m_currentSubscription)) {
-    delete m_currentTreeWidget;
-  }
-}
-
-void AdBlockDialog::currentChanged(int index) {
-  if (index != -1) {
-    m_currentTreeWidget = qobject_cast<AdBlockTreeWidget*>(m_ui->m_tabSubscriptions->widget(index));
-    m_currentSubscription = m_currentTreeWidget->subscription();
-  }
-}
-
-void AdBlockDialog::enableAdBlock(bool state) {
-  m_manager->setEnabled(state);
-
-  if (state) {
+    m_actionAddRule = menu->addAction(tr("Add rule"), this, &AdBlockDialog::addRule);
+    m_actionRemoveRule = menu->addAction(tr("Remove rule"), this, &AdBlockDialog::removeRule);
+    menu->addSeparator();
+    m_actionAddSubscription = menu->addAction(tr("Add subscription"), this,
+                              &AdBlockDialog::addSubscription);
+    m_actionRemoveSubscription = menu->addAction(tr("Remove subscription"), this,
+                                 &AdBlockDialog::removeSubscription);
+    menu->addAction(tr("Update subscriptions"), m_manager, &AdBlockManager::updateAllSubscriptions);
+    menu->addSeparator();
+    menu->addAction(tr("Learn about writing rules..."), this, &AdBlockDialog::learnAboutRules);
+    btn_options->setMenu(menu);
+    connect(menu, &QMenu::aboutToShow, this, &AdBlockDialog::aboutToShowMenu);
+    connect(m_ui->m_cbEnable, &QCheckBox::toggled, this, &AdBlockDialog::enableAdBlock);
+    connect(m_ui->m_tabSubscriptions, &QTabWidget::currentChanged, this,
+            &AdBlockDialog::currentChanged);
+    connect(m_ui->m_buttonBox, &QDialogButtonBox::rejected, this, &AdBlockDialog::close);
     load();
-  }
+    m_ui->m_buttonBox->setFocus();
 }
 
-void AdBlockDialog::aboutToShowMenu() {
-  bool subscriptionEditable = (m_currentSubscription != nullptr) && m_currentSubscription->canEditRules();
-  bool subscriptionRemovable = (m_currentSubscription != nullptr) && m_currentSubscription->canBeRemoved();
+void AdBlockDialog::showRule(const AdBlockRule *rule) const
+{
+    AdBlockSubscription *subscription = rule->subscription();
 
-  m_actionAddRule->setEnabled(subscriptionEditable);
-  m_actionRemoveRule->setEnabled(subscriptionEditable);
-  m_actionRemoveSubscription->setEnabled(subscriptionRemovable);
+    if (subscription != nullptr) {
+        for (int i = 0; i < m_ui->m_tabSubscriptions->count(); ++i) {
+            auto *treeWidget = qobject_cast<AdBlockTreeWidget *>(m_ui->m_tabSubscriptions->widget(i));
+
+            if (subscription == treeWidget->subscription()) {
+                treeWidget->showRule(rule);
+                m_ui->m_tabSubscriptions->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
 }
 
-void AdBlockDialog::learnAboutRules() {
-  qApp->web()->openUrlInExternalBrowser(QSL(ADBLOCK_HOWTO_FILTERS));
+void AdBlockDialog::addRule()
+{
+    m_currentTreeWidget->addRule();
 }
 
-void AdBlockDialog::loadSubscriptions() {
-  for (int i = 0; i < m_ui->m_tabSubscriptions->count(); ++i) {
-    auto* treeWidget = qobject_cast<AdBlockTreeWidget*>(m_ui->m_tabSubscriptions->widget(i));
-
-    treeWidget->refresh();
-  }
+void AdBlockDialog::removeRule()
+{
+    m_currentTreeWidget->removeRule();
 }
 
-void AdBlockDialog::load() {
-  if (m_loaded || !m_ui->m_cbEnable->isChecked()) {
-    return;
-  }
+void AdBlockDialog::addSubscription()
+{
+    AdBlockAddSubscriptionDialog dialog(this);
 
-  for (AdBlockSubscription* subscription : m_manager->subscriptions()) {
-    auto* tree = new AdBlockTreeWidget(subscription, m_ui->m_tabSubscriptions);
+    if (dialog.exec() != QDialog::Accepted) {
+        return;
+    }
 
-    m_ui->m_tabSubscriptions->addTab(tree, subscription->title());
-  }
+    QString title = dialog.title();
+    QString url = dialog.url();
 
-  m_loaded = true;
-  QTimer::singleShot(50, this, SLOT(loadSubscriptions()));
+    if (AdBlockSubscription *subscription = m_manager->addSubscription(title, url)) {
+        auto *tree = new AdBlockTreeWidget(subscription, m_ui->m_tabSubscriptions);
+        int index = m_ui->m_tabSubscriptions->insertTab(m_ui->m_tabSubscriptions->count() - 1, tree,
+                    subscription->title());
+
+        m_ui->m_tabSubscriptions->setCurrentIndex(index);
+    }
+}
+
+void AdBlockDialog::removeSubscription()
+{
+    if (m_manager->removeSubscription(m_currentSubscription)) {
+        delete m_currentTreeWidget;
+    }
+}
+
+void AdBlockDialog::currentChanged(int index)
+{
+    if (index != -1) {
+        m_currentTreeWidget = qobject_cast<AdBlockTreeWidget *>(m_ui->m_tabSubscriptions->widget(index));
+        m_currentSubscription = m_currentTreeWidget->subscription();
+    }
+}
+
+void AdBlockDialog::enableAdBlock(bool state)
+{
+    m_manager->setEnabled(state);
+
+    if (state) {
+        load();
+    }
+}
+
+void AdBlockDialog::aboutToShowMenu()
+{
+    bool subscriptionEditable = (m_currentSubscription != nullptr)
+                                && m_currentSubscription->canEditRules();
+    bool subscriptionRemovable = (m_currentSubscription != nullptr)
+                                 && m_currentSubscription->canBeRemoved();
+
+    m_actionAddRule->setEnabled(subscriptionEditable);
+    m_actionRemoveRule->setEnabled(subscriptionEditable);
+    m_actionRemoveSubscription->setEnabled(subscriptionRemovable);
+}
+
+void AdBlockDialog::learnAboutRules()
+{
+    qApp->web()->openUrlInExternalBrowser(QSL(ADBLOCK_HOWTO_FILTERS));
+}
+
+void AdBlockDialog::loadSubscriptions()
+{
+    for (int i = 0; i < m_ui->m_tabSubscriptions->count(); ++i) {
+        auto *treeWidget = qobject_cast<AdBlockTreeWidget *>(m_ui->m_tabSubscriptions->widget(i));
+
+        treeWidget->refresh();
+    }
+}
+
+void AdBlockDialog::load()
+{
+    if (m_loaded || !m_ui->m_cbEnable->isChecked()) {
+        return;
+    }
+
+    for (AdBlockSubscription *subscription : m_manager->subscriptions()) {
+        auto *tree = new AdBlockTreeWidget(subscription, m_ui->m_tabSubscriptions);
+
+        m_ui->m_tabSubscriptions->addTab(tree, subscription->title());
+    }
+
+    m_loaded = true;
+    QTimer::singleShot(50, this, SLOT(loadSubscriptions()));
 }

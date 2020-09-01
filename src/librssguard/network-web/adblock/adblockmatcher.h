@@ -30,34 +30,36 @@
 class QWebEngineUrlRequestInfo;
 class AdBlockManager;
 
-class AdBlockMatcher : public QObject {
-  Q_OBJECT
+class AdBlockMatcher : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit AdBlockMatcher(AdBlockManager* manager);
+public:
+    explicit AdBlockMatcher(AdBlockManager *manager);
     virtual ~AdBlockMatcher();
 
-    const AdBlockRule* match(const QWebEngineUrlRequestInfo& request, const QString& urlDomain, const QString& urlString) const;
+    const AdBlockRule *match(const QWebEngineUrlRequestInfo &request, const QString &urlDomain,
+                             const QString &urlString) const;
 
-    bool adBlockDisabledForUrl(const QUrl& url) const;
-    bool elemHideDisabledForUrl(const QUrl& url) const;
+    bool adBlockDisabledForUrl(const QUrl &url) const;
+    bool elemHideDisabledForUrl(const QUrl &url) const;
 
     QString elementHidingRules() const;
-    QString elementHidingRulesForDomain(const QString& domain) const;
+    QString elementHidingRulesForDomain(const QString &domain) const;
 
-  public slots:
+public slots:
     void update();
     void clear();
 
-  private:
-    AdBlockManager* m_manager;
+private:
+    AdBlockManager *m_manager;
 
-    QVector<AdBlockRule*> m_createdRules;
-    QVector<const AdBlockRule*> m_networkExceptionRules;
-    QVector<const AdBlockRule*> m_networkBlockRules;
-    QVector<const AdBlockRule*> m_domainRestrictedCssRules;
-    QVector<const AdBlockRule*> m_documentRules;
-    QVector<const AdBlockRule*> m_elemhideRules;
+    QVector<AdBlockRule *> m_createdRules;
+    QVector<const AdBlockRule *> m_networkExceptionRules;
+    QVector<const AdBlockRule *> m_networkBlockRules;
+    QVector<const AdBlockRule *> m_domainRestrictedCssRules;
+    QVector<const AdBlockRule *> m_documentRules;
+    QVector<const AdBlockRule *> m_elemhideRules;
 
     QString m_elementHidingRules;
     AdBlockSearchTree m_networkBlockTree;

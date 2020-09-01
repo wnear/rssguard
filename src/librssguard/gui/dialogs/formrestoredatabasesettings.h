@@ -7,28 +7,30 @@
 
 #include "ui_formrestoredatabasesettings.h"
 
-class FormRestoreDatabaseSettings : public QDialog {
-  Q_OBJECT
+class FormRestoreDatabaseSettings : public QDialog
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit FormRestoreDatabaseSettings(QWidget& parent);
+    explicit FormRestoreDatabaseSettings(QWidget &parent);
     virtual ~FormRestoreDatabaseSettings();
 
-    bool shouldRestart() const {
-      return m_shouldRestart;
+    bool shouldRestart() const
+    {
+        return m_shouldRestart;
     }
 
-  private slots:
+private slots:
     void performRestoration();
     void checkOkButton();
     void selectFolderWithGui();
     void selectFolder(QString folder = QString());
 
-  private:
+private:
     Ui::FormRestoreDatabaseSettings m_ui;
-    QPushButton* m_btnRestart;
+    QPushButton *m_btnRestart;
     bool m_shouldRestart;
 };
 

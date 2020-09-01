@@ -5,9 +5,10 @@
 
 #include "exceptions/applicationexception.h"
 
-class IOException : public ApplicationException {
-  public:
-    explicit IOException(const QString& message = QString());
+class IOException : public ApplicationException
+{
+public:
+    explicit IOException(const QString &message = QString());
 };
 
 #endif // IOEXCEPTION_H

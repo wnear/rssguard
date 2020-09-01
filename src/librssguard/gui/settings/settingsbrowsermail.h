@@ -8,18 +8,19 @@
 #include "miscellaneous/externaltool.h"
 #include "ui_settingsbrowsermail.h"
 
-class SettingsBrowserMail : public SettingsPanel {
-  Q_OBJECT
+class SettingsBrowserMail : public SettingsPanel
+{
+    Q_OBJECT
 
-  public:
-    explicit SettingsBrowserMail(Settings* settings, QWidget* parent = nullptr);
+public:
+    explicit SettingsBrowserMail(Settings *settings, QWidget *parent = nullptr);
     virtual ~SettingsBrowserMail();
 
     QString title() const;
     void loadSettings();
     void saveSettings();
 
-  private slots:
+private slots:
     void addExternalTool();
     void deleteSelectedExternalTool();
     void changeDefaultBrowserArguments(int index);
@@ -29,15 +30,16 @@ class SettingsBrowserMail : public SettingsPanel {
     void displayProxyPassword(int state);
     void onProxyTypeChanged(int index);
 
-  private:
+private:
     QList<ExternalTool> externalTools() const;
-    void setExternalTools(const QList<ExternalTool>& list);
+    void setExternalTools(const QList<ExternalTool> &list);
 
-    Ui::SettingsBrowserMail* m_ui;
+    Ui::SettingsBrowserMail *m_ui;
 };
 
-inline QString SettingsBrowserMail::title() const {
-  return tr("Web browser & e-mail & proxy");
+inline QString SettingsBrowserMail::title() const
+{
+    return tr("Web browser & e-mail & proxy");
 }
 
 #endif // SETTINGSBROWSERMAIL_H

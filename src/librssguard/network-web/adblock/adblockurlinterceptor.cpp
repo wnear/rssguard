@@ -21,9 +21,10 @@
 
 #include "network-web/adblock/adblockmanager.h"
 
-AdBlockUrlInterceptor::AdBlockUrlInterceptor(AdBlockManager* manager)
-  : UrlInterceptor(manager), m_manager(manager) {}
+AdBlockUrlInterceptor::AdBlockUrlInterceptor(AdBlockManager *manager)
+    : UrlInterceptor(manager), m_manager(manager) {}
 
-void AdBlockUrlInterceptor::interceptRequest(QWebEngineUrlRequestInfo& info) {
-  info.block(m_manager->block(info));
+void AdBlockUrlInterceptor::interceptRequest(QWebEngineUrlRequestInfo &info)
+{
+    info.block(m_manager->block(info));
 }

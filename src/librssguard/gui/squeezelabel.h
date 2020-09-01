@@ -5,16 +5,17 @@
 
 #include <QLabel>
 
-class SqueezeLabel : public QLabel {
-  Q_OBJECT
+class SqueezeLabel : public QLabel
+{
+    Q_OBJECT
 
-  public:
-    explicit SqueezeLabel(QWidget* parent = nullptr);
+public:
+    explicit SqueezeLabel(QWidget *parent = nullptr);
 
-  protected:
-    void paintEvent(QPaintEvent* event);
+protected:
+    void paintEvent(QPaintEvent *event);
 
-  private:
+private:
     QString m_squeezedTextCache;
 };
 

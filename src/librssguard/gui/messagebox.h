@@ -6,29 +6,30 @@
 #include <QDialogButtonBox>
 #include <QMessageBox>
 
-class MessageBox : public QMessageBox {
-  Q_OBJECT
+class MessageBox : public QMessageBox
+{
+    Q_OBJECT
 
-  public:
+public:
 
     // Constructors and destructors.
-    explicit MessageBox(QWidget* parent = nullptr);
+    explicit MessageBox(QWidget *parent = nullptr);
 
     // Custom icon setting.
     void setIcon(Icon icon);
 
-    static void setCheckBox(QMessageBox* msg_box, const QString& text, bool* data);
+    static void setCheckBox(QMessageBox *msg_box, const QString &text, bool *data);
 
     // Displays custom message box.
-    static QMessageBox::StandardButton show(QWidget* parent,
+    static QMessageBox::StandardButton show(QWidget *parent,
                                             QMessageBox::Icon icon,
-                                            const QString& title,
-                                            const QString& text,
-                                            const QString& informative_text = QString(),
-                                            const QString& detailed_text = QString(),
+                                            const QString &title,
+                                            const QString &text,
+                                            const QString &informative_text = QString(),
+                                            const QString &detailed_text = QString(),
                                             QMessageBox::StandardButtons buttons = QMessageBox::Ok,
                                             QMessageBox::StandardButton default_button = QMessageBox::Ok,
-                                            bool* dont_show_again = nullptr);
+                                            bool *dont_show_again = nullptr);
     static QIcon iconForStatus(QMessageBox::Icon status);
 };
 

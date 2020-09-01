@@ -24,44 +24,48 @@ class LocationLineEdit;
 class DiscoverFeedsButton;
 class SearchTextWidget;
 
-class WebBrowser : public TabContent {
-  Q_OBJECT
+class WebBrowser : public TabContent
+{
+    Q_OBJECT
 
-  public:
-    explicit WebBrowser(QWidget* parent = nullptr);
+public:
+    explicit WebBrowser(QWidget *parent = nullptr);
     virtual ~WebBrowser();
 
-    WebBrowser* webBrowser() const {
-      return const_cast<WebBrowser*>(this);
+    WebBrowser *webBrowser() const
+    {
+        return const_cast<WebBrowser *>(this);
     }
 
-    WebViewer* viewer() const {
-      return m_webView;
+    WebViewer *viewer() const
+    {
+        return m_webView;
     }
 
     void reloadFontSettings();
 
-  public slots:
+public slots:
     void increaseZoom();
     void decreaseZoom();
     void resetZoom();
 
     void clear();
-    void loadUrl(const QString& url);
-    void loadUrl(const QUrl& url);
-    void loadMessages(const QList<Message>& messages, RootItem* root);
-    void loadMessage(const Message& message, RootItem* root);
+    void loadUrl(const QString &url);
+    void loadUrl(const QUrl &url);
+    void loadMessages(const QList<Message> &messages, RootItem *root);
+    void loadMessage(const Message &message, RootItem *root);
 
     // Switches visibility of navigation bar.
-    inline void setNavigationBarVisible(bool visible) {
-      m_toolBar->setVisible(visible);
+    inline void setNavigationBarVisible(bool visible)
+    {
+        m_toolBar->setVisible(visible);
     }
 
-  protected:
-    bool eventFilter(QObject* watched, QEvent* event);
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 
-  private slots:
-    void updateUrl(const QUrl& url);
+private slots:
+    void updateUrl(const QUrl &url);
 
     void onLoadingStarted();
     void onLoadingProgress(int progress);
@@ -69,36 +73,36 @@ class WebBrowser : public TabContent {
 
     void receiveMessageStatusChangeRequest(int message_id, WebPage::MessageStatusChange change);
 
-    void onTitleChanged(const QString& new_title);
-    void onIconChanged(const QIcon& icon);
+    void onTitleChanged(const QString &new_title);
+    void onIconChanged(const QIcon &icon);
 
-  signals:
+signals:
     void closeRequested();
-    void iconChanged(int index, const QIcon& icon);
-    void titleChanged(int index, const QString& title);
+    void iconChanged(int index, const QIcon &icon);
+    void titleChanged(int index, const QString &title);
 
     void markMessageRead(int id, RootItem::ReadStatus read);
     void markMessageImportant(int id, RootItem::Importance important);
 
-  private:
+private:
     void initializeLayout();
-    Message* findMessage(int id);
+    Message *findMessage(int id);
 
     void markMessageAsRead(int id, bool read);
     void switchMessageImportance(int id, bool checked);
     void createConnections();
 
-    QVBoxLayout* m_layout;
-    QToolBar* m_toolBar;
-    WebViewer* m_webView;
-    SearchTextWidget* m_searchWidget;
-    LocationLineEdit* m_txtLocation;
-    DiscoverFeedsButton* m_btnDiscoverFeeds;
-    QProgressBar* m_loadingProgress;
-    QAction* m_actionBack;
-    QAction* m_actionForward;
-    QAction* m_actionReload;
-    QAction* m_actionStop;
+    QVBoxLayout *m_layout;
+    QToolBar *m_toolBar;
+    WebViewer *m_webView;
+    SearchTextWidget *m_searchWidget;
+    LocationLineEdit *m_txtLocation;
+    DiscoverFeedsButton *m_btnDiscoverFeeds;
+    QProgressBar *m_loadingProgress;
+    QAction *m_actionBack;
+    QAction *m_actionForward;
+    QAction *m_actionReload;
+    QAction *m_actionStop;
     QList<Message> m_messages;
     QPointer<RootItem> m_root;
 };

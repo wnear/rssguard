@@ -7,14 +7,15 @@
 
 #include "ui_formabout.h"
 
-class RSSGUARD_DLLSPEC FormAbout : public QDialog {
-  Q_OBJECT
+class RSSGUARD_DLLSPEC FormAbout : public QDialog
+{
+    Q_OBJECT
 
-  public:
-    explicit FormAbout(QWidget* parent);
+public:
+    explicit FormAbout(QWidget *parent);
     virtual ~FormAbout();
 
-  private:
+private:
     void loadLicenseAndInformation();
     void loadSettingsAndPaths();
 

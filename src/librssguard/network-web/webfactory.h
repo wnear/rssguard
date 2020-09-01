@@ -17,39 +17,41 @@
 class QMenu;
 #endif
 
-class WebFactory : public QObject {
-  Q_OBJECT
+class WebFactory : public QObject
+{
+    Q_OBJECT
 
-  public:
-    explicit WebFactory(QObject* parent = nullptr);
+public:
+    explicit WebFactory(QObject *parent = nullptr);
     virtual ~WebFactory();
 
     // Strips "<....>" (HTML, XML) tags from given text.
     QString stripTags(QString text);
 
     // HTML entity escaping.
-    QString escapeHtml(const QString& html);
-    QString deEscapeHtml(const QString& text);
+    QString escapeHtml(const QString &html);
+    QString deEscapeHtml(const QString &text);
 
 #if defined (USE_WEBENGINE)
-    QAction* engineSettingsAction();
+    QAction *engineSettingsAction();
 #endif
 
-  public slots:
+public slots:
     void updateProxy();
-    bool openUrlInExternalBrowser(const QString& url) const;
-    bool sendMessageViaEmail(const Message& message);
+    bool openUrlInExternalBrowser(const QString &url) const;
+    bool sendMessageViaEmail(const Message &message);
 
 #if defined (USE_WEBENGINE)
-  private slots:
-    void createMenu(QMenu* menu = nullptr);
+private slots:
+    void createMenu(QMenu *menu = nullptr);
     void webEngineSettingChanged(bool enabled);
 
-  private:
-    QAction* createEngineSettingsAction(const QString& title, QWebEngineSettings::WebAttribute attribute);
+private:
+    QAction *createEngineSettingsAction(const QString &title,
+                                        QWebEngineSettings::WebAttribute attribute);
 #endif
 
-  private:
+private:
     void generateEscapes();
     void generateDeescapes();
 
@@ -57,7 +59,7 @@ class WebFactory : public QObject {
     QMap<QString, QString> m_deEscapes;
 
 #if defined (USE_WEBENGINE)
-    QAction* m_engineSettings;
+    QAction *m_engineSettings;
 #endif
 };
 
